@@ -14,10 +14,10 @@ paths:
                             schema:
                                 type: object
                                 required:
-                                - user_id
+                                - userId
                                 - authenticated
                                 properties: 
-                                    user_id: 
+                                    userId: 
                                         type: integer
                                         format: int32
                                         default: -1
