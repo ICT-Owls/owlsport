@@ -1,0 +1,27 @@
+openapi: "3.1.0"
+info:
+    "title": "Carpooling"
+    "version": "1.0.0"
+paths:
+    /user/auth:
+        get:
+            description: Returns information about authentication status
+            responses:
+                '200':
+                    description: Information about authentication status
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                required:
+                                - user_id
+                                - authenticated
+                                properties: 
+                                    user_id: 
+                                        type: integer
+                                        format: int32
+                                        default: -1
+                                    authenticated:
+                                        type: boolean
+                                        default: false
+                                
