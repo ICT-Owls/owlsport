@@ -7,6 +7,7 @@ import MainContentPresenter from './presenters/MainContentPresenter';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 function Events() {
+    console.log();
     return (
         <>
             <h1>EVENTS PAGE</h1>
