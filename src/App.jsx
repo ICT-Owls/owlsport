@@ -4,16 +4,23 @@ import SidebarPresenter from './presenters/SidebarPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
 import ChatsPresenter from './presenters/ChatsPresenter';
 import MainContentPresenter from './presenters/MainContentPresenter';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import { LightTheme, DarkTheme } from './Themes';
 import './App.css';
+import React from 'react';
 
 function App() {
+    const [lightmode, setLightmode] = React.useState(true);
     return (
-        <div className="App absolute w-screen h-screen flex justify-start bg-gray-200">
+        <ThemeProvider
+            theme={lightmode ? LightTheme : DarkTheme}
+            className="App absolute w-screen h-screen flex justify-start bg-gray-200"
+        >
             <NavbarPresenter />
             <SidebarPresenter />
             <ChatsPresenter />
             <MainContentPresenter />
-        </div>
+        </ThemeProvider>
     );
 }
 
