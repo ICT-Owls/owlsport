@@ -1,4 +1,5 @@
 schemas:
+    # Information about the authentication status of the current user
     AuthInfo:
         type: object
         required:
@@ -12,3 +13,40 @@ schemas:
             authenticated:
                 type: boolean
                 default: false
+    Id:
+        type: number
+        format: int32
+        description: Database Ids
+    # Information about a user
+    User:
+        type: object
+        description: 'A user'
+        properties:
+            id:
+                $ref: '#/components/schemas/Id'
+                description: 'The ID of the user'
+            first_name:
+                type: string
+                description: 'First name of the user'
+            last_name:
+                type: string
+                description: 'Last name of the user'
+            email:
+                type: string
+                description: 'Email of the user'
+            date_of_birth:
+                type: date
+                description: 'Date of birth for this user'
+            friends:
+                type: array
+                items:
+                    type: string
+                description: List of friend ids
+                default: []
+        required:
+            - id
+            - first_name
+            - last_name
+            - email
+            - date_of_birth
+            - friends

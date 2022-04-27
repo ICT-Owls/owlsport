@@ -13,7 +13,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: 'definitions.yaml#/schemas/AuthInfo'
-                                openapi: '3.1.0'
     /user/{id}:
         get:
             summary: 'Get a user'
@@ -25,7 +24,7 @@ paths:
                   name: id
                   required: true
                   schema:
-                      $ref: '#/components/schemas/Id'
+                      $ref: 'definitions.yaml#/schemas/Id'
                   description: 'The user ID'
             responses:
                 '200':
@@ -33,7 +32,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/User'
+                                $ref: 'definitions.yaml#/schemas/User'
                 '400':
                     description: 'No id provided'
                 '404':
@@ -48,7 +47,7 @@ paths:
                   name: id
                   required: true
                   schema:
-                      $ref: '#/components/schemas/Id'
+                      $ref: 'definitions.yaml#/schemas/Id'
                   description: 'The user ID'
             requestBody:
                 description: 'The updated user object'
@@ -65,54 +64,15 @@ paths:
                                     type: array
                                     description: 'New friend list of user'
                                     items:
-                                        $ref: '#/components/schemas/Id'
+                                        $ref: 'definitions.yaml#/schemas/Id'
             responses:
                 '200':
                     description: 'Returns the updated user'
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/User'
+                                $ref: 'definitions.yaml#/schemas/User'
                 '401':
                     description: 'Body is empty'
                 '404':
                     description: 'User not found'
-
-components:
-    schemas:
-        Id:
-            type: number
-            format: int32
-            description: Database Ids
-        User:
-            type: object
-            description: 'A user'
-            properties:
-                id:
-                    $ref: '#/components/schemas/Id'
-                    description: 'The ID of the user'
-                first_name:
-                    type: string
-                    description: 'First name of the user'
-                last_name:
-                    type: string
-                    description: 'Last name of the user'
-                email:
-                    type: string
-                    description: 'Email of the user'
-                date_of_birth:
-                    type: date
-                    description: 'Date of birth for this user'
-                friends:
-                    type: array
-                    items:
-                        type: string
-                    description: List of friend ids
-                    default: []
-            required:
-                - id
-                - first_name
-                - last_name
-                - email
-                - date_of_birth
-                - friends
