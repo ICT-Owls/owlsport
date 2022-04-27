@@ -8,18 +8,26 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { LightTheme, DarkTheme } from './Themes';
 import './App.css';
 import React from 'react';
+import { Box } from '@mui/material';
 
 function App() {
     const [lightmode, setLightmode] = React.useState(true);
     return (
-        <ThemeProvider
-            theme={lightmode ? LightTheme : DarkTheme}
-            className="App absolute w-screen h-screen flex justify-start bg-gray-200"
-        >
-            <NavbarPresenter />
-            <SidebarPresenter />
-            <ChatsPresenter />
-            <MainContentPresenter />
+        <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
+            <div className="App absolute w-screen h-screen flex justify-start">
+                <Box
+                    sx={{
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'primary.light',
+                    }}
+                >
+                    <NavbarPresenter />
+                    <SidebarPresenter />
+                    <ChatsPresenter />
+                    <MainContentPresenter />
+                </Box>
+            </div>
         </ThemeProvider>
     );
 }
