@@ -34,7 +34,7 @@ app.use(decodeIDToken);
 app.use(express.static('build'));
 
 app.get('/user/:id',
-    params('id').isInt().withMessage('Id is not an int')
+    params('id').isInt().withMessage('Id is not an int'),
     async (req, res) => {
         const id = req.params.id;
         if (!id) return res.status(400).send('No id');
