@@ -4,6 +4,6 @@
 //showThis: something that is showed if show is false, if showThis does not exist then false is returned (nothing is rendered).
 //children: standard JS prop passed to all components, Show returns its children if show is true.
 function Show({ show, showThis, children }) {
-	return show ? children : showThis ? showThis : false;
+    return show ? children : showThis ? showThis : false;
 }
 export default Show;

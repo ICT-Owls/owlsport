@@ -1,6 +1,6 @@
-import MainContentView from "../views/MainContentView";
+import MainContentView from '../views/MainContentView';
 export default function MainContentPresenter() {
-	// Hooks, logic, etc goes here. These presenters manipulate data, transform it into usable functions and values, then passes those to a view.
-	// No visual code here.
-	return MainContentView();
+    // Hooks, logic, etc goes here. These presenters manipulate data, transform it into usable functions and values, then passes those to a view.
+    // No visual code here.
+    return MainContentView();
 }
