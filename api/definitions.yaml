@@ -1,0 +1,14 @@
+schemas:
+    AuthInfo:
+        type: object
+        required:
+            - userId
+            - authenticated
+        properties:
+            userId:
+                type: integer
+                format: int32
+                default: -1
+            authenticated:
+                type: boolean
+                default: false
