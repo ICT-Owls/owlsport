@@ -2,6 +2,13 @@
     "name": "carpooling",
     "version": "0.1.0",
     "private": true,
+    "scripts": {
+        "start-dev": "node scripts/start-dev.js",
+        "build": "node scripts/build.js",
+        "test": "node scripts/test.js",
+        "start-prod": "node server/server.ts",
+        "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./api/openapi.yaml"
+    },
     "dependencies": {
         "@babel/core": "^7.16.0",
         "@emotion/react": "^11.9.0",
@@ -66,13 +73,6 @@
         "webpack-dev-server": "^4.6.0",
         "webpack-manifest-plugin": "^4.0.2",
         "workbox-webpack-plugin": "^6.4.1"
-    },
-    "scripts": {
-        "start-dev": "node scripts/start-dev.js",
-        "build": "node scripts/build.js",
-        "test": "node scripts/test.js",
-        "start-prod": "node server/server.js",
-        "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./api/openapi.yaml"
     },
     "eslintConfig": {
         "extends": [
