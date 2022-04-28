@@ -155,7 +155,7 @@
     },
     "babel": {
         "presets": [
-            "react-app"
+            "@babel/typescript", "react-app"
         ]
     },
     "devDependencies": {
