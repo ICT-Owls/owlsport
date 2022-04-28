@@ -1,5 +1,5 @@
 {
-    "css.customData": [
-        "config/css_custom_data.json"
-    ]
+    "css.customData": ["config/css_custom_data.json"],
+    "editor.tabSize": 4,
+    "prettier.tabWidth": 4
 }
