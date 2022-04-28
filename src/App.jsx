@@ -1,27 +1,38 @@
 import Button from '@mui/material/Button';
-import './App.css';
 import SidebarPresenter from './presenters/SidebarPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
 import ChatsPresenter from './presenters/ChatsPresenter';
 import MainContentPresenter from './presenters/MainContentPresenter';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import { LightTheme, DarkTheme } from './Themes';
+import './App.css';
+import React from 'react';
+import { Box } from '@mui/material';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 const userObject = {}
-//export default userObject
+//export userObject
 
 function Home() {
+    const [lightmode, setLightmode] = React.useState(true);
     return (
-        <>
-            <div className="App">
-                <Button variant="contained">Look, an MUI button!</Button>
-                <SidebarPresenter isLoggedIn={userObject.isLoggedIn}/>
-                <NavbarPresenter />
-                <ChatsPresenter />
-                <MainContentPresenter />
+        <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
+            <div className="App absolute w-screen h-screen flex justify-start">
+                <Box
+                    sx={{
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'primary.light',
+                    }}
+                >
+                    <NavbarPresenter />
+                    <SidebarPresenter isLoggedIn={userObject.isLoggedIn}/>
+                    <ChatsPresenter />
+                    <MainContentPresenter />
+                </Box>
             </div>
-        </>
-    );
-}
+        </ThemeProvider>
+    );}
 
 function Events() {
     return (
