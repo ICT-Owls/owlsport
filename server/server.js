@@ -1,18 +1,22 @@
-const admin = require('firebase-admin');
-const serviceAccount = require('../***REMOVED***-firebase-adminsdk-wf7mw-0e8fb32b51.json');
+const { database, admin } = require('./database.js');
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL:
-        '***REMOVED***',
-});
+const cors = require('cors');
 
 const express = require('express');
 const path = require('path');
 const app = express();
-const port = 3000;
+const port = 3001;
 
-async function decodeIDToken(req, res, next) {
+// TODO: Bad bad, fix later
+app.use(
+    cors({
+        origin: '*',
+    })
+);
+
+app.use(express.json());
+
+app.use(async (req, res, next) => {
     if (req.headers?.authorization?.startsWith('Bearer ')) {
         try {
             const idToken = req.headers.authorization.split('Bearer ')[1];
@@ -25,16 +29,24 @@ async function decodeIDToken(req, res, next) {
     }
 
     next();
-}
-
-app.use(decodeIDToken);
+});
 
 app.use(express.static('build'));
+
+const userRoute = require('./routes/userRoute.js');
+app.use('/user', userRoute);
 
 app.get('/', (req, res) => {
     res.sendFile(path.resolve('build', 'index.html'));
 });
 
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+
 app.listen(port, () => {
     console.log(`Web server listening on port ${port}`);
 });
+
+module.exports = { app, database };
