@@ -82,7 +82,8 @@
         ],
         "ignorePatterns": [
             "**/server/*",
-            "**/test/*"
+            "**/test/*",
+            "**/src/*"
         ],
         "env": {
             "NODE_ENV": "development"
