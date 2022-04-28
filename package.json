@@ -84,9 +84,10 @@
             "react-app",
             "react-app/jest"
         ],
-        "env": {
-            "NODE_ENV": "development"
-        }
+        "ignorePatterns": [
+            "**/server/*",
+            "**/test/*"
+        ]
     },
     "browserslist": {
         "production": [
