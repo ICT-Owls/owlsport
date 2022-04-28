@@ -7,15 +7,12 @@ schemas:
             - authenticated
         properties:
             userId:
-                type: integer
-                format: int32
-                default: -1
+                $ref: '#/schemas/Id'
             authenticated:
                 type: boolean
                 default: false
     Id:
-        type: number
-        format: int32
+        type: string
         description: Database Ids
     # Information about a user
     User:
@@ -44,7 +41,6 @@ schemas:
                 description: List of friend ids
                 default: []
         required:
-            - id
             - first_name
             - last_name
             - email
@@ -60,8 +56,7 @@ schemas:
             - enddatetime
         properties:
             userId:
-                type: integer
-                format: int32
+                $ref: '#/schemas/Id'
             title:
                 type: string
             description:
