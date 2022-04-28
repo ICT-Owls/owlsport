@@ -5,6 +5,33 @@ const { users } = require('../database.js');
 const express = require('express');
 const router = express.Router();
 
+router.post(
+    '/create',
+    body('firstName').isString().withMessage('Invalid first name'),
+    body('lastName').isString().withMessage('Invalid last name'),
+    body('dateOfBirth').isNumeric().withMessage('Invalid date of birth'),
+    validate,
+    async (req, res) => {
+        const { firstName, lastName, dateOfBirth } = req.body;
+        const authUser = req.user;
+
+        const userRef = users.child(`/${authUser.uid}`);
+        await userRef.set({
+            id: authUser.uid,
+            firstName: firstName,
+            lastName: lastName,
+            email: authUser.email,
+            dateOfBirth: dateOfBirth,
+            friends: [],
+            creationDate: Date.now(),
+        });
+
+        const user = await userRef.get();
+
+        res.send(user.val());
+    }
+);
+
 router.get(
     '/:id',
     param('id').isString().withMessage('Id is not a string'),
