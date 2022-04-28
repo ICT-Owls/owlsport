@@ -36,6 +36,9 @@ app.use(express.static('build'));
 const userRoute = require('./routes/userRoute.js');
 app.use('/user', userRoute);
 
+const eventRoute = require('./routes/eventRoute.js');
+app.use('/events', eventRoute);
+
 app.get('/', (req, res) => {
     res.sendFile(path.resolve('build', 'index.html'));
 });
