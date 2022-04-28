@@ -1,5 +1,7 @@
-import logo from './logo.svg';
 import Button from '@mui/material/Button';
+import React from 'react';
+
+import logo from './logo.svg';
 import './App.css';
 import SidebarPresenter from './presenters/SidebarPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
