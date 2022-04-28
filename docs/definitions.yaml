@@ -22,48 +22,64 @@ schemas:
             id:
                 $ref: '#/schemas/Id'
                 description: 'The ID of the user'
-            first_name:
+            firstName:
                 type: string
                 description: 'First name of the user'
-            last_name:
+            lastName:
                 type: string
                 description: 'Last name of the user'
             email:
                 type: string
                 description: 'Email of the user'
-            date_of_birth:
-                type: date
-                description: 'Date of birth for this user'
+            dateOfBirth:
+                type: number
+                description: 'UNIX timestamp of when the user was born'
             friends:
                 type: array
                 items:
                     type: string
                 description: List of friend ids
                 default: []
+            creationDate:
+                type: number
+                description: 'UNIX timestamp of when the user was created'
         required:
-            - first_name
-            - last_name
+            - id
+            - firstName
+            - lastName
             - email
-            - date_of_birth
+            - dateOfBirth
             - friends
+            - creationDate
     Event:
         type: object
         required:
-            - userId
+            - creatorId
+            - id
+            - members
             - title
             - description
-            - startdatetime
-            - enddatetime
+            - startDateTime
+            - endDateTime
         properties:
-            userId:
+            creatorId:
                 $ref: '#/schemas/Id'
+                description: 'Id of the user who created this event'
+            id:
+                $ref: '#/schemas/Id'
+                description: 'Id of the event'
+            members:
+                type: array
+                items:
+                    $ref: '#/schemas/Id'
+                description: 'Id of the users participating in this event'
             title:
                 type: string
             description:
                 type: string
-            startdatetime:
+            startDateTime:
                 type: integer
                 format: int32
-            enddatetime:
+            endDateTime:
                 type: integer
                 format: int32
