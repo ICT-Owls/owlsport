@@ -1,13 +1,17 @@
 import React from 'react';
-import { ListItemText, MenuItem, MenuList } from '@mui/material';
+import { IconButton, ListItemText, MenuItem, MenuList } from '@mui/material';
 
 export default function SidebarView() {
 	//These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
 	return (
 		<div className= 'sidebar'>
-			<div className='logo'>
-				<img src='Solid_Logotype.png' alt='logo'/>
-			</div>
+			<IconButton color="secondary" aria-label="Search" component="span"
+						onClick={() => window.location.pathname = '/'}>
+				<img src="Solid_Logotype.png" className="h-10" alt="" />
+			</IconButton>
+			{/*<div className='logo'>*/}
+			{/*	<img src='Solid_Logotype.png' alt='logo'/>*/}
+			{/*</div>*/}
 
 			<div className= 'sidebar_first'>
 				<MenuList>
