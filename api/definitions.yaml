@@ -50,3 +50,25 @@ schemas:
             - email
             - date_of_birth
             - friends
+    Events:
+        type: object
+        required:
+            - userId
+            - title
+            - description
+            - startdatetime
+            - enddatetime
+        properties:
+            userId:
+                type: integer
+                format: int32
+            title:
+                type: string
+            description:
+                type: string
+            startdatetime:
+                type: integer
+                format: int32
+            enddatetime:
+                type: integer
+                format: int32
