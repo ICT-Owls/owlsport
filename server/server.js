@@ -1,11 +1,16 @@
-const { database } = require('./database.js');
+const cors = require('cors');
 
 const express = require('express');
 const path = require('path');
 const app = express();
 const port = 3001;
 
-async function decodeIDToken(req, res, next) {
+// TODO: Bad bad, fix later
+app.use(
+    cors({
+        origin: '*',
+    })
+);
     if (req.headers?.authorization?.startsWith('Bearer ')) {
         try {
             const idToken = req.headers.authorization.split('Bearer ')[1];
