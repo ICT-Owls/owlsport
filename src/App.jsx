@@ -6,12 +6,28 @@ import ChatsPresenter from './presenters/ChatsPresenter';
 import MainContentPresenter from './presenters/MainContentPresenter';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 
+const userObject = {}
+//export default userObject
+
+function Home() {
+    return (
+        <>
+            <div className="App">
+                <Button variant="contained">Look, an MUI button!</Button>
+                <SidebarPresenter isLoggedIn={userObject.isLoggedIn}/>
+                <NavbarPresenter />
+                <ChatsPresenter />
+                <MainContentPresenter />
+            </div>
+        </>
+    );
+}
+
 function Events() {
-    console.log();
     return (
         <>
             <h1>EVENTS PAGE</h1>
-            <SidebarPresenter/>
+            <SidebarPresenter isLoggedIn={userObject.isLoggedIn}/>
             <NavbarPresenter/>
             <ChatsPresenter />
             <MainContentPresenter />
@@ -23,7 +39,7 @@ function About() {
     return (
         <>
             <h1>ABOUT PAGE</h1>
-            <SidebarPresenter/>
+            <SidebarPresenter isLoggedIn={userObject.isLoggedIn}/>
             <NavbarPresenter/>
             <ChatsPresenter />
             <MainContentPresenter />
@@ -35,7 +51,7 @@ function Whatever() {
     return (
         <>
             <h1>WHATEVER PAGE</h1>
-            <SidebarPresenter/>
+            <SidebarPresenter isLoggedIn={userObject.isLoggedIn}/>
             <NavbarPresenter/>
             <ChatsPresenter />
             <MainContentPresenter />
@@ -44,10 +60,11 @@ function Whatever() {
 }
 
 function Login() {
+    userObject.isLoggedIn = true;
     return (
         <>
             <h1>LOGIN PAGE</h1>
-            <SidebarPresenter/>
+            <SidebarPresenter isLoggedIn={userObject.isLoggedIn}/>
             <NavbarPresenter/>
             <ChatsPresenter />
             <MainContentPresenter />
@@ -59,7 +76,7 @@ function Signup() {
     return (
         <>
             <h1>SIGNUP PAGE</h1>
-            <SidebarPresenter/>
+            <SidebarPresenter isLoggedIn={userObject.isLoggedIn}/>
             <NavbarPresenter/>
             <ChatsPresenter />
             <MainContentPresenter />
@@ -67,21 +84,34 @@ function Signup() {
     );
 }
 
-function Home() {
+function Logout() {
+    userObject.isLoggedIn = false;
     return (
         <>
-            <div className="App">
-                <Button variant="contained">Look, an MUI button!</Button>
-                <SidebarPresenter />
-                <NavbarPresenter />
-                <ChatsPresenter />
-                <MainContentPresenter />
-            </div>
+            <h1>LOGOUT PAGE</h1>
+            <SidebarPresenter isLoggedIn={userObject.isLoggedIn}/>
+            <NavbarPresenter/>
+            <ChatsPresenter />
+            <MainContentPresenter />
+        </>
+    );
+}
+
+function Account() {
+    return (
+        <>
+            <h1>ACCOUNT PAGE</h1>
+            <SidebarPresenter isLoggedIn={userObject.isLoggedIn}/>
+            <NavbarPresenter/>
+            <ChatsPresenter />
+            <MainContentPresenter />
         </>
     );
 }
 
 function App() {
+    userObject.isLoggedIn = false;
+
     return (
         <BrowserRouter>
             <div className="App">
@@ -106,6 +136,12 @@ function App() {
                     </Route>
                     <Route path="/signup" element={<Signup/>}>
                         <Route path="/signup" element={<Signup/>} />
+                    </Route>
+                    <Route path="/logout" element={<Logout/>}>
+                        <Route path="/logout" element={<Logout/>} />
+                    </Route>
+                    <Route path="/account" element={<Account/>}>
+                        <Route path="/account" element={<Account/>} />
                     </Route>
                 </Routes>
 
