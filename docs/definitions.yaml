@@ -50,7 +50,7 @@ schemas:
             - email
             - date_of_birth
             - friends
-    Events:
+    Event:
         type: object
         required:
             - userId
