@@ -54,7 +54,8 @@ schemas:
     Event:
         type: object
         required:
-            - userId
+            - creatorId
+            - members
             - title
             - description
             - startDateTime
