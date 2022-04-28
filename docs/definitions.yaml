@@ -23,7 +23,7 @@ schemas:
         description: 'A user'
         properties:
             id:
-                $ref: '#/components/schemas/Id'
+                $ref: '#/schemas/Id'
                 description: 'The ID of the user'
             first_name:
                 type: string
@@ -50,3 +50,25 @@ schemas:
             - email
             - date_of_birth
             - friends
+    Event:
+        type: object
+        required:
+            - userId
+            - title
+            - description
+            - startdatetime
+            - enddatetime
+        properties:
+            userId:
+                type: integer
+                format: int32
+            title:
+                type: string
+            description:
+                type: string
+            startdatetime:
+                type: integer
+                format: int32
+            enddatetime:
+                type: integer
+                format: int32
