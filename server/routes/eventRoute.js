@@ -50,8 +50,8 @@ router.post(
     body('description').optional().isString(),
     body('members').optional().isArray(),
     body('members.*').isString(),
-    body('startDateTime').optional({ min: 0 }).isInt(),
-    body('endDateTime').optional({ min: 0 }).isInt(),
+    body('startDateTime').optional().isInt({ min: 0 }),
+    body('endDateTime').optional().isInt({ min: 0 }),
     validate,
     async (req, res) => {
         const id = req.params.id;
