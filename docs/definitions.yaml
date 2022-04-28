@@ -23,7 +23,7 @@ schemas:
         description: 'A user'
         properties:
             id:
-                $ref: '#/components/schemas/Id'
+                $ref: '#/schemas/Id'
                 description: 'The ID of the user'
             first_name:
                 type: string
