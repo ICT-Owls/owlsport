@@ -9,8 +9,8 @@ router.post(
     '/create',
     body('title').isString(),
     body('description').isString(),
-    body('startDateTime').isNumeric(),
-    body('endDateTime').isNumeric(),
+    body('startDateTime').isInt(),
+    body('endDateTime').isInt(),
     validate,
     async (req, res) => {
         const { title, description, startDateTime, endDateTime } = req.body;
@@ -50,8 +50,8 @@ router.post(
     body('description').optional().isString(),
     body('members').optional().isArray(),
     body('members.*').isString(),
-    body('startDateTime').optional({ min: 0 }).isNumeric(),
-    body('endDateTime').optional({ min: 0 }).isNumeric(),
+    body('startDateTime').optional({ min: 0 }).isInt(),
+    body('endDateTime').optional({ min: 0 }).isInt(),
     validate,
     async (req, res) => {
         const id = req.params.id;
