@@ -6,7 +6,7 @@
         "start-dev": "node scripts/start-dev.js",
         "build": "node scripts/build.js",
         "test": "node scripts/test.js",
-        "start-prod": "node server/server.ts",
+        "start-prod": "node server/server.js",
         "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./api/openapi.yaml"
     },
     "dependencies": {
