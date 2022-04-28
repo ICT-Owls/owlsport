@@ -4,7 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 export default function NavbarView() {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
-        <div className="w-full h-fit fixed top-0 left-0 flex justify-around bg-primary bg-opacity-90">
+        <div className="w-full h-fit fixed top-0 left-0 flex justify-around bg-primary bg-opacity-90 bg-primary-200">
             <IconButton color="secondary" aria-label="Search" component="span">
                 <img src="Logotype.png" className="h-10" alt="" />
             </IconButton>
