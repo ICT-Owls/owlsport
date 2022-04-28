@@ -55,15 +55,20 @@ schemas:
         type: object
         required:
             - creatorId
+            - id
             - members
             - title
             - description
             - startDateTime
             - endDateTime
+            - creationDate
         properties:
             creatorId:
                 $ref: '#/schemas/Id'
                 description: 'Id of the user who created this event'
+            id:
+                $ref: '#/schemas/Id'
+                description: 'Id of the event'
             members:
                 type: array
                 items:
@@ -79,3 +84,6 @@ schemas:
             endDateTime:
                 type: integer
                 format: int32
+            creationDate:
+                type: number
+                description: 'UNIX timestamp of when the event was created'

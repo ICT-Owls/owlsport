@@ -8,7 +8,7 @@
         "test": "node scripts/test.js",
         "start-prod": "node server/server.js",
         "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./api/openapi.yaml",
-        "mocha-test": "mocha --require mocha-suppress-logs --recursive --exit",
+        "mocha-test": "env-cmd -e mochatest mocha --require mocha-suppress-logs --recursive --exit",
         "generate-api-client": "openapi-generator-cli generate -i docs/openapi.yaml -g javascript -o generated-sources/openapi --additional-properties=npmName=restClient,supportsES6=true,npmVersion=8.5.5,withInterfaces=true"
     },
     "dependencies": {
@@ -41,6 +41,7 @@
         "css-minimizer-webpack-plugin": "^3.2.0",
         "dotenv": "^10.0.0",
         "dotenv-expand": "^5.1.0",
+        "env-cmd": "^10.1.0",
         "eslint": "^8.3.0",
         "eslint-config-react-app": "^7.0.1",
         "eslint-webpack-plugin": "^3.1.1",
@@ -89,10 +90,6 @@
         "extends": [
             "react-app",
             "react-app/jest"
-        ],
-        "ignorePatterns": [
-            "**/server/*",
-            "**/test/*"
         ]
     },
     "browserslist": {
