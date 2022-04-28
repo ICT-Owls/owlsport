@@ -24,6 +24,8 @@
         "browserslist": "^4.18.1",
         "camelcase": "^6.2.1",
         "case-sensitive-paths-webpack-plugin": "^2.4.0",
+        "chai": "^4.3.6",
+        "chai-http": "^4.3.0",
         "css-loader": "^6.5.1",
         "css-minimizer-webpack-plugin": "^3.2.0",
         "dotenv": "^10.0.0",
@@ -42,6 +44,8 @@
         "jest-resolve": "^27.4.2",
         "jest-watch-typeahead": "^1.0.0",
         "mini-css-extract-plugin": "^2.4.5",
+        "mocha": "^9.2.2",
+        "mocha-suppress-logs": "^0.3.1",
         "postcss-flexbugs-fixes": "^5.0.2",
         "postcss-loader": "^6.2.1",
         "postcss-normalize": "^10.0.1",
@@ -72,7 +76,8 @@
         "build": "node scripts/build.js",
         "test": "node scripts/test.js",
         "start-prod": "node server/server.js",
-        "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./api/openapi.yaml"
+        "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./api/openapi.yaml",
+        "mocha-test": "mocha --require mocha-suppress-logs --recursive --exit"
     },
     "eslintConfig": {
         "extends": [

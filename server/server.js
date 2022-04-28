@@ -103,3 +103,5 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
     console.log(`Web server listening on port ${port}`);
 });
+
+module.exports = { app, database };
