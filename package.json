@@ -86,10 +86,6 @@
         "extends": [
             "react-app",
             "react-app/jest"
-        ],
-        "ignorePatterns": [
-            "**/server/*",
-            "**/test/*"
         ]
     },
     "browserslist": {
