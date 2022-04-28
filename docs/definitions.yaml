@@ -32,14 +32,17 @@ schemas:
                 type: string
                 description: 'Email of the user'
             dateOfBirth:
-                type: date
-                description: 'Date of birth for this user'
+                type: number
+                description: 'UNIX timestamp of when the user was born'
             friends:
                 type: array
                 items:
                     type: string
                 description: List of friend ids
                 default: []
+            creationDate:
+                type: number
+                description: 'UNIX timestamp of when the user was created'
         required:
             - firstName
             - lastName
