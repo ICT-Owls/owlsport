@@ -5,7 +5,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { palette } from '@mui/system';
 
-function Item({ sender }) {
+function Item({ sender, content }) {
     return (
         <div
             className={
@@ -15,8 +15,8 @@ function Item({ sender }) {
                     : ' justify-end child:bg-secondary-100')
             }
         >
-            <span className="w-auto p-0.5 pb-1 m-0.5 rounded-full text-xl">
-                some text
+            <span className="w-auto p-2 pb-3 m-4 rounded-3xl text-xl max-w-full break-words">
+                {content}
             </span>
         </div>
     );
@@ -42,35 +42,38 @@ export default function ChatsView() {
                     </div>
                     <Divider variant="middle" className="bg-secondary-200" />
                     <div className="h-auto overflow-y-auto max-h-[50vh]">
-                        <Item></Item>
-                        <Item sender="other"></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item sender="other"></Item>
-                        <Item sender="other"></Item>
-                        <Item sender="other"></Item>
-                        <Item></Item>
-                        <Item sender="other"></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item sender="other"></Item>
-                        <Item sender="other"></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item></Item>
-                        <Item sender="other"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test" sender="other"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test" sender="other"></Item>
+                        <Item content="test" sender="other"></Item>
+                        <Item content="test" sender="other"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test" sender="other"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test" sender="other"></Item>
+                        <Item content="test" sender="other"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item content="test"></Item>
+                        <Item
+                            content="also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+                            sender="other"
+                        ></Item>
                     </div>
                 </div>
                 <TextField
