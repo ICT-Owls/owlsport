@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import Button from '@mui/material/Button';
 import SidebarPresenter from './presenters/SidebarPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
