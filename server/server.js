@@ -1,3 +1,5 @@
+const { database, admin } = require('./database.js');
+
 const cors = require('cors');
 
 const express = require('express');

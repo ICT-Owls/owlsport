@@ -9,4 +9,4 @@ admin.initializeApp({
 const database = admin.database();
 const users = database.ref('/users');
 
-module.exports = { database, users };
+module.exports = { admin, database, users };
