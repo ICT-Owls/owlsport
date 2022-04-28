@@ -55,6 +55,7 @@ schemas:
         type: object
         required:
             - creatorId
+            - id
             - members
             - title
             - description
@@ -64,6 +65,9 @@ schemas:
             creatorId:
                 $ref: '#/schemas/Id'
                 description: 'Id of the user who created this event'
+            id:
+                $ref: '#/schemas/Id'
+                description: 'Id of the event'
             members:
                 type: array
                 items:
