@@ -55,7 +55,12 @@ const registerUser = async function (
 const loginUser = async function (email, password) {
     const credentials = await signInWithEmailAndPassword(auth, email, password);
     const user = await fetch(
-        `http://localhost:3001/user/${credentials.user.uid}`
+        `http://localhost:3001/user/${credentials.user.uid}`,
+        {
+            headers: {
+                authorization: `Bearer ${credentials.user.accessToken}`,
+            },
+        }
     ).then((r) => r.json());
     return user;
 };

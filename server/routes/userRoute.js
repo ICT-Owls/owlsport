@@ -1,5 +1,5 @@
 const { body, param, oneOf } = require('express-validator');
-const { validate } = require('../utils.js');
+const { validate, authorize } = require('../utils.js');
 const { users } = require('../database.js');
 
 const express = require('express');
@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post(
     '/create',
+    authorize,
     body('firstName').isString().withMessage('Invalid first name'),
     body('lastName').isString().withMessage('Invalid last name'),
     body('dateOfBirth').isNumeric().withMessage('Invalid date of birth'),
@@ -15,7 +16,12 @@ router.post(
         const { firstName, lastName, dateOfBirth } = req.body;
         const authUser = req.user;
 
-        const userRef = users.child(`/${authUser.uid}`);
+        const userRef = users.child(authUser.uid);
+        const userSnapshot = await userRef.get();
+
+        if (userSnapshot.exists())
+            return res.status(400).send('User already exists');
+
         await userRef.set({
             id: authUser.uid,
             firstName: firstName,
@@ -34,6 +40,7 @@ router.post(
 
 router.get(
     '/:id',
+    authorize,
     param('id').isString().withMessage('Id is not a string'),
     validate,
     async (req, res) => {
@@ -48,17 +55,18 @@ router.get(
 );
 
 router.post(
-    '/:id',
+    '/',
+    authorize,
     body('email').optional().isEmail().withMessage('Invalid email'),
     body('friends').optional().isArray().withMessage('Friends is not an array'),
     body('friends.*').isString().withMessage('Friend id is not a string'),
     oneOf([body('friends').exists(), body('email').exists()]),
     validate,
     async (req, res) => {
-        const id = req.params.id;
+        const authUser = req.user;
         const { email, friends } = req.body;
 
-        const userRef = users.child(id);
+        const userRef = users.child(authUser.uid);
         const userSnapshot = await userRef.get();
 
         if (!userSnapshot.exists())
