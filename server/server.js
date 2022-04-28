@@ -11,6 +11,9 @@ app.use(
         origin: '*',
     })
 );
+
+app.use(express.json());
+
     if (req.headers?.authorization?.startsWith('Bearer ')) {
         try {
             const idToken = req.headers.authorization.split('Bearer ')[1];
