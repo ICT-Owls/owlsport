@@ -60,8 +60,14 @@ schemas:
             - startDateTime
             - endDateTime
         properties:
-            userId:
+            creatorId:
                 $ref: '#/schemas/Id'
+                description: 'Id of the user who created this event'
+            members:
+                type: array
+                items:
+                    $ref: '#/schemas/Id'
+                description: 'Id of the users participating in this event'
             title:
                 type: string
             description:
