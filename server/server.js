@@ -16,6 +16,7 @@ app.use(
 
 app.use(express.json());
 
+app.use(async (req, res, next) => {
     if (req.headers?.authorization?.startsWith('Bearer ')) {
         try {
             const idToken = req.headers.authorization.split('Bearer ')[1];
@@ -28,11 +29,7 @@ app.use(express.json());
     }
 
     next();
-}
-
-app.use(express.json());
-
-app.use(decodeIDToken);
+});
 
 app.use(express.static('build'));
 
