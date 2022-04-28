@@ -1,5 +1,5 @@
 const { body, param } = require('express-validator');
-const { validate } = require('../utils.js');
+const { validate, authorize } = require('../utils.js');
 const { events } = require('../database.js');
 
 const express = require('express');
@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post(
     '/create',
+    authorize,
     body('title').isString(),
     body('description').isString(),
     body('startDateTime').isInt(),
@@ -34,18 +35,25 @@ router.post(
     }
 );
 
-router.get('/:id', param('id').isString(), validate, async (req, res) => {
-    const id = req.params.id;
+router.get(
+    '/:id',
+    authorize,
+    param('id').isString(),
+    validate,
+    async (req, res) => {
+        const id = req.params.id;
 
-    const eventRef = events.child(id);
-    const event = await (await eventRef.get()).val();
-    if (!event) return res.status(404).send('Event not found');
+        const eventRef = events.child(id);
+        const event = await (await eventRef.get()).val();
+        if (!event) return res.status(404).send('Event not found');
 
-    res.send(event);
-});
+        res.send(event);
+    }
+);
 
 router.post(
     '/:id',
+    authorize,
     body('title').optional().isString(),
     body('description').optional().isString(),
     body('members').optional().isArray(),
@@ -78,5 +86,16 @@ router.post(
         res.send(updatedEvent.val());
     }
 );
+
+router.get('/mine', authorize, async (req, res) => {
+    const userId = req.user.uid;
+
+    const events = events.get();
+    const userEvents = events.filter(
+        (e) => e.creatorId == userId || e.members?.includes()
+    );
+
+    res.send(userEvents || []);
+});
 
 module.exports = router;
