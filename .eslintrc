@@ -9,7 +9,8 @@
     "rules": {
         "semi": [2, "always"],
         "no-unused-vars": "warn",
-        "no-tabs": "warn"
+        "no-tabs": "warn",
+        "react/prop-types": "warn"
     },
     "plugins": [
         "react",
