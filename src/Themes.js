@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 export const LightTheme = createTheme({
     palette: {

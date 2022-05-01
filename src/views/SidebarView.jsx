@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 
 export default function SidebarView(props) {
+    // eslint-disable-next-line
     const isLoggedIn = props.isLoggedIn;
 
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
@@ -22,9 +23,9 @@ export default function SidebarView(props) {
                 <img src="Solid_Logotype.png" className="h-10" alt="" />
             </IconButton>
             {/*<div className='logo'>*/}
-            {/*	<img src='Solid_Logotype.png' alt='logo'/>*/}
+            {/* <img src='Solid_Logotype.png' alt='logo'/>*/}
             {/*</div>*/}
-
+            {/* eslint-disable-next-line */}
             <div className="sidebar_first">
                 <MenuList>
                     <MenuItem

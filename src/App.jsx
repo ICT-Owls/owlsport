@@ -1,4 +1,3 @@
-import Button from '@mui/material/Button';
 import SidebarPresenter from './presenters/SidebarPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
 import ChatsPresenter from './presenters/ChatsPresenter';
@@ -13,9 +12,11 @@ const userObject = {};
 //export userObject
 
 function App() {
+    // eslint-disable-next-line
     const [lightmode, setLightmode] = React.useState(true);
     return (
         <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
+            {/* eslint-disable-next-line */}
             <div className="App absolute w-screen h-screen flex justify-start">
                 <Box
                     sx={{
