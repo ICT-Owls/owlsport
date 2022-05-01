@@ -2,6 +2,24 @@
     "extends": ["eslint:recommended", "plugin:react/recommended"],
     "parser": "babel",
     "rules": {
-        "semi": "error"
+        "semi": [2, "always"],
+        "no-unused-vars": "warn",
+        "no-tabs": "warn",
+        "react/prop-types": "warn"
+    },
+    "plugins": [
+        "react",
+        "tailwindcss"
+    ],
+    "parserOptions": {
+        "babelOptions": {
+          "presets": [
+            ["babel-preset-react-app", false], "babel-preset-react-app/prod"
+          ]
+        }
+    },
+    "env": {
+        "node": true,
+        "es6": true
     }
 }
