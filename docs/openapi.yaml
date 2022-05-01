@@ -83,7 +83,7 @@ paths:
             tags:
                 - user
             requestBody:
-                description: 'Partial user object'
+                description: 'User details'
                 required: true
                 content:
                     application/json:
@@ -114,6 +114,8 @@ paths:
                     description: 'Invalid body format'
                 '404':
                     description: 'User not found'
+                '409':
+                    description: 'User already exists'
 
     /events:
         get:
