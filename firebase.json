@@ -5,7 +5,7 @@
 
         "rewrites": [
             {
-                "regex": "/user/(\d+)",
+                "regex": "/user/(\\d+)",
                 "run": {
                     "serviceId": "carpooling",
                     "region": "europe-north1"
