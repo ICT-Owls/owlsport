@@ -24,7 +24,7 @@ router.post(
         // Doublecheck that the user does not exist yet in the realtime database
         const userSnapshot = await userRef.get();
         if (userSnapshot.exists())
-            return res.status(400).send('User already exists');
+            return res.status(409).send('User already exists');
 
         await userRef.set({
             id: authUser.uid,
