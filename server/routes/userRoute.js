@@ -9,7 +9,7 @@ const router = express.Router();
  * Create a user from both the user object we receive from firebase authentication, but also additional info in the request body.
  */
 router.post(
-    '/create',
+    '/',
     authorize,
     body('firstName').isString().withMessage('Invalid first name'),
     body('lastName').isString().withMessage('Invalid last name'),
@@ -65,7 +65,7 @@ router.get(
  * Update a user.
  * Only fields that can be updated are the email, and friends.
  */
-router.post(
+router.patch(
     '/',
     authorize,
     body('email').optional().isEmail().withMessage('Invalid email'),
