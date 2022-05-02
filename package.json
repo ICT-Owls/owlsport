@@ -7,7 +7,7 @@
         "build": "node scripts/build.js",
         "test": "node scripts/test.js",
         "start-prod": "node server/server.js",
-        "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./api/openapi.yaml",
+        "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./docs/openapi.yaml",
         "mocha-test": "mocha --require mocha-suppress-logs --recursive --exit",
         "generate-api-client": "openapi-generator-cli generate"
     },
@@ -162,6 +162,8 @@
         "@openapitools/openapi-generator-cli": "^2.5.1",
         "@redocly/openapi-cli": "^1.0.0-beta.94",
         "autoprefixer": "^10.4.5",
+        "eslint-plugin-mocha": "^10.0.4",
+        "eslint-plugin-tailwindcss": "^3.5.0",
         "postcss": "^8.4.12",
         "redoc-cli": "^0.13.10",
         "swagger-jsdoc": "^6.2.1",

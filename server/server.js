@@ -16,7 +16,7 @@ app.use(
 
 app.use(express.json());
 
-app.use(async (req, res, next) => {
+app.use(async (req, _res, next) => {
     if (req.headers?.authorization?.startsWith('Bearer ')) {
         try {
             const idToken = req.headers.authorization.split('Bearer ')[1];
@@ -39,11 +39,11 @@ app.use('/user', userRoute);
 const eventRoute = require('./routes/eventRoute.js');
 app.use('/events', eventRoute);
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
     res.sendFile(path.resolve('build', 'index.html'));
 });
 
-app.use((err, req, res, next) => {
+app.use((err, _req, res) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });
