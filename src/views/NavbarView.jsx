@@ -10,7 +10,7 @@ export default function NavbarView() {
                 <img src="Logotype.png" className="h-10" alt="" />
             </IconButton>
             <Box
-                className="m-4 flex justify-start"
+                className="flex justify-start m-4"
                 sx={{
                     width: 1000,
                     maxWidth: '100%',

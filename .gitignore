@@ -4,7 +4,8 @@
 /node_modules
 /.pnp
 .pnp.js
-.vscode
+.vscode/*
+!.vscode/settings.json
 
 # testing
 /coverage
@@ -13,9 +14,9 @@
 /build
 
 # generated files
-package-lock.json
-generated-sources
-api-client
+/package-lock.json
+/generated-sources
+/api-client
 
 # misc
 .DS_Store

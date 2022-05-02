@@ -1,0 +1,155 @@
+openapi: '3.0.3'
+info:
+    title: 'Carpooling'
+    version: '1.0.0'
+paths:
+    /user/auth:
+        get:
+            description: Returns information about authentication status
+            responses:
+                '200':
+                    description: Information about authentication status
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/schemas/AuthInfo'
+    /user/{id}:
+        get:
+            summary: 'Get a user'
+            description: 'Get a user by their user id'
+            tags:
+                - user
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: 'definitions.yaml#/schemas/Id'
+                  description: 'The user ID'
+            responses:
+                '200':
+                    description: 'Returns the user'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/schemas/User'
+                '400':
+                    description: 'No id provided'
+                '404':
+                    description: 'User not found'
+        post:
+            summary: 'Update a user'
+            description: 'Update a user with new data, omitted fields are unchanged.'
+            tags:
+                - user
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: 'definitions.yaml#/schemas/Id'
+                  description: 'The user ID'
+            requestBody:
+                description: 'The updated user object'
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    description: 'New email of the user'
+                                friends:
+                                    type: array
+                                    description: 'New friend list of user'
+                                    items:
+                                        $ref: 'definitions.yaml#/schemas/Id'
+            responses:
+                '200':
+                    description: 'Returns the updated user'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/schemas/User'
+                '401':
+                    description: 'Body is empty'
+                '404':
+                    description: 'User not found'
+    /user/create:
+        post:
+            summary: 'Create a user'
+            description: 'Create a user from the provided data and firebase auth token'
+            tags:
+                - user
+            requestBody:
+                description: 'Partial user object'
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                firstName:
+                                    type: string
+                                    description: 'First name of the user'
+                                lastName:
+                                    type: string
+                                    description: 'Last name of the user'
+                                dateOfBirth:
+                                    type: number
+                                    description: 'Date of birth of the user'
+                            required:
+                                - firstName
+                                - lastName
+                                - dateOfBirth
+            responses:
+                '200':
+                    description: 'Returns the newly created user'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/schemas/User'
+                '401':
+                    description: 'Invalid body format'
+                '404':
+                    description: 'User not found'
+
+    /events:
+        get:
+            summary: 'Get list of all events'
+            description: 'Get list of all events'
+            tags:
+                - event
+            responses:
+                '200':
+                    description: 'Returns a list of events'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/schemas/Event'
+        post:
+            summary: 'Create an event'
+            description: 'Create a new event by a signed in user.'
+            tags:
+                - event
+            requestBody:
+                description: 'The event object'
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: 'definitions.yaml#/schemas/Event'
+            responses:
+                '200':
+                    description: 'Returns the event id'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: string
+                                        description: 'New id of the event'
+                '401':
+                    description: 'Body is empty'

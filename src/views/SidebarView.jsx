@@ -1,55 +1,142 @@
-//import {Container} from "postcss";
 import React from 'react';
-//import {Link} from "@mui/material";
-//import {Route, BrowserRouter, Routes} from "react-router-dom";
+import {
+    IconButton,
+    ListItemText,
+    MenuItem,
+    MenuList,
+    Divider,
+} from '@mui/material';
+import PropTypes from 'prop-types';
 
-export default function SidebarView() {
-    //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
+export default function SidebarView(props) {
+    const isLoggedIn = props.isLoggedIn;
+
+    //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
         <div className="sidebar">
-            <div className="logo">
-                <img src="Solid_Logotype.png" alt="logo" />
-            </div>
+            <IconButton
+                color="secondary"
+                aria-label="Search"
+                component="span"
+                onClick={() => (window.location.pathname = '/')}
+            >
+                <img src="Solid_Logotype.png" className="h-10" alt="" />
+            </IconButton>
+            {/*<div className='logo'>*/}
+            {/*<img src='Solid_Logotype.png' alt='logo'/>*/}
+            {/*</div>*/}
 
-            {/* <div className="sidebar_first">
-                <ul className="sidebar_ul">
-                    <li
-                        key="0"
+            {/* eslint-disable-next-line tailwindcss/no-custom-classname*/}
+            <div className="sidebar_first">
+                <MenuList>
+                    <MenuItem
                         onClick={() => (window.location.pathname = '/events')}
                     >
-                        <div>Events</div>
-                    </li>
-                    <li
-                        key="1"
+                        <ListItemText
+                            primaryTypographyProps={{
+                                fontSize: 22,
+                                color: 'primary.secondary',
+                            }}
+                        >
+                            Events
+                        </ListItemText>
+                    </MenuItem>
+                    <MenuItem
                         onClick={() => (window.location.pathname = '/about')}
                     >
-                        <div>About Us</div>
-                    </li>
-                    <li
-                        key="2"
+                        <ListItemText
+                            primaryTypographyProps={{
+                                fontSize: 22,
+                                color: 'primary.secondary',
+                            }}
+                        >
+                            About
+                        </ListItemText>
+                    </MenuItem>
+                    <MenuItem
                         onClick={() => (window.location.pathname = '/whatever')}
                     >
-                        <div>Whatever Else</div>
-                    </li>
-                </ul>
-            </div>
+                        <ListItemText
+                            primaryTypographyProps={{
+                                fontSize: 22,
+                                color: 'primary.secondary',
+                            }}
+                        >
+                            Whatever Else
+                        </ListItemText>
+                        <Divider black />
+                    </MenuItem>
+                </MenuList>
 
-            <div className="sidebar_second">
-                <ul className="sidebar_ul">
-                    <li
-                        key="3"
-                        onClick={() => (window.location.pathname = '/login')}
-                    >
-                        <div>Login</div>
-                    </li>
-                    <li
-                        key="4"
-                        onClick={() => (window.location.pathname = '/signup')}
-                    >
-                        <div>Sign Up</div>
-                    </li>
-                </ul>
-            </div> */}
+                <Divider />
+                {isLoggedIn ? (
+                    <MenuList>
+                        <MenuItem
+                            onClick={() =>
+                                (window.location.pathname = '/logout')
+                            }
+                        >
+                            <ListItemText
+                                primaryTypographyProps={{
+                                    fontSize: 22,
+                                    color: 'primary.secondary',
+                                }}
+                            >
+                                Logout
+                            </ListItemText>
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() =>
+                                (window.location.pathname = '/account')
+                            }
+                        >
+                            <ListItemText
+                                primaryTypographyProps={{
+                                    fontSize: 22,
+                                    color: 'primary.secondary',
+                                }}
+                            >
+                                Account
+                            </ListItemText>
+                        </MenuItem>
+                    </MenuList>
+                ) : (
+                    <MenuList>
+                        <MenuItem
+                            onClick={() =>
+                                (window.location.pathname = '/login')
+                            }
+                        >
+                            <ListItemText
+                                primaryTypographyProps={{
+                                    fontSize: 22,
+                                    color: 'primary.secondary',
+                                }}
+                            >
+                                Login
+                            </ListItemText>
+                        </MenuItem>
+                        <MenuItem
+                            onClick={() =>
+                                (window.location.pathname = '/signup')
+                            }
+                        >
+                            <ListItemText
+                                primaryTypographyProps={{
+                                    fontSize: 22,
+                                    color: 'primary.secondary',
+                                }}
+                            >
+                                Sign Up
+                            </ListItemText>
+                        </MenuItem>
+                    </MenuList>
+                )}
+            </div>
         </div>
     );
 }
+
+SidebarView.propTypes = {
+    isLoggedIn: PropTypes.bool,
+};

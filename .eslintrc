@@ -12,6 +12,14 @@
         "no-tabs": "warn",
         "react/prop-types": "warn"
     },
+    "overrides": [
+      {
+        "files": [ "src/**/*" ],
+        "env": {
+          "browser": true
+        }
+      }
+    ],
     "plugins": [
         "react",
         "tailwindcss"
