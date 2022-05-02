@@ -17,10 +17,10 @@ function App() {
         <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
             <div className="flex absolute justify-start w-screen h-screen App">
                 <Box
+                    className="bg-background"
                     sx={{
                         width: '100%',
                         height: '100%',
-                        backgroundColor: 'primary.light',
                     }}
                 >
                     <NavbarPresenter />
