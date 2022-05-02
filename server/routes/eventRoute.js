@@ -73,6 +73,11 @@ router.post(
         if (!eventSnapshot.exists())
             return res.status(404).send('Event not found');
 
+        // Check who created the event
+        // Only the event creator can update events
+        if (!eventSnapshot.creatorId != req.user.id)
+            return res.status(401).send('Unauthorized');
+
         var update = {};
         if (title) update.title = title;
         if (description) update.description = description;
