@@ -117,6 +117,24 @@ paths:
                 '409':
                     description: 'User already exists'
 
+    /events/{id}:
+        get:
+            summary: 'Get event by id'
+            description: 'Get a specific event by its id'
+            tags:
+                - event
+            responses:
+                '200':
+                    description: 'Returns the event'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/schemas/Event'
+                '401':
+                    description: 'Unauthenticated'
+                '404':
+                    description: 'Event not found'
+
     /events:
         post:
             summary: 'Create an event'
@@ -157,23 +175,6 @@ paths:
                     description: 'Invalid body'
                 '401':
                     description: 'Unauthenticated'
-
-        get:
-            summary: 'Get event by id'
-            description: 'Get a specific event by its id'
-            tags:
-                - event
-            responses:
-                '200':
-                    description: 'Returns the event'
-                    content:
-                        application/json:
-                            schema:
-                                $ref: 'definitions.yaml#/schemas/Event'
-                '401':
-                    description: 'Unauthenticated'
-                '404':
-                    description: 'Event not found'
 
         patch:
             summary: 'Update an event'
