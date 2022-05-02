@@ -36,11 +36,13 @@ paths:
                                 $ref: 'definitions.yaml#/schemas/User'
                 '400':
                     description: 'No id provided'
+                '401':
+                    description: 'Unauthenticated'
                 '404':
                     description: 'User not found'
 
     /user:
-        post:
+        patch:
             summary: 'Update a user'
             description: 'Update a user with new data, omitted fields are unchanged.'
             tags:
@@ -75,7 +77,6 @@ paths:
                 '404':
                     description: 'User not found'
 
-    /user/create:
         post:
             summary: 'Create a user'
             description: 'Create a user from the provided data and firebase auth token'
