@@ -10,7 +10,7 @@ const router = express.Router();
  * User making the post request automatically becomes the owner.
  */
 router.post(
-    '/create',
+    '/',
     authorize,
     body('title').isString(),
     body('description').isString(),
@@ -62,6 +62,7 @@ router.get(
 /**
  * Update event info.
  */
+router.patch(
     '/:id',
     authorize,
     param('id').isString(),

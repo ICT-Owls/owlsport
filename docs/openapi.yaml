@@ -115,18 +115,6 @@ paths:
                     description: 'User already exists'
 
     /events:
-        get:
-            summary: 'Get list of all events'
-            description: 'Get list of all events'
-            tags:
-                - event
-            responses:
-                '200':
-                    description: 'Returns a list of events'
-                    content:
-                        application/json:
-                            schema:
-                                $ref: 'definitions.yaml#/schemas/Event'
         post:
             summary: 'Create an event'
             description: 'Create a new event by a signed in user.'
@@ -138,14 +126,94 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: 'definitions.yaml#/schemas/Event'
+                            type: object
+                            properties:
+                                title:
+                                    type: string
+                                    description: 'Title of the event'
+                                description:
+                                    type: string
+                                    description: 'Description of the event'
+                                startDateTime:
+                                    type: integer
+                                    format: int32
+                                    description: 'Unix timestamp when the event starts'
+                                endDateTime:
+                                    type: integer
+                                    format: int32
+                                    description: 'Unix timestamp when the event ends'
             responses:
                 '200':
                     description: 'Returns the event id'
                     content:
                         application/json:
                             schema:
-                                type: string
-                                description: 'Id of the new event'
+                                $ref: 'definitions.yaml#/schemas/Event'
+                                description: 'The newly created event'
+                '400':
+                    description: 'Invalid body'
                 '401':
-                    description: 'Body is empty'
+                    description: 'Unauthenticated'
+
+        get:
+            summary: 'Get event by id'
+            description: 'Get a specific event by its id'
+            tags:
+                - event
+            responses:
+                '200':
+                    description: 'Returns the event'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/schemas/Event'
+                '401':
+                    description: 'Unauthenticated'
+                '404':
+                    description: 'Event not found'
+
+        patch:
+            summary: 'Update an event'
+            description: 'Update an existing event.'
+            tags:
+                - event
+            requestBody:
+                description: |
+                    Fields to modify, non-existant fields lead to no change.
+                    At least one field has to be provided.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                title:
+                                    type: string
+                                    description: 'Title of the event'
+                                description:
+                                    type: string
+                                    description: 'Description of the event'
+                                startDateTime:
+                                    type: integer
+                                    format: int32
+                                    description: 'Unix timestamp when the event starts'
+                                endDateTime:
+                                    type: integer
+                                    format: int32
+                                    description: 'Unix timestamp when the event ends'
+                                members:
+                                    type: string
+                                    items:
+                                        $ref: 'definitions.yaml#/schemas/Id'
+                                    description: 'List of event members'
+            responses:
+                '200':
+                    description: 'Returns the updated event'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/schemas/Event'
+                '400':
+                    description: 'Invalid body'
+                '401':
+                    description: 'Unauthenticated or Unauthorized'
