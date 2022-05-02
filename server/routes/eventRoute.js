@@ -54,6 +54,7 @@ router.get(
 router.post(
     '/:id',
     authorize,
+    param('id').isString(),
     body('title').optional().isString(),
     body('description').optional().isString(),
     body('members').optional().isArray(),
