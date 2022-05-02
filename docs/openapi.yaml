@@ -37,18 +37,13 @@ paths:
                     description: 'No id provided'
                 '404':
                     description: 'User not found'
+
+    /user:
         post:
             summary: 'Update a user'
             description: 'Update a user with new data, omitted fields are unchanged.'
             tags:
                 - user
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      $ref: 'definitions.yaml#/schemas/Id'
-                  description: 'The user ID'
             requestBody:
                 description: 'The updated user object'
                 required: true
@@ -72,8 +67,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: 'definitions.yaml#/schemas/User'
+                '400':
+                    description: 'Invalid body format'
                 '401':
-                    description: 'Body is empty'
+                    description: 'Unauthenticated'
                 '404':
                     description: 'User not found'
     /user/create:
