@@ -61,6 +61,7 @@ schemas:
             - description
             - startDateTime
             - endDateTime
+            - creationDate
         properties:
             creatorId:
                 $ref: '#/schemas/Id'
@@ -83,3 +84,6 @@ schemas:
             endDateTime:
                 type: integer
                 format: int32
+            creationDate:
+                type: number
+                description: 'UNIX timestamp of when the event was created'

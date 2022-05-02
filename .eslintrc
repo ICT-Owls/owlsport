@@ -9,8 +9,17 @@
     "rules": {
         "semi": [2, "always"],
         "no-unused-vars": "warn",
-        "no-tabs": "warn"
+        "no-tabs": "warn",
+        "react/prop-types": "warn"
     },
+    "overrides": [
+      {
+        "files": [ "src/**/*" ],
+        "env": {
+          "browser": true
+        }
+      }
+    ],
     "plugins": [
         "react",
         "tailwindcss"
