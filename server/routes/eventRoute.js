@@ -100,7 +100,6 @@ router.patch(
         await eventRef.update(update);
 
         const updatedEvent = await eventRef.get();
-
         res.send(updatedEvent.val());
     }
 );

@@ -13,6 +13,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: 'definitions.yaml#/schemas/AuthInfo'
+
     /user/{id}:
         get:
             summary: 'Get a user'
@@ -73,6 +74,7 @@ paths:
                     description: 'Unauthenticated'
                 '404':
                     description: 'User not found'
+
     /user/create:
         post:
             summary: 'Create a user'
