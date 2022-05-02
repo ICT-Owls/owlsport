@@ -5,6 +5,10 @@ const { events } = require('../database.js');
 const express = require('express');
 const router = express.Router();
 
+/**
+ * Create a new event.
+ * User making the post request automatically becomes the owner.
+ */
 router.post(
     '/create',
     authorize,
@@ -35,6 +39,10 @@ router.post(
     }
 );
 
+/**
+ * Get an event by its ID.
+ * Currently anyone can get any event as long as they know the ID.
+ */
 router.get(
     '/:id',
     authorize,
@@ -51,7 +59,9 @@ router.get(
     }
 );
 
-router.post(
+/**
+ * Update event info.
+ */
     '/:id',
     authorize,
     param('id').isString(),
@@ -70,6 +80,7 @@ router.post(
         const eventRef = events.child(id);
         const eventSnapshot = await eventRef.get();
 
+        // Check if the event exists
         if (!eventSnapshot.exists())
             return res.status(404).send('Event not found');
 
