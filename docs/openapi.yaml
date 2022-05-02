@@ -110,10 +110,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: 'definitions.yaml#/schemas/User'
-                '401':
+                '400':
                     description: 'Invalid body format'
-                '404':
-                    description: 'User not found'
+                '401':
+                    description: 'Unauthenticated'
                 '409':
                     description: 'User already exists'
 
