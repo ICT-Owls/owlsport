@@ -16,12 +16,19 @@ app.use(
 
 app.use(express.json());
 
+/**
+ * Middleware for authenticating the user with firebase auth
+ * Currently any authorization has to be done in their respective endpoints.
+ */
 app.use(async (req, res, next) => {
     if (req.headers?.authorization?.startsWith('Bearer ')) {
         try {
+            // Firebase auth token
             const idToken = req.headers.authorization.split('Bearer ')[1];
 
             const decodedToken = await admin.auth().verifyIdToken(idToken);
+            // The authenticated user is available as the 'user' prop on the express req.
+            // This can also be used to check if the user has been authenticated or not.
             req['user'] = decodedToken;
         } catch (err) {
             console.log(err);
