@@ -5,6 +5,9 @@ const { users } = require('../database.js');
 const express = require('express');
 const router = express.Router();
 
+/**
+ * Create a user from both the user object we receive from firebase authentication, but also additional info in the request body.
+ */
 router.post(
     '/create',
     authorize,
@@ -17,8 +20,9 @@ router.post(
         const authUser = req.user;
 
         const userRef = users.child(authUser.uid);
-        const userSnapshot = await userRef.get();
 
+        // Doublecheck that the user does not exist yet in the realtime database
+        const userSnapshot = await userRef.get();
         if (userSnapshot.exists())
             return res.status(400).send('User already exists');
 
@@ -38,6 +42,9 @@ router.post(
     }
 );
 
+/**
+ * Get a user by their ID.
+ */
 router.get(
     '/:id',
     authorize,
@@ -54,6 +61,10 @@ router.get(
     }
 );
 
+/**
+ * Update a user.
+ * Only fields that can be updated are the email, and friends.
+ */
 router.post(
     '/',
     authorize,
