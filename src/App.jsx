@@ -1,4 +1,3 @@
-import Button from '@mui/material/Button';
 import SidebarPresenter from './presenters/SidebarPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
 import ChatsPresenter from './presenters/ChatsPresenter';
@@ -13,10 +12,10 @@ const userObject = {};
 //export userObject
 
 function App() {
-    const [lightmode, setLightmode] = React.useState(true);
+    const [lightmode, ] = React.useState(true);
     return (
         <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-            <div className="App absolute w-screen h-screen flex justify-start">
+            <div className="flex absolute justify-start w-screen h-screen App">
                 <Box
                     sx={{
                         width: '100%',

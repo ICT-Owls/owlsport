@@ -5,12 +5,13 @@ import SearchIcon from '@mui/icons-material/Search';
 export default function NavbarView() {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
-        <div className="w-full h-fit fixed top-0 left-0 flex justify-around bg-white bg-opacity-90">
+        // eslint-disable-next-line 
+        <div className="flex fixed top-0 left-0 justify-around w-full h-fit bg-opacity-90 bg-white">
             <IconButton color="secondary" aria-label="Search" component="span">
                 <img src="Logotype.png" className="h-10" alt="" />
             </IconButton>
             <Box
-                className="m-4 flex justify-start"
+                className="flex justify-start m-4"
                 sx={{
                     width: 1000,
                     maxWidth: '100%',

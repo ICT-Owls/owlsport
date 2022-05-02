@@ -6,6 +6,7 @@ import {
     MenuList,
     Divider,
 } from '@mui/material';
+import PropTypes from 'prop-types';
 
 export default function SidebarView(props) {
     const isLoggedIn = props.isLoggedIn;
@@ -22,9 +23,10 @@ export default function SidebarView(props) {
                 <img src="Solid_Logotype.png" className="h-10" alt="" />
             </IconButton>
             {/*<div className='logo'>*/}
-            {/*	<img src='Solid_Logotype.png' alt='logo'/>*/}
+            {/*<img src='Solid_Logotype.png' alt='logo'/>*/}
             {/*</div>*/}
 
+            {/* eslint-disable-next-line tailwindcss/no-custom-classname*/}
             <div className="sidebar_first">
                 <MenuList>
                     <MenuItem
@@ -134,3 +136,7 @@ export default function SidebarView(props) {
         </div>
     );
 }
+
+SidebarView.propTypes = {
+    isLoggedIn: PropTypes.bool,
+};
