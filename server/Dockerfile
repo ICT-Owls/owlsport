@@ -10,6 +10,7 @@ RUN echo 'Adding files...'
 ADD server.js ./
 ADD database.js ./
 ADD utils.js ./
+ADD ***REMOVED***-firebase-adminsdk-wf7mw-0e8fb32b51.json ./
 ADD routes/* ./
 ADD package.json ./
 
