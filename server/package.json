@@ -1,0 +1,14 @@
+{
+    "name": "carpooling-server",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "start-prod": "cross-env NODE_ENV=production PORT=80 node server.js",
+        "start-dev": "cross-env NODE_ENV=development PORT=3003 node server.js",
+        "clean-node_modules": "rimraf node_modules"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "rimraf": "^3.0.2"
+    }
+}

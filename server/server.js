@@ -10,6 +10,7 @@ const port = parseInt(process.env.PORT);
 
 if (isNaN(port)) {
     console.error("Environment variable PORT must be set!");
+    process.exit(1);
 }
 
 // TODO: Bad bad, fix later
@@ -49,6 +50,7 @@ const userRoute = require('./routes/userRoute.js');
 app.use('/user', userRoute);
 
 const eventRoute = require('./routes/eventRoute.js');
+const { exit } = require('process');
 app.use('/events', eventRoute);
 
 app.get('/', (req, res) => {

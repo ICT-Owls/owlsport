@@ -1,0 +1,38 @@
+{
+    "extends": [
+         "eslint:recommended",
+         "plugin:react/recommended", 
+         "plugin:tailwindcss/recommended", 
+         "plugin:react/recommended"
+        ],
+    "parser": "@babel/eslint-parser",
+    "rules": {
+        "semi": [2, "always"],
+        "no-unused-vars": "warn",
+        "no-tabs": "warn",
+        "react/prop-types": "warn"
+    },
+    "overrides": [
+      {
+        "files": [ "src/**/*" ],
+        "env": {
+          "browser": true
+        }
+      }
+    ],
+    "plugins": [
+        "react",
+        "tailwindcss"
+    ],
+    "parserOptions": {
+        "babelOptions": {
+          "presets": [
+            ["babel-preset-react-app", false], "babel-preset-react-app/prod"
+          ]
+        }
+    },
+    "env": {
+        "node": true,
+        "es6": true
+    }
+}

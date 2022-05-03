@@ -7,13 +7,13 @@ EXPOSE 80/tcp
 EXPOSE 80/udp
 
 RUN echo 'Adding files...'
-ADD server/* ./
+ADD server.js ./
+ADD database.js ./
+ADD utils.js ./
+ADD routes/* ./
 ADD package.json ./
-ADD tsconfig.json ./
-ADD ***REMOVED***-firebase-adminsdk-wf7mw-0e8fb32b51.json ./
-ADD config/* ./
 
 RUN echo 'Installing node packages...'
 RUN ["npm", "i"]
 
-ENTRYPOINT ["node", "server/server.js"]
+ENTRYPOINT ["node", "server.js"]
