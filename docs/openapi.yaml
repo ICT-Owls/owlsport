@@ -136,6 +136,23 @@ paths:
                     description: 'Event not found'
 
     /events:
+        get:
+            summary: 'List own events'
+            description: 'List all events the current user is a owner or member of.'
+            tags:
+                - event
+            responses:
+                '200':
+                    description: 'List of events'
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: 'definitions.yaml#/schemas/Event'
+                '401':
+                    description: 'Unauthenticated'
+
         post:
             summary: 'Create an event'
             description: 'Create a new event by a signed in user.'
