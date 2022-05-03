@@ -1,4 +1,4 @@
-const { app, database } = require('../server/server.js');
+const { app, database } = require('../src/server.js');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const { assert } = require('chai');
