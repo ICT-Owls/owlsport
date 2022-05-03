@@ -40,6 +40,20 @@ router.post(
 );
 
 /**
+ * List all events a user has access to.
+ */
+router.get('/', authorize, async (req, res) => {
+    const userId = req.user.uid;
+
+    const eventsRef = await events.get();
+    const userEvents = Object.values(eventsRef.val()).filter(
+        (e) => e.creatorId == userId || e.members?.includes()
+    );
+
+    res.send(userEvents || []);
+});
+
+/**
  * Get an event by its ID.
  * Currently anyone can get any event as long as they know the ID.
  */
@@ -103,16 +117,5 @@ router.patch(
         res.send(updatedEvent.val());
     }
 );
-
-router.get('/mine', authorize, async (req, res) => {
-    const userId = req.user.uid;
-
-    const events = events.get();
-    const userEvents = events.filter(
-        (e) => e.creatorId == userId || e.members?.includes()
-    );
-
-    res.send(userEvents || []);
-});
 
 module.exports = router;
