@@ -23,7 +23,6 @@ const post = function (path) {
 
 describe('Users', function () {
     var testUserRef = undefined;
-    var testUser = undefined;
 
     before(async function () {
         const users = database.ref('/users');
@@ -38,7 +37,6 @@ describe('Users', function () {
         });
 
         testUserRef = userRef;
-        testUser = await userRef.get();
     });
 
     describe('/GET /user/:id', function () {

@@ -1,10 +1,10 @@
 {
     "extends": [
-         "eslint:recommended",
-         "plugin:react/recommended", 
-         "plugin:tailwindcss/recommended", 
-         "plugin:react/recommended"
-        ],
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:tailwindcss/recommended",
+        "plugin:react/recommended"
+    ],
     "parser": "@babel/eslint-parser",
     "rules": {
         "semi": [2, "always"],
@@ -13,26 +13,47 @@
         "react/prop-types": "warn"
     },
     "overrides": [
-      {
-        "files": [ "src/**/*" ],
-        "env": {
-          "browser": true
+        {
+            "files": ["src/**/*"],
+            "env": {
+                "browser": true
+            }
+        },
+        {
+            "files": ["test/**/*"],
+            "env": {
+                "mocha": true
+            }
         }
-      }
     ],
-    "plugins": [
-        "react",
-        "tailwindcss"
-    ],
+    "plugins": ["react", "tailwindcss"],
     "parserOptions": {
         "babelOptions": {
-          "presets": [
-            ["babel-preset-react-app", false], "babel-preset-react-app/prod"
-          ]
+            "presets": [
+                ["babel-preset-react-app", false],
+                "babel-preset-react-app/prod"
+            ]
+        },
+        "ecmaFeatures": {
+          "jsx": true
         }
     },
     "env": {
         "node": true,
         "es6": true
-    }
+    },
+    "settings": {
+        "react": {
+            "createClass": "createReactClass", // Regex for Component Factory to use,
+            // default to "createReactClass"
+            "pragma": "React", // Pragma to use, default to "React"
+            "fragment": "Fragment", // Fragment to use (may be a property of <pragma>), default to "Fragment"
+            "version": "detect" // React version. "detect" automatically picks the version you have installed.
+            // You can also use `16.0`, `16.3`, etc, if you want to override the detected value.
+            // It will default to "latest" and warn if missing, and to "detect" in the future
+        }
+    },
+    "ignorePatterns": [
+        "node_modules/**/*", "build/**/*", "src/api-client/**/*"
+    ]
 }

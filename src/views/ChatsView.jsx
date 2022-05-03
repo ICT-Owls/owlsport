@@ -1,33 +1,5 @@
 import React from 'react';
 
-import { Button, TextField, ListSubheader, Divider } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import { palette } from '@mui/system';
-
-function Item({ sender, content }) {
-    return (
-        <div
-            className={
-                'flex' +
-                (sender == 'other'
-                    ? ' justify-start child:bg-primary-300'
-                    : ' justify-end child:bg-secondary-100')
-            }
-        >
-            <span className="w-auto p-2 pb-3 m-4 rounded-3xl text-xl max-w-full break-words">
-                {content}
-            </span>
-        </div>
-    );
-}
-
-function ChatSelection() {
-    return <img src="Logotype.png" alt="" />;
-}
-
 export default function ChatsView() {
     var test;
     function test2(e) {

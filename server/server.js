@@ -22,11 +22,7 @@ app.use(
 
 app.use(express.json());
 
-/**
- * Middleware for authenticating the user with firebase auth
- * Currently any authorization has to be done in their respective endpoints.
- */
-app.use(async (req, res, next) => {
+app.use(async (req, _res, next) => {
     if (req.headers?.authorization?.startsWith('Bearer ')) {
         try {
             // Firebase auth token
@@ -53,11 +49,11 @@ const eventRoute = require('./routes/eventRoute.js');
 const { exit } = require('process');
 app.use('/events', eventRoute);
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
     res.sendFile(path.resolve('build', 'index.html'));
 });
 
-app.use((err, req, res, next) => {
+app.use((err, _req, res) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });
