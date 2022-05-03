@@ -3,6 +3,8 @@ import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    EmailAuthProvider,
+    GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth as firebaseuiAuth } from 'firebaseui';
 
@@ -91,7 +93,8 @@ export const startLogin = () => {
         signInSuccessUrl: '<url-to-redirect-to-on-success>',
         signInOptions: [
             // Leave the lines as is for the providers you want to offer your users.
-            auth.EmailAuthProvider.PROVIDER_ID,
+            EmailAuthProvider.PROVIDER_ID,
+            GoogleAuthProvider.PROVIDER_ID,
         ],
         // Terms of service url.
         tosUrl: '<your-tos-url>',
