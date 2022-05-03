@@ -8,7 +8,7 @@ import {
     Button,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { padding } from '@mui/system';
+import { startLogin } from '../helpers/Firebase';
 
 export default function SidebarView(props) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -58,7 +58,7 @@ export default function SidebarView(props) {
                         <>
                             <Button
                                 color="primary"
-                                onClick={() => setIsLoggedIn(!isLoggedIn)}
+                                onClick={() => startLogin()}
                             >
                                 Sign In
                             </Button>

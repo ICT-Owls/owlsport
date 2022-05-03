@@ -29,6 +29,11 @@ function App() {
                         <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
                         <ChatsPresenter />
                         <MainContentPresenter />
+                        <div className="absolute top-1/3 left-1/3 w-80 h-80 bg-cyan-600">
+                            <h1>Welcome to My Awesome App</h1>
+                            <div id="firebaseui-auth-container"></div>
+                            <div id="loader">Loading...</div>
+                        </div>
                     </Box>
                 </div>
             </ThemeProvider>
