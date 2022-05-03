@@ -3,6 +3,7 @@ import NavbarPresenter from './presenters/NavbarPresenter';
 import ChatsPresenter from './presenters/ChatsPresenter';
 import MainContentPresenter from './presenters/MainContentPresenter';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import { StyledEngineProvider } from '@mui/material/styles';
 import { LightTheme, DarkTheme } from './Themes';
 import './App.css';
 import React from 'react';
@@ -12,24 +13,26 @@ const userObject = {};
 //export userObject
 
 function App() {
-    const [lightmode, ] = React.useState(true);
+    const [lightmode] = React.useState(true);
     return (
-        <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-            <div className="flex absolute justify-start w-screen h-screen App">
-                <Box
-                    className="bg-background"
-                    sx={{
-                        width: '100%',
-                        height: '100%',
-                    }}
-                >
-                    <NavbarPresenter />
-                    <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-                    <ChatsPresenter />
-                    <MainContentPresenter />
-                </Box>
-            </div>
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
+                <div className="flex absolute justify-start w-screen h-screen App">
+                    <Box
+                        className="bg-background"
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                        }}
+                    >
+                        <NavbarPresenter />
+                        <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
+                        <ChatsPresenter />
+                        <MainContentPresenter />
+                    </Box>
+                </div>
+            </ThemeProvider>
+        </StyledEngineProvider>
     );
 }
 
