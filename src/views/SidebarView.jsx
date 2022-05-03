@@ -27,7 +27,7 @@ export default function SidebarView({
                 </IconButton>
 
                 <div className="sidebar_first">
-                    <div className="flex flex-col justify-start child:text-xl child:p-4">
+                    <div className="flex flex-col justify-start child:p-4 child:text-xl">
                         <Button color="primary" href="/events">
                             Events
                         </Button>
