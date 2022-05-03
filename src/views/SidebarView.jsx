@@ -1,15 +1,17 @@
-import React from 'react';
+import { React, useState } from 'react';
 import {
     IconButton,
     ListItemText,
     MenuItem,
     MenuList,
     Divider,
+    Button,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+import { padding } from '@mui/system';
 
 export default function SidebarView(props) {
-    const isLoggedIn = props.isLoggedIn;
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
@@ -28,110 +30,47 @@ export default function SidebarView(props) {
 
             {/* eslint-disable-next-line tailwindcss/no-custom-classname*/}
             <div className="sidebar_first">
-                <MenuList>
-                    <MenuItem
-                        onClick={() => (window.location.pathname = '/events')}
-                    >
-                        <ListItemText
-                            primaryTypographyProps={{
-                                fontSize: 22,
-                                color: 'primary.secondary',
-                            }}
-                        >
-                            Events
-                        </ListItemText>
-                    </MenuItem>
-                    <MenuItem
-                        onClick={() => (window.location.pathname = '/about')}
-                    >
-                        <ListItemText
-                            primaryTypographyProps={{
-                                fontSize: 22,
-                                color: 'primary.secondary',
-                            }}
-                        >
-                            About
-                        </ListItemText>
-                    </MenuItem>
-                    <MenuItem
-                        onClick={() => (window.location.pathname = '/whatever')}
-                    >
-                        <ListItemText
-                            primaryTypographyProps={{
-                                fontSize: 22,
-                                color: 'primary.secondary',
-                            }}
-                        >
-                            Whatever Else
-                        </ListItemText>
-                        <Divider black />
-                    </MenuItem>
-                </MenuList>
-
-                <Divider />
-                {isLoggedIn ? (
-                    <MenuList>
-                        <MenuItem
-                            onClick={() =>
-                                (window.location.pathname = '/logout')
-                            }
-                        >
-                            <ListItemText
-                                primaryTypographyProps={{
-                                    fontSize: 22,
-                                    color: 'primary.secondary',
-                                }}
-                            >
-                                Logout
-                            </ListItemText>
-                        </MenuItem>
-                        <MenuItem
-                            onClick={() =>
-                                (window.location.pathname = '/account')
-                            }
-                        >
-                            <ListItemText
-                                primaryTypographyProps={{
-                                    fontSize: 22,
-                                    color: 'primary.secondary',
-                                }}
-                            >
+                <div className="flex flex-col justify-start child:text-xl child:p-4">
+                    <Button color="primary" href="/events">
+                        Events
+                    </Button>
+                    <Button color="primary" href="/about">
+                        About
+                    </Button>
+                    <Button color="primary" href="/whatever" className="mb-0">
+                        Whatever
+                    </Button>
+                    <Divider style={{ padding: '0px' }} />
+                    {isLoggedIn ? (
+                        <>
+                            <Button color="primary" href="/account">
                                 Account
-                            </ListItemText>
-                        </MenuItem>
-                    </MenuList>
-                ) : (
-                    <MenuList>
-                        <MenuItem
-                            onClick={() =>
-                                (window.location.pathname = '/login')
-                            }
-                        >
-                            <ListItemText
-                                primaryTypographyProps={{
-                                    fontSize: 22,
-                                    color: 'primary.secondary',
-                                }}
+                            </Button>
+                            <Button
+                                color="primary"
+                                href="/whatever"
+                                onClick={() => setIsLoggedIn(!isLoggedIn)}
                             >
-                                Login
-                            </ListItemText>
-                        </MenuItem>
-                        <MenuItem
-                            onClick={() =>
-                                (window.location.pathname = '/signup')
-                            }
-                        >
-                            <ListItemText
-                                primaryTypographyProps={{
-                                    fontSize: 22,
-                                    color: 'primary.secondary',
-                                }}
+                                Sign Out
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button
+                                color="primary"
+                                onClick={() => setIsLoggedIn(!isLoggedIn)}
                             >
-                                Sign Up
-                            </ListItemText>
-                        </MenuItem>
-                    </MenuList>
-                )}
+                                Sign In
+                            </Button>
+                            <Button
+                                color="primary"
+                                onClick={() => setIsLoggedIn(!isLoggedIn)}
+                            >
+                                Create Account
+                            </Button>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );
