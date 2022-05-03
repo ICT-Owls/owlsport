@@ -5,7 +5,7 @@ const cors = require('cors');
 const express = require('express');
 const path = require('path');
 const app = express();
-const port = 3001;
+const port = 30649;
 
 // TODO: Bad bad, fix later
 app.use(
