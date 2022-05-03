@@ -15,7 +15,7 @@
 # generated files
 /package-lock.json
 /generated-sources
-/api-client
+/src/api-client
 
 # misc
 .DS_Store

@@ -54,6 +54,6 @@
         }
     },
     "ignorePatterns": [
-        "node_modules/**/*", "generated_sources/**/*", "build/**/*", "api-client/**/*"
+        "node_modules/**/*", "build/**/*", "src/api-client/**/*"
     ]
 }

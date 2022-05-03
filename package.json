@@ -9,7 +9,7 @@
         "start-prod": "node server/server.js",
         "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./docs/openapi.yaml",
         "mocha-test": "mocha --require mocha-suppress-logs --recursive --exit",
-        "generate-api-client": "openapi-generator-cli generate"
+        "generate-api-client": "npx sc generate -l typescript-fetch -o src/api-client/ -i docs/openapi.yaml"
     },
     "dependencies": {
         "@babel/core": "^7.16.0",
@@ -32,7 +32,6 @@
         "bfj": "^7.0.2",
         "browserslist": "^4.18.1",
         "camelcase": "^6.2.1",
-        "carpooling-api-client": "file:api-client",
         "case-sensitive-paths-webpack-plugin": "^2.4.0",
         "chai": "^4.3.6",
         "chai-http": "^4.3.0",
@@ -53,6 +52,7 @@
         "fs-extra": "^10.0.0",
         "html-webpack-plugin": "^5.5.0",
         "identity-obj-proxy": "^3.0.0",
+        "isomorphic-fetch": "^3.0.0",
         "jest": "^27.4.3",
         "jest-resolve": "^27.4.2",
         "jest-watch-typeahead": "^1.0.0",
@@ -78,6 +78,7 @@
         "style-loader": "^3.3.1",
         "terser-webpack-plugin": "^5.2.5",
         "typescript": "^4.6.3",
+        "url": "^0.11.0",
         "web-vitals": "^2.1.4",
         "webpack": "^5.64.4",
         "webpack-dev-server": "^4.6.0",
@@ -159,7 +160,6 @@
         ]
     },
     "devDependencies": {
-        "@openapitools/openapi-generator-cli": "^2.5.1",
         "@redocly/openapi-cli": "^1.0.0-beta.94",
         "autoprefixer": "^10.4.5",
         "eslint-plugin-mocha": "^10.0.4",
@@ -167,6 +167,7 @@
         "postcss": "^8.4.12",
         "redoc-cli": "^0.13.10",
         "swagger-jsdoc": "^6.2.1",
+        "swagger-nodegen-cli": "^3.0.34",
         "tailwindcss": "^3.0.24",
         "webpack-cli": "^4.9.2"
     }
