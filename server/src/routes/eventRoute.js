@@ -5,8 +5,12 @@ const { events } = require('../database.js');
 const express = require('express');
 const router = express.Router();
 
+/**
+ * Create a new event.
+ * User making the post request automatically becomes the owner.
+ */
 router.post(
-    '/create',
+    '/',
     authorize,
     body('title').isString(),
     body('description').isString(),
@@ -35,6 +39,24 @@ router.post(
     }
 );
 
+/**
+ * List all events a user has access to.
+ */
+router.get('/', authorize, async (req, res) => {
+    const userId = req.user.uid;
+
+    const eventsRef = await events.get();
+    const userEvents = Object.values(eventsRef.val()).filter(
+        (e) => e.creatorId == userId || e.members?.includes()
+    );
+
+    res.send(userEvents || []);
+});
+
+/**
+ * Get an event by its ID.
+ * Currently anyone can get any event as long as they know the ID.
+ */
 router.get(
     '/:id',
     authorize,
@@ -51,9 +73,13 @@ router.get(
     }
 );
 
-router.post(
+/**
+ * Update event info.
+ */
+router.patch(
     '/:id',
     authorize,
+    param('id').isString(),
     body('title').optional().isString(),
     body('description').optional().isString(),
     body('members').optional().isArray(),
@@ -69,8 +95,14 @@ router.post(
         const eventRef = events.child(id);
         const eventSnapshot = await eventRef.get();
 
+        // Check if the event exists
         if (!eventSnapshot.exists())
             return res.status(404).send('Event not found');
+
+        // Check who created the event
+        // Only the event creator can update events
+        if (!eventSnapshot.creatorId != req.user.id)
+            return res.status(401).send('Unauthorized');
 
         var update = {};
         if (title) update.title = title;
@@ -82,20 +114,8 @@ router.post(
         await eventRef.update(update);
 
         const updatedEvent = await eventRef.get();
-
         res.send(updatedEvent.val());
     }
 );
-
-router.get('/mine', authorize, async (req, res) => {
-    const userId = req.user.uid;
-
-    const events = events.get();
-    const userEvents = events.filter(
-        (e) => e.creatorId == userId || e.members?.includes()
-    );
-
-    res.send(userEvents || []);
-});
 
 module.exports = router;
