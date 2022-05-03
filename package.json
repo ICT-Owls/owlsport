@@ -163,6 +163,7 @@
         ]
     },
     "devDependencies": {
+        "@mui/x-date-pickers": "^5.0.0-alpha.2",
         "@openapitools/openapi-generator-cli": "^2.5.1",
         "@redocly/openapi-cli": "^1.0.0-beta.94",
         "autoprefixer": "^10.4.5",
