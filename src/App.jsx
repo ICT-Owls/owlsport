@@ -10,8 +10,23 @@ import { Box } from '@mui/material';
 
 const userObject = {};
 //export userObject
+import { Configuration, UserApi } from './api-client/index.ts';
+ 
+const configuration = new Configuration({
+    // Send request to same origin as the web page
+    basePath: "https://carpooling-backend-sy465fjv3q-lz.a.run.app/",
+});
+const userApi = new UserApi(configuration);
+const user = userApi.userPost({
+    firstname: 'Apple',
+    lastName: 'Pearson',
+    dateOfBirth: 123,
+});
 
 function App() {
+
+
+    
     const [lightmode, ] = React.useState(true);
     return (
         <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
