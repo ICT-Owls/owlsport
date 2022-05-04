@@ -10,7 +10,7 @@ import {
 import { Box } from '@mui/system';
 import PropTypes from 'prop-types';
 import React from 'react';
-import AvatarView from './AvatarView';
+import AvatarPresenter from '../presenters/AvatarPresenter';
 
 export default function EventListView(props) {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
@@ -28,13 +28,13 @@ export default function EventListView(props) {
                             >
                                 <Card
                                     className={
-                                        'p-0 last:pb-0 max-h-32 bg-background-100 hover:bg-background-200'
+                                        'max-h-32 bg-background-100 p-0 last:pb-0 hover:bg-background-200'
                                     }
                                 >
-                                    <div className={'flex flex-row grow p-0'}>
+                                    <div className={'flex grow flex-row p-0'}>
                                         <div
                                             className={
-                                                'aspect-square flex flex-col justify-center items-center h-32'
+                                                'flex aspect-square h-32 flex-col items-center justify-center'
                                             }
                                         >
                                             <DateBox
@@ -49,7 +49,7 @@ export default function EventListView(props) {
                                         />
                                         <div
                                             className={
-                                                'flex flex-col grow md:flex-row lg:flex-row'
+                                                'flex grow flex-col md:flex-row lg:flex-row'
                                             }
                                         >
                                             <div
@@ -126,11 +126,11 @@ function MemberBox(props) {
     return (
         <List
             className={
-                'flex flex-row flex-wrap justify-center items-center child:m-1 last:mr-2'
+                'flex flex-row flex-wrap items-center justify-center last:mr-2 child:m-1'
             }
         >
             {members.map((m) => (
-                <AvatarView key={m.id} user={m} />
+                <AvatarPresenter key={m.id} userId={m} />
             ))}
         </List>
     );
