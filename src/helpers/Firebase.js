@@ -39,11 +39,14 @@ const uiConfig = {
             // User successfully signed in.
             // Return type determines whether we continue the redirect automatically
             // or whether we leave that to developer to handle.
-            
+
             authResult.user.getIdToken().then((idToken) => {
                 userApi
-                    .userIdGet(authResult.user.uid, {headers:{authorization: `Bearer ${idToken}`}})
-                    .then((e) => writestuff(e));
+                    .userIdGet(authResult.user.uid, {
+                        headers: { authorization: `Bearer ${idToken}` },
+                    })
+                    .then((e) => callOnLogin(e))
+                    .catch((e) => console.error(e));
             });
             return false;
         },
@@ -131,5 +134,16 @@ export const startLogin = () => {
     // Initialize the FirebaseUI Widget using Firebase.
     ui.start('#firebaseui-auth-container', uiConfig);
 };
+
+let callbackOnLogin = () => {
+    console.error('Login subscription is empty after login success');
+};
+
+export function subscribeToLogin(callback) {
+    callbackOnLogin = callback;
+}
+function callOnLogin(user) {
+    callbackOnLogin(user);
+}
 
 export { app, registerUser, loginUser };
