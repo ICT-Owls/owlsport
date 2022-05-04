@@ -9,6 +9,8 @@ EXPOSE 80/udp
 RUN echo 'Adding files...'
 COPY src ./src
 COPY test ./test
+COPY package.json ./
+COPY .babelrc ./
 COPY ***REMOVED***-firebase-adminsdk-wf7mw-0e8fb32b51.json ./
 
 RUN echo 'Installing node packages...'
