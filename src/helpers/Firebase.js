@@ -8,6 +8,8 @@ import {
 } from 'firebase/auth';
 import { auth as firebaseuiAuth } from 'firebaseui';
 
+import 'firebaseui/dist/firebaseui.css';
+
 const firebaseConfig = {
     apiKey: '***REMOVED***',
     authDomain: '***REMOVED***',
