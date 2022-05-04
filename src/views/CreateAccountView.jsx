@@ -21,6 +21,9 @@ export default function CreateAccountView({
     passwordInvalid,
     displayNameError,
     displayName,
+    email,
+    password,
+    repeatPassword,
 }) {
     return (
         <div>
@@ -38,6 +41,7 @@ export default function CreateAccountView({
                         fullWidth
                         variant="standard"
                         onChange={(e) => setDisplayName(e.target.value)}
+                        value={displayName}
                     />
                     <TextField
                         error={!!emailNotValid}
@@ -49,6 +53,7 @@ export default function CreateAccountView({
                         fullWidth
                         variant="standard"
                         onChange={(e) => setEmail(e.target.value)}
+                        value={email}
                     />
                     <TextField
                         error={!!passwordInvalid}
@@ -60,6 +65,7 @@ export default function CreateAccountView({
                         fullWidth
                         variant="standard"
                         onChange={(e) => setPassword(e.target.value)}
+                        value={password}
                     />
                     <TextField
                         error={!!passwordsDontMatch}
@@ -71,6 +77,7 @@ export default function CreateAccountView({
                         fullWidth
                         variant="standard"
                         onChange={(e) => setRepeatPassword(e.target.value)}
+                        value={repeatPassword}
                     />
                 </DialogContent>
                 <DialogActions>

@@ -64,5 +64,8 @@ export default function CreateAccountPresenter({ showMe, handleVisibility }) {
         passwordInvalid,
         displayNameError,
         displayName,
+        email,
+        password,
+        repeatPassword,
     });
 }
