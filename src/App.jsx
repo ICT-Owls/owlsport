@@ -12,7 +12,7 @@ const userObject = {};
 //export userObject
 
 function App() {
-    const [lightmode, ] = React.useState(true);
+    const [lightmode] = React.useState(true);
     return (
         <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
             <div className="flex absolute justify-start w-screen h-screen App">
