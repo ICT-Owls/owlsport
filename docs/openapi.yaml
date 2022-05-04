@@ -12,7 +12,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/AuthInfo'
+                                $ref: 'definitions.yaml#/components/schemas/AuthInfo'
     /user/{id}:
         get:
             summary: 'Get a user'
@@ -24,7 +24,7 @@ paths:
                   name: id
                   required: true
                   schema:
-                      $ref: 'definitions.yaml#/schemas/Id'
+                      $ref: 'definitions.yaml#/components/schemas/Id'
                   description: 'The user ID'
             responses:
                 '200':
@@ -32,7 +32,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/User'
+                                $ref: 'definitions.yaml#/components/schemas/User'
                 '400':
                     description: 'No id provided'
                 '404':
@@ -47,7 +47,7 @@ paths:
                   name: id
                   required: true
                   schema:
-                      $ref: 'definitions.yaml#/schemas/Id'
+                      $ref: 'definitions.yaml#/components/schemas/Id'
                   description: 'The user ID'
             requestBody:
                 description: 'The updated user object'
@@ -64,14 +64,14 @@ paths:
                                     type: array
                                     description: 'New friend list of user'
                                     items:
-                                        $ref: 'definitions.yaml#/schemas/Id'
+                                        $ref: 'definitions.yaml#/components/schemas/Id'
             responses:
                 '200':
                     description: 'Returns the updated user'
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/User'
+                                $ref: 'definitions.yaml#/components/schemas/User'
                 '401':
                     description: 'Body is empty'
                 '404':
@@ -109,7 +109,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/User'
+                                $ref: 'definitions.yaml#/components/schemas/User'
                 '401':
                     description: 'Invalid body format'
                 '404':
@@ -127,7 +127,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/Event'
+                                $ref: 'definitions.yaml#/components/schemas/Event'
         post:
             summary: 'Create an event'
             description: 'Create a new event by a signed in user.'
@@ -139,7 +139,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: 'definitions.yaml#/schemas/Event'
+                            $ref: 'definitions.yaml#/components/schemas/Event'
             responses:
                 '200':
                     description: 'Returns the event id'

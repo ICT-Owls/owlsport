@@ -1,89 +1,90 @@
-schemas:
-    # Information about the authentication status of the current user
-    AuthInfo:
-        type: object
-        required:
-            - userId
-            - authenticated
-        properties:
-            userId:
-                $ref: '#/schemas/Id'
-            authenticated:
-                type: boolean
-                default: false
-    Id:
-        type: string
-        description: Database Ids
-    # Information about a user
-    User:
-        type: object
-        description: 'A user'
-        properties:
-            id:
-                $ref: '#/schemas/Id'
-                description: 'The ID of the user'
-            firstName:
-                type: string
-                description: 'First name of the user'
-            lastName:
-                type: string
-                description: 'Last name of the user'
-            email:
-                type: string
-                description: 'Email of the user'
-            dateOfBirth:
-                type: number
-                description: 'UNIX timestamp of when the user was born'
-            friends:
-                type: array
-                items:
-                    type: string
-                description: List of friend ids
-                default: []
-            creationDate:
-                type: number
-                description: 'UNIX timestamp of when the user was created'
-        required:
-            - id
-            - firstName
-            - lastName
-            - email
-            - dateOfBirth
-            - friends
-            - creationDate
-    Event:
-        type: object
-        required:
-            - creatorId
-            - id
-            - members
-            - title
-            - description
-            - startDateTime
-            - endDateTime
-            - creationDate
-        properties:
-            creatorId:
-                $ref: '#/schemas/Id'
-                description: 'Id of the user who created this event'
-            id:
-                $ref: '#/schemas/Id'
-                description: 'Id of the event'
-            members:
-                type: array
-                items:
+components:
+    schemas:
+        # Information about the authentication status of the current user
+        AuthInfo:
+            type: object
+            required:
+                - userId
+                - authenticated
+            properties:
+                userId:
                     $ref: '#/schemas/Id'
-                description: 'Id of the users participating in this event'
-            title:
-                type: string
-            description:
-                type: string
-            startDateTime:
-                type: integer
-                format: int32
-            endDateTime:
-                type: integer
-                format: int32
-            creationDate:
-                type: number
-                description: 'UNIX timestamp of when the event was created'
+                authenticated:
+                    type: boolean
+                    default: false
+        Id:
+            type: string
+            description: Database Ids
+        # Information about a user
+        User:
+            type: object
+            description: 'A user'
+            properties:
+                id:
+                    $ref: '#/schemas/Id'
+                    description: 'The ID of the user'
+                firstName:
+                    type: string
+                    description: 'First name of the user'
+                lastName:
+                    type: string
+                    description: 'Last name of the user'
+                email:
+                    type: string
+                    description: 'Email of the user'
+                dateOfBirth:
+                    type: number
+                    description: 'UNIX timestamp of when the user was born'
+                friends:
+                    type: array
+                    items:
+                        type: string
+                    description: List of friend ids
+                    default: []
+                creationDate:
+                    type: number
+                    description: 'UNIX timestamp of when the user was created'
+            required:
+                - id
+                - firstName
+                - lastName
+                - email
+                - dateOfBirth
+                - friends
+                - creationDate
+        Event:
+            type: object
+            required:
+                - creatorId
+                - id
+                - members
+                - title
+                - description
+                - startDateTime
+                - endDateTime
+                - creationDate
+            properties:
+                creatorId:
+                    $ref: '#/components/schemas/Id'
+                    description: 'Id of the user who created this event'
+                id:
+                    $ref: '#/components/schemas/Id'
+                    description: 'Id of the event'
+                members:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Id'
+                    description: 'Id of the users participating in this event'
+                title:
+                    type: string
+                description:
+                    type: string
+                startDateTime:
+                    type: integer
+                    format: int32
+                endDateTime:
+                    type: integer
+                    format: int32
+                creationDate:
+                    type: number
+                    description: 'UNIX timestamp of when the event was created'
