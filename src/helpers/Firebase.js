@@ -7,11 +7,14 @@ import {
     GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth as firebaseuiAuth } from 'firebaseui';
-import { Configuration, UserApi } from '../api-client/index.ts';
+import {
+    Configuration as CarpoolingApiConfig,
+    UserApi,
+} from '../api-client/index.ts';
 
 import 'firebaseui/dist/firebaseui.css';
 
-const backendApiConfig = new Configuration({
+const backendApiConfig = new CarpoolingApiConfig({
     // Send request to same origin as the web page
     basePath: 'https://carpooling-backend-sy465fjv3q-lz.a.run.app',
 });
@@ -32,21 +35,16 @@ const firebaseConfig = {
 
 const uiConfig = {
     callbacks: {
-        signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+        signInSuccessWithAuthResult: function (authResult) {
             // User successfully signed in.
             // Return type determines whether we continue the redirect automatically
             // or whether we leave that to developer to handle.
-
-            let apiOptions = {
-                headers: {
-                    authorization: `Bearer ${authResult.credential.idToken}`,
-                },
-            };
-
-            userApi
-                .userIdGet(authResult.user.uid, apiOptions)
-                .then((e) => writestuff(e));
-
+            
+            authResult.user.getIdToken().then((idToken) => {
+                userApi
+                    .userIdGet(authResult.user.uid, {headers:{authorization: `Bearer ${idToken}`}})
+                    .then((e) => writestuff(e));
+            });
             return false;
         },
         uiShown: function () {
@@ -59,8 +57,14 @@ const uiConfig = {
     signInFlow: 'popup',
     signInOptions: [
         // Leave the lines as is for the providers you want to offer your users.
-        EmailAuthProvider.PROVIDER_ID,
-        GoogleAuthProvider.PROVIDER_ID,
+        {
+            provider: EmailAuthProvider.PROVIDER_ID,
+            clientId: '***REMOVED***',
+        },
+        {
+            provider: GoogleAuthProvider.PROVIDER_ID,
+            clientId: '***REMOVED***',
+        },
     ],
     // Terms of service url.
     tosUrl: '<your-tos-url>',
