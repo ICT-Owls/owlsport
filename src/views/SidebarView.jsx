@@ -63,7 +63,10 @@ export default function SidebarView(props) {
                         >
                             Whatever Else
                         </ListItemText>
-                        <Divider black />
+                        {/*<Divider black />*/}
+                        <Divider sx={{ bgcolor: 'black' }}>
+
+                        </Divider>
                     </MenuItem>
                 </MenuList>
 
