@@ -32,6 +32,7 @@ export default function EventCreatingView() {
                             <h5 className=''>James Bond</h5>
 
                         </div>
+
                     </div>{/*md:w-1/2 content-center*/}
                     <div className='flex'>
                         <div  className='md:w-2/5 content-center min-w-200'>
