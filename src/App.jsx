@@ -14,6 +14,7 @@ const userObject = {};
 
 function App() {
     const [lightmode] = React.useState(true);
+    const [user, setUser] = React.useState(null);
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>

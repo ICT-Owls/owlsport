@@ -7,14 +7,16 @@ import {
     GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth as firebaseuiAuth } from 'firebaseui';
-//import { Configuration, UserApi } from '../api-client/index.ts';
+import { Configuration, UserApi } from '../api-client/index.ts';
 
 import 'firebaseui/dist/firebaseui.css';
 
-/*const backendApiConfig = new Configuration({
+const backendApiConfig = new Configuration({
     // Send request to same origin as the web page
     basePath: 'https://carpooling-backend-sy465fjv3q-lz.a.run.app',
-});*/
+});
+
+const userApi = new UserApi(backendApiConfig);
 
 const firebaseConfig = {
     apiKey: '***REMOVED***',
@@ -35,9 +37,17 @@ const uiConfig = {
             // Return type determines whether we continue the redirect automatically
             // or whether we leave that to developer to handle.
 
-            console.log(authResult.getUser().getDisplayName());
+            let apiOptions = {
+                headers: {
+                    authorization: `Bearer ${authResult.credential.idToken}`,
+                },
+            };
 
-            return true;
+            userApi
+                .userIdGet(authResult.user.uid, apiOptions)
+                .then((e) => writestuff(e));
+
+            return false;
         },
         uiShown: function () {
             // The widget is rendered.
@@ -47,7 +57,6 @@ const uiConfig = {
     },
     // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
     signInFlow: 'popup',
-    signInSuccessUrl: '<url-to-redirect-to-on-success>',
     signInOptions: [
         // Leave the lines as is for the providers you want to offer your users.
         EmailAuthProvider.PROVIDER_ID,
@@ -59,10 +68,12 @@ const uiConfig = {
     privacyPolicyUrl: '<your-privacy-policy-url>',
 };
 
+function writestuff(e) {
+    console.log(e);
+}
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
-/*const userApi = new UserApi(backendApiConfig);*/
 
 const registerUser = async function (
     firstName,
