@@ -3,12 +3,13 @@ info:
     title: 'Carpooling'
     version: '1.0.0'
 paths:
-    /user/auth:
+    /user/authe:
         get:
-            description: Returns information about authentication status
+            summary: 'Get auth status'
+            description: 'Returns information about authentication status'
             responses:
                 '200':
-                    description: Information about authentication status
+                    description: 'Information about authentication status'
                     content:
                         application/json:
                             schema:
@@ -153,3 +154,12 @@ paths:
                                         description: 'New id of the event'
                 '401':
                     description: 'Body is empty'
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: FBAuth
+
+security:
+    - bearerAuth: []
