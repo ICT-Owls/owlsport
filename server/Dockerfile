@@ -7,14 +7,12 @@ EXPOSE 80/tcp
 EXPOSE 80/udp
 
 RUN echo 'Adding files...'
-ADD server.js ./
-ADD database.js ./
-ADD utils.js ./
-ADD ***REMOVED***-firebase-adminsdk-wf7mw-0e8fb32b51.json ./
-ADD routes/* ./routes/
-ADD package.json ./
+COPY src ./src
+COPY test ./test
+COPY ***REMOVED***-firebase-adminsdk-wf7mw-0e8fb32b51.json ./
 
 RUN echo 'Installing node packages...'
 RUN ["npm", "i"]
+RUN ["npm", "run", "mocha-test"]
 
 ENTRYPOINT ["npm", "run", "start-prod"]
