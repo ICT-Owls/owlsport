@@ -1,7 +1,23 @@
 import SidebarView from '../views/SidebarView';
+import { useState } from 'react';
 
 export default function SidebarPresenter(props) {
-    // Hooks, logic, etc goes here. These presenters manipulate data, transform it into usable functions and values, then passes those to a view.
-    // No visual code here.
-    return SidebarView(props);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [openLogin, setOpenLogin] = useState(false);
+    const [openCreate, setOpenCreate] = useState(false);
+
+    function handleLoginVisibility(bool) {
+        setOpenLogin(bool);
+    }
+    function handleCreateVisibility(bool) {
+        setOpenCreate(bool);
+    }
+    return SidebarView({
+        isLoggedIn,
+        openLogin,
+        openCreate,
+        setIsLoggedIn,
+        handleLoginVisibility,
+        handleCreateVisibility,
+    });
 }
