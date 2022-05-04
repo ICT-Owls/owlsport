@@ -8,7 +8,7 @@ components:
                 - authenticated
             properties:
                 userId:
-                    $ref: '#/schemas/Id'
+                    $ref: '#/components/schemas/Id'
                 authenticated:
                     type: boolean
                     default: false
@@ -21,7 +21,7 @@ components:
             description: 'A user'
             properties:
                 id:
-                    $ref: '#/schemas/Id'
+                    $ref: '#/components/schemas/Id'
                     description: 'The ID of the user'
                 firstName:
                     type: string
