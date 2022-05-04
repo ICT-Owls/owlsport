@@ -10,7 +10,7 @@
         "semi": [2, "always"],
         "no-unused-vars": "warn",
         "no-tabs": "warn",
-        "react/prop-types": "warn"
+        "react/prop-types": "off"
     },
     "overrides": [
       {
