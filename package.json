@@ -155,7 +155,8 @@
     },
     "babel": {
         "presets": [
-            "@babel/typescript", "react-app"
+            "@babel/typescript",
+            "react-app"
         ]
     },
     "devDependencies": {
@@ -164,10 +165,11 @@
         "autoprefixer": "^10.4.5",
         "eslint-plugin-tailwindcss": "^3.5.0",
         "postcss": "^8.4.12",
+        "prettier": "^2.6.2",
+        "prettier-plugin-tailwindcss": "^0.1.10",
         "redoc-cli": "^0.13.10",
         "rimraf": "^3.0.2",
         "swagger-jsdoc": "^6.2.1",
-        "rimraf": "^3.0.2",
         "tailwindcss": "^3.0.24",
         "webpack-cli": "^4.9.2"
     }
