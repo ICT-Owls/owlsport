@@ -19,13 +19,17 @@ export default function CreateAccountView({
     emailNotValid,
     passwordsDontMatch,
     passwordInvalid,
+    displayNameError,
+    displayName,
 }) {
     return (
         <div>
             <Dialog open={showMe} onClose={() => handleVisibility(false)}>
-                <DialogTitle>Create a Account</DialogTitle>
+                <DialogTitle>Create an Account</DialogTitle>
                 <DialogContent>
                     <TextField
+                        error={!!displayNameError}
+                        helperText={displayNameError}
                         required
                         autoFocus
                         margin="dense"
@@ -73,7 +77,16 @@ export default function CreateAccountView({
                     <Button onClick={() => handleVisibility(false)}>
                         Cancel
                     </Button>
-                    <Button onClick={() => handleVisibility(false)}>
+                    <Button
+                        disabled={
+                            !!displayNameError ||
+                            !!emailNotValid ||
+                            !!passwordInvalid ||
+                            !!passwordsDontMatch ||
+                            !!displayNameError
+                        }
+                        onClick={() => handleVisibility(false)}
+                    >
                         Create Account
                     </Button>
                 </DialogActions>
