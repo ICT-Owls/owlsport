@@ -9,14 +9,18 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { startLogin } from '../helpers/Firebase';
 import { useEffect } from 'react';
 
-export default function SignInView({ showMe, handleClose }) {
+export default function SignInView({ showMe, handleVisibility }) {
     useEffect(() => {
         startLogin();
     }, []);
 
     return (
         <div>
-            <Dialog keepMounted={true} open={showMe} onClose={handleClose()}>
+            <Dialog
+                keepMounted={true}
+                open={showMe}
+                onClose={() => handleVisibility(false)}
+            >
                 <DialogContent>
                     <div id="firebaseui-auth-container"></div>
                     <div id="loader">Loading...</div>

@@ -4,19 +4,20 @@ import { useState } from 'react';
 export default function SidebarPresenter(props) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [openLogin, setOpenLogin] = useState(false);
+    const [openCreate, setOpenCreate] = useState(false);
 
-    function handleLoginOpen() {
-        setOpenLogin(true);
+    function handleLoginVisibility(bool) {
+        setOpenLogin(bool);
     }
-
-    function handleLoginClose() {
-        setOpenLogin(false);
+    function handleCreateVisibility(bool) {
+        setOpenCreate(bool);
     }
     return SidebarView({
-        openLogin,
-        handleLoginOpen,
-        handleLoginClose,
         isLoggedIn,
+        openLogin,
+        openCreate,
         setIsLoggedIn,
+        handleLoginVisibility,
+        handleCreateVisibility,
     });
 }

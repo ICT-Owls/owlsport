@@ -3,13 +3,15 @@ import { IconButton, Divider, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import SignInView from './SignInView';
 import { Link } from 'react-router-dom';
+import CreateAccountPresenter from '../presenters/CreateAccountPresenter';
 
 export default function SidebarView({
-    openLogin,
-    handleLoginOpen,
-    handleLoginClose,
     isLoggedIn,
+    openLogin,
+    openCreate,
     setIsLoggedIn,
+    handleLoginVisibility,
+    handleCreateVisibility,
 }) {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
@@ -59,13 +61,13 @@ export default function SidebarView({
                             <>
                                 <Button
                                     color="primary"
-                                    onClick={() => handleLoginOpen(true)}
+                                    onClick={() => handleLoginVisibility(true)}
                                 >
                                     Sign In
                                 </Button>
                                 <Button
                                     color="primary"
-                                    onClick={() => setIsLoggedIn(!isLoggedIn)}
+                                    onClick={() => handleCreateVisibility(true)}
                                 >
                                     Create Account
                                 </Button>
@@ -75,8 +77,12 @@ export default function SidebarView({
                 </div>
             </div>
             <SignInView
-                handleClose={() => handleLoginClose}
+                handleVisibility={handleLoginVisibility}
                 showMe={openLogin}
+            />
+            <CreateAccountPresenter
+                handleVisibility={handleCreateVisibility}
+                showMe={openCreate}
             />
         </>
     );
