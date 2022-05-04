@@ -22,7 +22,7 @@ export default function EventListView(props) {
                     return (
                         <ListItem key={e.id}>
                             <Link
-                                href={'/events/' + e.id}
+                                to={'/events/' + e.id}
                                 underline="none"
                                 className={'grow'}
                             >
