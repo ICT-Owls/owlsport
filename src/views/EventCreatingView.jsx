@@ -6,13 +6,30 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 //import { FormControlUnstyled } from '@mui/base';
 import { Button} from '@mui/material';
 //import SearchIcon from '@mui/icons-material/Search';
+import { Wrapper } from "@googlemaps/react-wrapper";
+import { useEffect, useRef } from 'react';
 
 // function UserInfoView() {
 //     return (null);
 // }
+function MyMapComponent({ center, zoom}) {
+    console.log("MyMapComponent", center, zoom);
+    if (center === undefined) center = { lat: -25.344, lng: 131.031 };
+    if (zoom === undefined) zoom = 6;
+    const ref = useRef();
+
+    useEffect(() => {
+        new window.google.maps.Map(ref.current, {
+            center,
+            zoom,
+        });
+    });
+
+    return <div ref={ref} id="map" />;
+}
 
 export default function EventCreatingView() {
-    const [value, setValue] = React.useState/*<Date | null>*/(new Date());
+    const [value, setValue] = React.useState(new Date());
 
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
@@ -95,8 +112,30 @@ export default function EventCreatingView() {
                                            id="Description"
                                 />
                             </div>
-                            <div>
-                                <p>map</p>
+                            <div className="h-full w-300">
+                                {/*<Wrapper apiKey={"AIzaSyDXvjtauHrSqoYDwlFH_ST899pZVcWY7jo"}>*/}
+                                {/*    <MyMapComponent />*/}
+                                {/*</Wrapper>*/}
+
+                                {/*<div id='map' className="h-full w-300">*/}
+
+                                {/*</div>*/}
+                                {/*<script*/}
+                                {/*    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXvjtauHrSqoYDwlFH_ST899pZVcWY7jo&callback=initMap&v=weekly"*/}
+                                {/*    defer*/}
+                                {/*/>*/}
+
+                                <iframe
+                                    sx={{ border: "0" }}
+                                    width="400"
+                                    height="300"
+                                    // style="border:0"
+                                    loading="lazy"
+                                    frameBorder="0"
+                                    allowFullScreen
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCGxW2vdNkBmPIc4GEer8Y85xAXPpfMjwY&q=Space+Needle,Seattle+WA">
+                                </iframe>
                             </div>
 
                         </div>
