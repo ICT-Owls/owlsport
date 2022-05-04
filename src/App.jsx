@@ -17,9 +17,9 @@ function App() {
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-                <div className="flex absolute justify-start w-screen h-screen App">
+                <div className="App absolute flex h-screen w-screen justify-start">
                     <Box
-                        className="bg-background"
+                        className="bg-background-200"
                         sx={{
                             width: '100%',
                             height: '100%',
