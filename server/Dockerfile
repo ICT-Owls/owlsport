@@ -15,6 +15,5 @@ COPY ***REMOVED***-firebase-adminsdk-wf7mw-0e8fb32b51.json ./
 
 RUN echo 'Installing node packages...'
 RUN ["npm", "i"]
-RUN ["npm", "run", "mocha-test"]
 
 ENTRYPOINT ["npm", "run", "start-prod"]
