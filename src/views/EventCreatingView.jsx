@@ -4,7 +4,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 //import { FormControlUnstyled } from '@mui/base';
-import { Button} from '@mui/material';
+import { Button, Grid } from '@mui/material';
+import { Grid, } from '@material-ui/core';
 //import SearchIcon from '@mui/icons-material/Search';
 import { Wrapper } from "@googlemaps/react-wrapper";
 import { useEffect, useRef } from 'react';
@@ -31,7 +32,88 @@ function MyMapComponent({ center, zoom}) {
 export default function EventCreatingView() {
     const [value, setValue] = React.useState(new Date());
 
-    //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
+    return(
+        // <Form onSubmit={handleSubmit}>
+        <Form>
+            <Grid container>
+                <Grid item xs={6}>
+                    <Controls.Input
+                        name="fullName"
+                        label="Full Name"
+                        value={values.fullName}
+                        onChange={handleInputChange}
+                        error={errors.fullName}
+                    />
+                    <Controls.Input
+                        label="Email"
+                        name="email"
+                        value={values.email}
+                        onChange={handleInputChange}
+                        error={errors.email}
+                    />
+                    <Controls.Input
+                        label="Mobile"
+                        name="mobile"
+                        value={values.mobile}
+                        onChange={handleInputChange}
+                        error={errors.mobile}
+                    />
+                    <Controls.Input
+                        label="City"
+                        name="city"
+                        value={values.city}
+                        onChange={handleInputChange}
+                    />
+
+                </Grid>
+                <Grid item xs={6}>
+                    <Controls.RadioGroup
+                        name="gender"
+                        label="Gender"
+                        value={values.gender}
+                        onChange={handleInputChange}
+                        items={genderItems}
+                    />
+                    <Controls.Select
+                        name="departmentId"
+                        label="Department"
+                        value={values.departmentId}
+                        onChange={handleInputChange}
+                        options={employeeService.getDepartmentCollection()}
+                        error={errors.departmentId}
+                    />
+                    <Controls.DatePicker
+                        name="hireDate"
+                        label="Hire Date"
+                        value={values.hireDate}
+                        onChange={handleInputChange}
+                    />
+                    <Controls.Checkbox
+                        name="isPermanent"
+                        label="Permanent Employee"
+                        value={values.isPermanent}
+                        onChange={handleInputChange}
+                    />
+
+                    <div>
+                        <Controls.Button
+                            type="submit"
+                            text="Submit" />
+                        <Controls.Button
+                            text="Reset"
+                            color="default"
+                            onClick={resetForm} />
+                    </div>
+                </Grid>
+            </Grid>
+        </Form>
+    );
+}
+
+export default function EventCreatingView2() {
+    const [value, setValue] = React.useState(new Date());
+
+        //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
         <div className='container absolut w-screen h-screen bg-black bg-opacity-10 flex justify-center'>
             <div className='flex w-full  justify-center bg-white mt-24 '>
