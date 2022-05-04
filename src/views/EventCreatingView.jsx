@@ -4,11 +4,12 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 //import { FormControlUnstyled } from '@mui/base';
-import { Button, Grid } from '@mui/material';
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextareaAutosize } from '@mui/material';
 //import { Grid } from '@material-ui/core';
 //import SearchIcon from '@mui/icons-material/Search';
 import { Wrapper } from "@googlemaps/react-wrapper";
 import { useEffect, useRef } from 'react';
+
 
 // function UserInfoView() {
 //     return (null);
@@ -77,18 +78,7 @@ export default function EventCreatingView2() {
                     <div className='flex w-full px-12 data-aos-duration="2000'>
                         <div className='bg-gray-100 relative rounded-lg p-8 sm:p-12'>
                             <div className="mb-6">
-                                <textfield
-                                    type="text"
-                                    placeholder="Event"
-                                    className="
-                                    w-full
-                                    rounded
-                                    p-3
-                                    focus:border-primary
-                                    "
-                                    name="event"
-                                    id="event"
-                                />
+                                <TextField fullWidth id="outlined-basic" label="Event" variant="outlined" />
                             </div>
 
                             <div className="mb-6">
@@ -118,41 +108,36 @@ export default function EventCreatingView2() {
                             </div>
 
                             <div className="mb-6">
-                                <select className="form-select appearance-none
-                                  block
-                                  w-full
-                                  px-3
-                                  py-1.5
-                                  text-base
-                                  font-normal
-                                  text-gray-700
-                                  bg-white bg-clip-padding bg-no-repeat
-                                  border border-solid border-gray-300
-                                  rounded
-                                  transition
-                                  ease-in-out
-                                  m-0
-                                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example">
-                                    <option selected>Duration (hours)</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Hours</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value='1'
+                                        label="Duration"
+                                        // onChange={handleChange}
+                                    >
+                                        <MenuItem value={1}>One</MenuItem>
+                                        <MenuItem value={2}>Two</MenuItem>
+                                        <MenuItem value={3}>Three</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </div>
 
                             <div className="mb-6">
-                                <input
-                                    type="text"
-                                    placeholder="Location"
-                                    className="
-                                    w-full
-                                    rounded
-                                    p-3
-                                    focus:border-primary
-                                                                       "
-                                    name="location"
-                                    id="location"
-                                />
+                                <TextField fullWidth id="outlined-basic" label="Location" variant="outlined" />
+                                {/*<input*/}
+                                {/*    type="text"*/}
+                                {/*    placeholder="Location"*/}
+                                {/*    className="*/}
+                                {/*    w-full*/}
+                                {/*    rounded*/}
+                                {/*    p-3*/}
+                                {/*    focus:border-primary*/}
+                                {/*                                       "*/}
+                                {/*    name="location"*/}
+                                {/*    id="location"*/}
+                                {/*/>*/}
                             </div>
 
                             <div className='m-6'>
@@ -196,19 +181,26 @@ export default function EventCreatingView2() {
 
                         <div  className='md:w-3/5 content-center ml-8'>
                             <div className="bg-gray-100 relative rounded-lg p-8 sm:p-12">
-                                <textarea
-                                    rows="12"
+                                <TextareaAutosize
+                                    aria-label="minimum height"
+                                    minRows={15}
+                                    maxRows={20}
                                     placeholder="About"
-                                    className="
-                                    w-full
-                                    rounded
-                                    p-3
-                                    font-family: 'Arial'
+                                    style={{ width: 600 }}
+                                />
+                                {/*<textarea*/}
+                                {/*    rows="12"*/}
+                                {/*    placeholder="About"*/}
+                                {/*    className="*/}
+                                {/*    w-full*/}
+                                {/*    rounded*/}
+                                {/*    p-3*/}
+                                {/*    font-family: 'Arial'*/}
 
-                                    "
-                                    name="about"
-                                    id="about"
-                                ></textarea>
+                                {/*    "*/}
+                                {/*    name="about"*/}
+                                {/*    id="about"*/}
+                                {/*></textarea>*/}
 
                                 <div className='m-6'>
                                     <iframe
