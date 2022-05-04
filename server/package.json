@@ -1,0 +1,23 @@
+{
+    "name": "carpooling-server",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "start-prod": "cross-env NODE_ENV=production PORT=80 node src/server.js",
+        "start-dev": "cross-env NODE_ENV=development PORT=3003 node src/server.js",
+        "clean-node_modules": "rimraf node_modules"
+    },
+    "devDependencies": {
+        "@babel/eslint-parser": "^7.17.0",
+        "cross-env": "^7.0.3",
+        "eslint": "^8.14.0",
+        "rimraf": "^3.0.2"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.18.1",
+        "express-validator": "^6.14.0",
+        "firebase-admin": "^10.1.0",
+        "path": "^0.12.7"
+    }
+}
