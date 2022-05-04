@@ -26,7 +26,6 @@ export default function SidebarView(props) {
             {/*<img src='Solid_Logotype.png' alt='logo'/>*/}
             {/*</div>*/}
 
-            {/* eslint-disable-next-line tailwindcss/no-custom-classname*/}
             <div className="sidebar_first">
                 <MenuList>
                     <MenuItem

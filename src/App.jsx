@@ -7,6 +7,7 @@ import { LightTheme, DarkTheme } from './Themes';
 import './App.css';
 import React from 'react';
 import { Box } from '@mui/material';
+import { EventCreatingPresenter } from './presenters/EventCreatingPresenter';
 
 const userObject = {};
 //export userObject
@@ -26,6 +27,7 @@ function App() {
                     <NavbarPresenter />
                     <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
                     <ChatsPresenter />
+                    <EventCreatingPresenter/>
                     <MainContentPresenter />
                 </Box>
             </div>
