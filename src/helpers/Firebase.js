@@ -45,8 +45,28 @@ const uiConfig = {
                     .userIdGet(authResult.user.uid, {
                         headers: { authorization: `Bearer ${idToken}` },
                     })
-                    .then((e) => callOnLogin(e))
-                    .catch((e) => console.error(e));
+                    .then((d) => callOnLogin(d))
+                    .catch((e) => {
+                        if (e.status == 404) {
+                            userApi
+                                .userPost(
+                                    {
+                                        firstName: 'Kevin',
+                                        lastName: 'Kelvin',
+                                        dateOfBirth: 0,
+                                    },
+                                    {
+                                        headers: {
+                                            authorization: `Bearer ${idToken}`,
+                                        },
+                                    }
+                                )
+                                .then((d) => callOnLogin(d))
+                                .catch((e) => console.error(e));
+                        } else {
+                            console.error(e);
+                        }
+                    });
             });
             return false;
         },
