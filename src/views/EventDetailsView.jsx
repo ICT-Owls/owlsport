@@ -127,173 +127,169 @@ export default function EventDetailsView () {
                         <div>1</div>
                     </div>
                 </DialogContent>
-        <div className='flex flex-row justify-around '>
-            {/*<div>1</div>*/}
-            {/*<div>1</div>*/}
-            {/*<div>1</div>*/}
 
-            <div className="flex justify-start ml-4 m-20">
+                <div className='flex flex-row justify-around '>
+                    {/*<div>1</div>*/}
+                    {/*<div>1</div>*/}
+                    {/*<div>1</div>*/}
 
-                <div className='flex mr-2'>
-                    <Card sx={{ minWidth: 350 }}>
-                        <div className='flex ml-4 m-2'>
-                            <div className='mr-2'>
-                                <Avatar alt="Erik" img src='Logotype.png' />
-                            </div>
+                    <div className="flex justify-start ml-4 m-20">
 
-                            <Typography gutterBottom variant="h6" component="div">
-                                Eric Ericsson
-                            </Typography>
+                        <div className='flex mr-2'>
+                            <Card sx={{ minWidth: 350 }}>
+                                <div className='flex ml-4 m-2'>
+                                    <div className='mr-2'>
+                                        <Avatar alt="Erik" img src='Logotype.png' />
+                                    </div>
+
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        Eric Ericsson
+                                    </Typography>
+                                </div>
+
+                                <div className='flex ml-4'>
+                                    <IconButton aria-label="location" size="small">
+                                        <LocationOnIcon fontSize="small" />
+                                        <p>Location</p>
+                                    </IconButton>
+
+                                </div>
+
+                                <div className='justify-start flex ml-4 '>
+
+
+                                    <AvatarGroup max={4}>
+                                        <Avatar alt="Erik" img src='Logotype.png' />
+                                        <Avatar alt="Erik" img src='Logotype.png' />
+                                        <Avatar alt="Erik" img src='Logotype.png' />
+                                        <Avatar alt="Erik" img src='Logotype.png' />
+                                    </AvatarGroup>
+
+                                    <div className= 'flex ml-20'>
+                                        <Button
+                                            variant="contained"
+                                            className="
+                                                hover: bg-primary
+                                                rounded
+                                                border border-primary
+                                                transition
+                                                duration-500
+                                                "                        >
+                                            JOIN
+                                        </Button>
+                                    </div>
+                                </div>
+                            </Card>
                         </div>
+                        <div className='flex mr-2'>
+                            <Card sx={{ minWidth: 350 }}>
+                                <div className='flex ml-4 m-2'>
+                                    <div className='mr-2'>
+                                        <Avatar alt="Erik" img src='Logotype.png' />
+                                    </div>
 
-                        <div className='flex ml-4'>
-                            <IconButton aria-label="location" size="small">
-                                <LocationOnIcon fontSize="small" />
-                                <p>Location</p>
-                            </IconButton>
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        Eric Ericsson
+                                    </Typography>
+                                </div>
 
+                                <div className='flex ml-4'>
+                                    <IconButton aria-label="location" size="small">
+                                        <LocationOnIcon fontSize="small" />
+                                        <p>Location</p>
+                                    </IconButton>
+
+                                </div>
+
+                                <div className='justify-start flex ml-4 '>
+
+
+                                    <AvatarGroup max={4}>
+                                        <Avatar alt="Erik" img src='Logotype.png' />
+                                        <Avatar alt="Erik" img src='Logotype.png' />
+                                        <Avatar alt="Erik" img src='Logotype.png' />
+                                        <Avatar alt="Erik" img src='Logotype.png' />
+                                    </AvatarGroup>
+
+                                    <div className= 'flex ml-20'>
+                                        <Button
+                                            variant="contained"
+                                            className="
+                                                hover: bg-primary
+                                                rounded
+                                                border border-primary
+                                                transition
+                                                duration-500
+                                                "                        >
+                                            JOIN
+                                        </Button>
+                                    </div>
+                                </div>
+                            </Card>
                         </div>
+                        <div className='flex mr-2'>
+                            <Card sx={{ minWidth: 350 }}>
 
-                        <div className='justify-start flex ml-4 '>
+                                <div className='flex ml-4 m-2'>
+                                    <div className='mr-2'>
+                                        <Avatar alt="Erik" img src='Logotype.png' />
+                                    </div>
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        Eric Ericsson
+                                    </Typography>
+                                </div>
 
+                                <div className='flex ml-4'>
+                                    <IconButton aria-label="location" size="small">
+                                        <LocationOnIcon fontSize="small" />
+                                        <p>Location</p>
+                                    </IconButton>
 
-                            <AvatarGroup max={4}>
-                                <Avatar alt="Erik" img src='Logotype.png' />
-                                <Avatar alt="Erik" img src='Logotype.png' />
-                                <Avatar alt="Erik" img src='Logotype.png' />
-                                <Avatar alt="Erik" img src='Logotype.png' />
-                            </AvatarGroup>
-
-                            <div className= 'flex ml-20'>
-                                <Button
-                                    variant="contained"
-                                    className="
-                                        hover: bg-primary
-                                        rounded
-                                        border border-primary
-                                        transition
-                                        duration-500
-                                        "                        >
-                                    JOIN
-                                </Button>
-                            </div>
-                        </div>
-                    </Card>
-                </div>
-                <div className='flex mr-2'>
-                    <Card sx={{ minWidth: 350 }}>
-                        <div className='flex ml-4 m-2'>
-                            <div className='mr-2'>
-                                <Avatar alt="Erik" img src='Logotype.png' />
-                            </div>
-
-                            <Typography gutterBottom variant="h6" component="div">
-                                Eric Ericsson
-                            </Typography>
-                        </div>
-
-                        <div className='flex ml-4'>
-                            <IconButton aria-label="location" size="small">
-                                <LocationOnIcon fontSize="small" />
-                                <p>Location</p>
-                            </IconButton>
-
-                        </div>
-
-                        <div className='justify-start flex ml-4 '>
+                                </div>
+        <div className='justify-start flex ml-4 '>
 
 
-                            <AvatarGroup max={4}>
-                                <Avatar alt="Erik" img src='Logotype.png' />
-                                <Avatar alt="Erik" img src='Logotype.png' />
-                                <Avatar alt="Erik" img src='Logotype.png' />
-                                <Avatar alt="Erik" img src='Logotype.png' />
-                            </AvatarGroup>
+                    <AvatarGroup max={4}>
+                        <Avatar alt="Erik" img src='Logotype.png' />
+                        <Avatar alt="Erik" img src='Logotype.png' />
+                        <Avatar alt="Erik" img src='Logotype.png' />
+                        <Avatar alt="Erik" img src='Logotype.png' />
+                    </AvatarGroup>
 
-                            <div className= 'flex ml-20'>
-                                <Button
-                                    variant="contained"
-                                    className="
-                                        hover: bg-primary
-                                        rounded
-                                        border border-primary
-                                        transition
-                                        duration-500
-                                        "                        >
-                                    JOIN
-                                </Button>
-                            </div>
-                        </div>
-                    </Card>
-                </div>
-                <div className='flex mr-2'>
-                    <Card sx={{ minWidth: 350 }}>
-
-                        <div className='flex ml-4 m-2'>
-                            <div className='mr-2'>
-                                <Avatar alt="Erik" img src='Logotype.png' />
-                            </div>
-                            <Typography gutterBottom variant="h6" component="div">
-                                Eric Ericsson
-                            </Typography>
-                        </div>
-
-                        <div className='flex ml-4'>
-                            <IconButton aria-label="location" size="small">
-                                <LocationOnIcon fontSize="small" />
-                                <p>Location</p>
-                            </IconButton>
-
-                        </div>
-<div className='justify-start flex ml-4 '>
-
-
-            <AvatarGroup max={4}>
-                <Avatar alt="Erik" img src='Logotype.png' />
-                <Avatar alt="Erik" img src='Logotype.png' />
-                <Avatar alt="Erik" img src='Logotype.png' />
-                <Avatar alt="Erik" img src='Logotype.png' />
-            </AvatarGroup>
-
-    <div className= 'flex ml-20'>
-        <Button
-            variant="contained"
-            className="
-                hover: bg-primary
-                rounded
-                border border-primary
-                transition
-                duration-500
-                "                        >
-            JOIN
-        </Button>
-    </div>
-</div>
-
-
-                        <CardActions>
-
-                        </CardActions>
-                    </Card>
-                </div>
+            <div className= 'flex ml-20'>
+                <Button
+                    variant="contained"
+                    className="
+                        hover: bg-primary
+                        rounded
+                        border border-primary
+                        transition
+                        duration-500
+                        "                        >
+                    JOIN
+                </Button>
             </div>
-
         </div>
 
 
+                                <CardActions>
 
+                                </CardActions>
+                            </Card>
+                        </div>
+                    </div>
 
+                </div>
 
-
-    // <div>
-        //     <Button
-        //         onClick={() => {
-        //             setScroll('paper');
-        //             setOpen(true);
-        //         }}
-        //     >
-        //         scroll
-        //     </Button>
+                 {/*<div>*/}
+                 {/*    <Button*/}
+                 {/*        onClick={() => {*/}
+                 {/*            setScroll('paper');*/}
+                 {/*            setOpen(true);*/}
+                 {/*        }}*/}
+                 {/*    >*/}
+                 {/*        scroll*/}
+                 {/*    </Button>*/}
 
                 <DialogActions>
                     <Button onClick={handleClose}>Save and exit</Button>
