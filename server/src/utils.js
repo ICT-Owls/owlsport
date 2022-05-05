@@ -1,4 +1,4 @@
-const { validationResult } = require('express-validator');
+import{ validationResult } from 'express-validator';
 
 /**
  * Express middleware that checks for validation errors,
@@ -10,7 +10,7 @@ const validate = function async(req, res, next) {
     else {
         // TODO: Might not want to just include the error in the response in the futre for security reasons.
         res.status(400).send(errors);
-    }
+    } 
 };
 
 const authorize = async function (req, res, next) {
@@ -18,4 +18,4 @@ const authorize = async function (req, res, next) {
     else next();
 };
 
-module.exports = { validate, authorize };
+export { validate, authorize };

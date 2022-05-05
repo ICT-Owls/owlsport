@@ -1,9 +1,9 @@
-const { body, param } = require('express-validator');
-const { validate, authorize } = require('../utils.js');
-const { events } = require('../database.js');
+import { body, param } from 'express-validator';
+import { validate, authorize } from '../utils.js';
+import { events } from '../database.js';
 
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+const router = Router();
 
 /**
  * Create a new event.
@@ -118,4 +118,4 @@ router.patch(
     }
 );
 
-module.exports = router;
+export default router;

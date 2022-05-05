@@ -1,9 +1,9 @@
-const { body, param, oneOf } = require('express-validator');
-const { validate, authorize } = require('../utils.js');
-const { users } = require('../database.js');
+import { body, param, oneOf } from 'express-validator';
+import { validate, authorize } from '../utils.js';
+import { users } from '../database.js';
 
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+const router = Router();
 
 /**
  * Create a user from both the user object we receive from firebase authentication, but also additional info in the request body.
@@ -95,4 +95,4 @@ router.patch(
     }
 );
 
-module.exports = router;
+export default router;

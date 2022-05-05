@@ -2,9 +2,10 @@
     "name": "carpooling-server",
     "version": "0.1.0",
     "private": true,
+    "type": "module",
     "scripts": {
         "start-prod": "cross-env NODE_ENV=production PORT=80 node src/server.js",
-        "start-dev": "cross-env NODE_ENV=development PORT=3003 node src/server.js",
+        "start-dev": "cross-env NODE_ENV=development PORT=37823 node src/server.js",
         "mocha-test": "mocha --require mocha-suppress-logs --recursive --exit",
         "clean-node_modules": "rimraf node_modules"
     },
@@ -20,6 +21,12 @@
         "express": "^4.18.1",
         "express-validator": "^6.14.0",
         "firebase-admin": "^10.1.0",
-        "path": "^0.12.7"
+        "path": "^0.12.7",
+        "query-string": "^7.1.1",
+        "ws": "^8.6.0"
+    },
+    "optionalDependencies": {
+        "bufferutil": "^4.0.6",
+        "utf-8-validate": "^5.0.9"
     }
 }

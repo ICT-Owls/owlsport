@@ -1,15 +1,18 @@
-const { database, admin } = require('./database.js');
+import { database, admin } from './database.js';
 
-const cors = require('cors');
+import cors from 'cors';
 
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
+
+import websockets from './websockets/index.js';
+
 const app = express();
 
 const port = parseInt(process.env.PORT);
 
 if (isNaN(port)) {
-    console.error("Environment variable PORT must be set!");
+    console.error('Environment variable PORT must be set!');
     process.exit(1);
 }
 
@@ -40,17 +43,23 @@ app.use(async (req, _res, next) => {
     next();
 });
 
-app.use(express.static('build'));
+const server = app.listen(port, () => {
+    console.log(`Web server listening on port ${port}`);
+});
 
-const userRoute = require('./routes/userRoute.js');
+const wsServer = websockets(server);
+
+app.use(express.static('../build'));
+
+import userRoute from './routes/userRoute.js';
 app.use('/user', userRoute);
 
-const eventRoute = require('./routes/eventRoute.js');
-const { exit } = require('process');
+import eventRoute from './routes/eventRoute.js';
+import { exit } from 'process';
 app.use('/events', eventRoute);
 
 app.get('/', (_req, res) => {
-    res.sendFile(path.resolve('build', 'index.html'));
+    res.sendFile(path.resolve('../build', 'index.html'));
 });
 
 app.use((err, _req, res) => {
@@ -58,8 +67,6 @@ app.use((err, _req, res) => {
     res.status(500).send('Something broke!');
 });
 
-app.listen(port, () => {
-    console.log(`Web server listening on port ${port}`);
-});
 
-module.exports = { app, database };
+
+export { app, database };
