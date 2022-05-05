@@ -1,0 +1,15 @@
+components:
+  schemas:
+    SubscribeRequest:
+      required: true
+      content:
+        application/json:
+            schema:
+                type: object
+                properties:
+                    callbackUrl: # Callback URL
+                        type: string
+                        format: uri
+                        example: https://myserver.com/send/callback/here
+                    required:
+                        - callbackUrl

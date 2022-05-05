@@ -115,8 +115,9 @@ paths:
                         application/json:
                             schema:
                                 $ref: 'definitions.yaml#/components/schemas/User'
-                '401':
-                    description: 'Invalid body format'
+                # TODO: What's supposed to be here?
+                #'401':
+                #    description: 'Invalid body format'
                 '401':
                     description: 'Unauthenticated'
                 '409':
@@ -134,7 +135,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/Event'
+                                $ref: 'definitions.yaml#/components/schemas/Event'
                 '401':
                     description: 'Unauthenticated'
                 '404':
@@ -171,7 +172,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/Event'
+                                $ref: 'definitions.yaml#/components/schemas/Event'
                                 description: 'The newly created event'
                 '400':
                     description: 'Invalid body'
@@ -210,7 +211,7 @@ paths:
                                 members:
                                     type: string
                                     items:
-                                        $ref: 'definitions.yaml#/schemas/Id'
+                                        $ref: 'definitions.yaml#/components/schemas/Id'
                                     description: 'List of event members'
             responses:
                 '200':
@@ -218,11 +219,20 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/Event'
+                                $ref: 'definitions.yaml#/components/schemas/Event'
                 '400':
                     description: 'Invalid body'
                 '401':
                     description: 'Body is empty'
+    /user/{id}/subscribe:
+        post:
+            summary: Subscribe to user
+            requestBody:
+                $ref: 'callbacks.yaml#/components/schemas/SubscribeRequest'
+            responses:
+                '201': 
+                    description: Callback created
+                
 components:
     securitySchemes:
         bearerAuth:
