@@ -100,7 +100,7 @@ function writestuff(e) {
 }
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 const registerUser = async function (
     firstName,
@@ -156,7 +156,9 @@ export const startLogin = () => {
 };
 
 let callbackOnLogin = () => {
-    console.error('Login subscription is empty after login success');
+    console.error(
+        'Firebase.js callback: Login subscription is empty after login success'
+    );
 };
 
 export function subscribeToLogin(callback) {
