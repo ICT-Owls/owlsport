@@ -1,5 +1,6 @@
 import SidebarPresenter from './presenters/SidebarPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
+import ChatsPresenter from './presenters/ChatsPresenter';
 import MainContentPresenter from './presenters/MainContentPresenter';
 import EventDetailsPresenter from './presenters/EventDetailsPresenter';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
@@ -11,7 +12,6 @@ import { Box } from '@mui/material';
 import { subscribeToLogin } from './helpers/Firebase';
 import { useEffect } from 'react';
 import { auth } from './helpers/Firebase';
-import EventDetailsView from './views/EventDetailsView';
 
 function App() {
     const [lightmode] = React.useState(true);
@@ -28,7 +28,7 @@ function App() {
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-                <div className="App absolute flex h-full w-full flex-col justify-start ">
+                <div className="App absolute flex h-full w-full flex-col justify-start bg-background-200 ">
                     <NavbarPresenter />
                     <div className="mt-14 flex">
                         <SidebarPresenter user={user} />
