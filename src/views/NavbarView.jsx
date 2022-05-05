@@ -5,6 +5,38 @@ import { Link } from 'react-router-dom';
 
 export default function NavbarView () {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
+    /*
+    return (
+        <nav className="navbar is-fresh"
+        role='navigaion'
+        aria-label='main navigation'>
+            <IconButton color="secondary" aria-label="Search" component="span">
+                <img src="Logotype.png" className="h-10" alt="" />
+            </IconButton>
+            <Box
+                className="flex justify-start m-4"
+                sx={{
+                    width: 1000,
+                    maxWidth: '100%',
+                }}
+            >
+                <TextField
+                    fullWidth
+                    label="fullWidth"
+                    id="fullWidth"
+                    color="secondary"
+                />
+                <IconButton
+                    color="secondary"
+                    aria-label="Search"
+                    component="span"
+                >
+                    <SearchIcon color="secondary" sx={{ fontSize: 40 }} />
+                </IconButton>
+            </Box>
+        </nav>
+    );
+    /*/
     return (
         <div
             className={
@@ -37,4 +69,5 @@ export default function NavbarView () {
             <div>{/* I act as a third item for formattings sake */}</div>
         </div>
     );
+    //*/
 }

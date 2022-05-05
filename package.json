@@ -17,6 +17,7 @@
         "@babel/core": "^7.16.0",
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
+        "@googlemaps/react-wrapper": "^1.1.32",
         "@mui/icons-material": "^5.6.2",
         "@mui/material": "^5.6.3",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
@@ -35,6 +36,7 @@
         "bfj": "^7.0.2",
         "browserslist": "^4.18.1",
         "camelcase": "^6.2.1",
+        "carpooling-api-client": "file:api-client",
         "case-sensitive-paths-webpack-plugin": "^2.4.0",
         "chai": "^4.3.6",
         "chai-http": "^4.3.0",
@@ -153,6 +155,9 @@
         "resetMocks": true
     },
     "devDependencies": {
+        "@mui/base": "^5.0.0-alpha.79",
+        "@mui/x-date-pickers": "^5.0.0-alpha.2",
+        "@openapitools/openapi-generator-cli": "^2.5.1",
         "@redocly/openapi-cli": "^1.0.0-beta.94",
         "autoprefixer": "^10.4.5",
         "eslint-plugin-tailwindcss": "^3.5.0",
