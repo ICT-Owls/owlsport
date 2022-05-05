@@ -11,6 +11,7 @@ import {
     Configuration as CarpoolingApiConfig,
     UserApi,
 } from '../api-client/index.ts';
+import { v4 as uuidv4 } from 'uuid';
 
 import 'firebaseui/dist/firebaseui.css';
 
@@ -152,22 +153,37 @@ const loginUser = async function (email, password) {
 // Initialize the FirebaseUI Widget using Firebase.
 var ui = new firebaseuiAuth.AuthUI(auth);
 
-export const startLogin = () => {
-    // Initialize the FirebaseUI Widget using Firebase.
+//Function called when the signin window is mounted
+export const startLogin = (callback) => {
+    //Subscribe to run callback after signin. Also unsubs in the same callback
+    var unsub = subscribeToLogin(() => {
+        //call callback and unsub. Only
+        callback();
+        unsub();
+    });
     ui.start('#firebaseui-auth-container', uiConfig);
 };
 
-let callbackOnLogin = () => {
-    console.error(
-        'Firebase.js callback: Login subscription is empty after login success'
-    );
-};
+let callbackOnLogin = {};
 
 export function subscribeToLogin(callback) {
-    callbackOnLogin = callback;
+    // create uid, add it to object
+    var id = uuidv4();
+    callbackOnLogin[id] = callback;
+
+    return () => {
+        //return function that removes field in object
+        delete callbackOnLogin.id;
+    };
 }
 function callOnLogin(user) {
-    callbackOnLogin(user);
+    //check if object is empty first.
+    Object.keys(callbackOnLogin).length == 0
+        ? console.error(
+              'Firebase.js callback: Login subscription is empty after login success'
+          )
+        : //If there are some callbacks, call them all
+          Object.values(callbackOnLogin).forEach((e) => e());
 }
 
 export { app, registerUser, loginUser };
