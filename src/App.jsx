@@ -8,12 +8,22 @@ import { LightTheme, DarkTheme } from './Themes';
 import './App.css';
 import React from 'react';
 import { Box } from '@mui/material';
-
-const userObject = {};
-//export userObject
+import { subscribeToLogin } from './helpers/Firebase';
+import { useEffect } from 'react';
+import { auth } from './helpers/Firebase';
 
 function App() {
     const [lightmode] = React.useState(true);
+    const [user, setUser] = React.useState(null);
+
+    useEffect(() => {
+        return auth.onAuthStateChanged((e) => setUser(e));
+    }, []);
+
+    useEffect(() => {
+        console.log('Current User Object: ', user);
+    }, [user]);
+
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
@@ -26,7 +36,7 @@ function App() {
                         }}
                     >
                         <NavbarPresenter />
-                        <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
+                        <SidebarPresenter user={user} />
                         <ChatsPresenter />
                         <MainContentPresenter />
                     </Box>

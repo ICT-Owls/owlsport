@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Button, TextField, ListSubheader, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -27,12 +27,7 @@ function Item({ sender, content }) {
 function ChatSelection() {
     return <img src="Logotype.png" alt="" />;
 }
-
 export default function ChatsView() {
-    var test;
-    function test2(e) {
-        return null;
-    }
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
         <div className="fixed bottom-0 right-0 flex justify-start">

@@ -12,6 +12,8 @@ export default function SidebarView({
     setIsLoggedIn,
     handleLoginVisibility,
     handleCreateVisibility,
+    user,
+    signOut,
 }) {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
@@ -44,7 +46,7 @@ export default function SidebarView({
                             Whatever
                         </Button>
                         <Divider style={{ padding: '0px' }} />
-                        {isLoggedIn ? (
+                        {user ? (
                             <>
                                 <Button color="primary" href="/account">
                                     Account
@@ -52,7 +54,7 @@ export default function SidebarView({
                                 <Button
                                     color="primary"
                                     href="/whatever"
-                                    onClick={() => setIsLoggedIn(!isLoggedIn)}
+                                    onClick={() => signOut()}
                                 >
                                     Sign Out
                                 </Button>

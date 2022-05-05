@@ -11,11 +11,11 @@ import { useEffect } from 'react';
 
 export default function SignInView({ showMe, handleVisibility }) {
     useEffect(() => {
-        startLogin();
-    }, []);
+        if (showMe === true) startLogin(() => handleVisibility(false));
+    }, [showMe]);
 
     return (
-        <div>
+        <>
             <Dialog
                 keepMounted={true}
                 open={showMe}
@@ -26,6 +26,6 @@ export default function SignInView({ showMe, handleVisibility }) {
                     <div id="loader">Loading...</div>
                 </DialogContent>
             </Dialog>
-        </div>
+        </>
     );
 }
