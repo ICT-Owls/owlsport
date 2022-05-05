@@ -1,55 +1,93 @@
-//import {Container} from "postcss";
-import React from 'react';
-//import {Link} from "@mui/material";
-//import {Route, BrowserRouter, Routes} from "react-router-dom";
+import { React } from 'react';
+import { IconButton, Divider, Button } from '@mui/material';
+import PropTypes from 'prop-types';
+import SignInView from './SignInView';
+import { Link } from 'react-router-dom';
+import CreateAccountPresenter from '../presenters/CreateAccountPresenter';
 
-export default function SidebarView() {
-    //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
+export default function SidebarView({
+    isLoggedIn,
+    openLogin,
+    openCreate,
+    setIsLoggedIn,
+    handleLoginVisibility,
+    handleCreateVisibility,
+}) {
+    //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
-        <div className="sidebar">
-            <div className="logo">
-                <img src="Solid_Logotype.png" alt="logo" />
-            </div>
+        <>
+            <div className="sidebar">
+                <IconButton
+                    href="/test"
+                    color="secondary"
+                    aria-label="Search"
+                    component="span"
+                >
+                    <Link to="/">
+                        <img src="Solid_Logotype.png" className="h-10" alt="" />
+                    </Link>
+                </IconButton>
 
-            <div className="sidebar_first">
-                <ul className="sidebar_ul">
-                    <li
-                        key="0"
-                        onClick={() => (window.location.pathname = '/events')}
-                    >
-                        <div>Events</div>
-                    </li>
-                    <li
-                        key="1"
-                        onClick={() => (window.location.pathname = '/about')}
-                    >
-                        <div>About Us</div>
-                    </li>
-                    <li
-                        key="2"
-                        onClick={() => (window.location.pathname = '/whatever')}
-                    >
-                        <div>Whatever Else</div>
-                    </li>
-                </ul>
+                <div className="sidebar_first">
+                    <div className="flex flex-col justify-start child:p-4 child:text-xl">
+                        <Button color="primary" href="/events">
+                            Events
+                        </Button>
+                        <Button color="primary" href="/about">
+                            About
+                        </Button>
+                        <Button
+                            color="primary"
+                            href="/whatever"
+                            className="mb-0"
+                        >
+                            Whatever
+                        </Button>
+                        <Divider style={{ padding: '0px' }} />
+                        {isLoggedIn ? (
+                            <>
+                                <Button color="primary" href="/account">
+                                    Account
+                                </Button>
+                                <Button
+                                    color="primary"
+                                    href="/whatever"
+                                    onClick={() => setIsLoggedIn(!isLoggedIn)}
+                                >
+                                    Sign Out
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button
+                                    color="primary"
+                                    onClick={() => handleLoginVisibility(true)}
+                                >
+                                    Sign In
+                                </Button>
+                                <Button
+                                    color="primary"
+                                    onClick={() => handleCreateVisibility(true)}
+                                >
+                                    Create Account
+                                </Button>
+                            </>
+                        )}
+                    </div>
+                </div>
             </div>
-
-            <div className="sidebar_second">
-                <ul className="sidebar_ul">
-                    <li
-                        key="3"
-                        onClick={() => (window.location.pathname = '/login')}
-                    >
-                        <div>Login</div>
-                    </li>
-                    <li
-                        key="4"
-                        onClick={() => (window.location.pathname = '/signup')}
-                    >
-                        <div>Sign Up</div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+            <SignInView
+                handleVisibility={handleLoginVisibility}
+                showMe={openLogin}
+            />
+            <CreateAccountPresenter
+                handleVisibility={handleCreateVisibility}
+                showMe={openCreate}
+            />
+        </>
     );
 }
+
+SidebarView.propTypes = {
+    isLoggedIn: PropTypes.bool,
+};
