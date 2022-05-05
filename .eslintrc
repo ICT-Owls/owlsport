@@ -1,7 +1,7 @@
 {
     "extends": [
          "eslint:recommended",
-         "plugin:react/recommended", 
+         "plugin:@typescript-eslint/recommended",
          "plugin:tailwindcss/recommended", 
          "plugin:react/recommended"
         ],
@@ -22,7 +22,8 @@
     ],
     "plugins": [
         "react",
-        "tailwindcss"
+        "tailwindcss",
+        "@typescript-eslint"
     ],
     "parserOptions": {
         "babelOptions": {
