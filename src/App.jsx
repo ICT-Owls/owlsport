@@ -10,17 +10,18 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { subscribeToLogin } from './helpers/Firebase';
 import { useEffect } from 'react';
-
-const userObject = {};
-//export userObject
+import { auth } from './helpers/Firebase';
 
 function App() {
     const [lightmode] = React.useState(true);
     const [user, setUser] = React.useState(null);
-    subscribeToLogin(setUser);
 
     useEffect(() => {
-        console.log(user);
+        auth.onAuthStateChanged((e) => setUser(e));
+    }, []);
+
+    useEffect(() => {
+        console.log('Current User Object: ', user);
     }, [user]);
 
     return (
@@ -35,7 +36,7 @@ function App() {
                         }}
                     >
                         <NavbarPresenter />
-                        <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
+                        <SidebarPresenter user={user} />
                         <ChatsPresenter />
                         <MainContentPresenter />
                     </Box>
