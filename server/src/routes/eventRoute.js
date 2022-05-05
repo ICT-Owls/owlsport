@@ -40,6 +40,8 @@ router.post(
 );
 
 /**
+ * List all events a user has access to.
+ */
 router.get('/', authorize, async (req, res) => {
     const userId = req.user.uid;
 
@@ -54,6 +56,7 @@ router.get('/', authorize, async (req, res) => {
 /**
  * Get an event by its ID.
  * Currently anyone can get any event as long as they know the ID.
+ */
 router.get(
     '/:id',
     authorize,
