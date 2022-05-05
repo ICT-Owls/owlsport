@@ -27,10 +27,12 @@ function Item({ sender, content }) {
 function ChatSelection() {
     return <img src="Logotype.png" alt="" />;
 }
-import { subscribeToLogin } from '../helpers/Firebase';
+import { getUser, subscribeToLogin } from '../helpers/Firebase';
 export default function ChatsView() {
-    const [user, setUser] = useState({firstName: "Not signed in"});
-    subscribeToLogin(setUser);
+    const [user, setUser] = useState({firstName: 'not signed in'});
+    getUser().then((e) => {
+        setUser(e);
+    });
 
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (

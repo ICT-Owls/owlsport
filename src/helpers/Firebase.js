@@ -41,6 +41,8 @@ const uiConfig = {
             // or whether we leave that to developer to handle.
 
             authResult.user.getIdToken().then((idToken) => {
+                localStorage.setItem('auth', idToken); // Store token in localstorage
+                localStorage.setItem('uid', authResult.user.uid); 
                 userApi
                     .userIdGet(authResult.user.uid, {
                         headers: { authorization: `Bearer ${idToken}` },
@@ -149,8 +151,16 @@ const loginUser = async function (email, password) {
 var ui = new firebaseuiAuth.AuthUI(auth);
 
 export const startLogin = () => {
+    if (isLoggedIn()) {
+        return;
+    }
+
     // Initialize the FirebaseUI Widget using Firebase.
     ui.start('#firebaseui-auth-container', uiConfig);
+};
+
+export const logOut = () => {
+    localStorage.removeItem('auth');
 };
 
 /* API */
@@ -164,6 +174,26 @@ export function subscribeToLogin(callback) {
 export function subscribeToEvents(callback) {
     callbackOnEventChange.push(callback);
 }
+
+export function isLoggedIn() {
+    return (
+        localStorage.getItem('auth') != null &&
+        localStorage.getItem('uid') != null
+    );
+}
+
+export async function getUser() {
+    const token = localStorage.getItem('auth');
+    const uid = localStorage.getItem('uid');
+    if (!token) return;
+
+    const user = await userApi.userIdGet(uid, {
+        headers: { authorization: `Bearer ${token}` },
+    });
+
+    return user;
+}
+
 /* *** */
 
 // Implementation stuff
