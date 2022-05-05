@@ -41,6 +41,8 @@ const uiConfig = {
             // or whether we leave that to developer to handle.
 
             authResult.user.getIdToken().then((idToken) => {
+                localStorage.setItem('auth', idToken); // Store token in localstorage
+                localStorage.setItem('uid', authResult.user.uid); 
                 userApi
                     .userIdGet(authResult.user.uid, {
                         headers: { authorization: `Bearer ${idToken}` },
@@ -97,12 +99,8 @@ const uiConfig = {
     privacyPolicyUrl: '<your-privacy-policy-url>',
 };
 
-function writestuff(e) {
-    console.log(e);
-}
-
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 const registerUser = async function (
     firstName,
@@ -153,19 +151,63 @@ const loginUser = async function (email, password) {
 var ui = new firebaseuiAuth.AuthUI(auth);
 
 export const startLogin = () => {
+    if (isLoggedIn()) {
+        return;
+    }
+
     // Initialize the FirebaseUI Widget using Firebase.
     ui.start('#firebaseui-auth-container', uiConfig);
 };
 
-let callbackOnLogin = () => {
-    console.error('Login subscription is empty after login success');
+export const logOut = () => {
+    localStorage.removeItem('auth');
 };
 
+/* API */
+let callbackOnLogin = [];
+let callbackOnEventChange = [];
+
 export function subscribeToLogin(callback) {
-    callbackOnLogin = callback;
+    callbackOnLogin.push(callback);
 }
+
+export function subscribeToEvents(callback) {
+    callbackOnEventChange.push(callback);
+}
+
+export function isLoggedIn() {
+    return (
+        localStorage.getItem('auth') != null &&
+        localStorage.getItem('uid') != null
+    );
+}
+
+export async function getUser() {
+    const token = localStorage.getItem('auth');
+    const uid = localStorage.getItem('uid');
+    if (!token) return;
+
+    const user = await userApi.userIdGet(uid, {
+        headers: { authorization: `Bearer ${token}` },
+    });
+
+    return user;
+}
+
+/* *** */
+
+// Implementation stuff
+
 function callOnLogin(user) {
-    callbackOnLogin(user);
+    for (const callback of callbackOnLogin) {
+        callback(user);
+    }
+}
+
+function callOnEventChange(eventId, change) {
+    for (const callback of callbackOnEventChange) {
+        callback(eventId, change);
+    }
 }
 
 export { app, registerUser, loginUser };

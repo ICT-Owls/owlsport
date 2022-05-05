@@ -10,36 +10,39 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { subscribeToLogin } from './helpers/Firebase';
 import { useEffect } from 'react';
-
-const userObject = {};
-//export userObject
+import { auth } from './helpers/Firebase';
 
 function App() {
     const [lightmode] = React.useState(true);
     const [user, setUser] = React.useState(null);
-    subscribeToLogin(setUser);
 
     useEffect(() => {
-        console.log(user);
+        auth.onAuthStateChanged((e) => setUser(e));
+    }, []);
+
+    useEffect(() => {
+        console.log('Current User Object: ', user);
     }, [user]);
 
     return (
-        <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-            <div className="flex absolute justify-start w-full h-screen App">
-                <Box
-                    className="bg-background-100"
-                    sx={{
-                        width: '100%',
-                        height: '100%',
-                    }}
-                >
-                    <NavbarPresenter />
-                    <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-                    <ChatsPresenter />
-                    <MainContentPresenter />
-                </Box>
-            </div>
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
+                <div className="App absolute flex h-screen w-screen justify-start">
+                    <Box
+                        className="bg-background-200"
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                        }}
+                    >
+                        <NavbarPresenter />
+                        <SidebarPresenter user={user} />
+                        <ChatsPresenter />
+                        <MainContentPresenter />
+                    </Box>
+                </div>
+            </ThemeProvider>
+        </StyledEngineProvider>
     );
 }
 
