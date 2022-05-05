@@ -8,8 +8,8 @@
         "test": "node scripts/test.js",
         "clean-node_modules": "rimraf node_modules",
         "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./docs/openapi.yaml",
-        "mocha-test": "env-cmd -e mochatest mocha --require mocha-suppress-logs --recursive --exit",
-        "generate-api-client": "openapi-generator-cli generate -i docs/openapi.yaml -g javascript -o generated-sources/openapi --additional-properties=npmName=restClient,supportsES6=true,npmVersion=8.5.5,withInterfaces=true"
+        "mocha-test": "mocha --require mocha-suppress-logs --recursive --exit",
+        "generate-api-client": "npx sc generate -l typescript-fetch -o src/api-client/ -i docs/openapi.yaml"
     },
     "dependencies": {
         "@babel/core": "^7.16.0",
@@ -168,9 +168,12 @@
         "autoprefixer": "^10.4.5",
         "eslint-plugin-tailwindcss": "^3.5.0",
         "postcss": "^8.4.12",
+        "prettier": "^2.6.2",
+        "prettier-plugin-tailwindcss": "^0.1.10",
         "redoc-cli": "^0.13.10",
         "rimraf": "^3.0.2",
         "swagger-jsdoc": "^6.2.1",
+        "swagger-nodegen-cli": "^3.0.34",
         "tailwindcss": "^3.0.24",
         "webpack-cli": "^4.9.2"
     }
