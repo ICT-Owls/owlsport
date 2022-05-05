@@ -6,11 +6,13 @@
         "start-dev": "node scripts/start-dev.js",
         "build": "node scripts/build.js",
         "test": "node scripts/test.js",
-        "clean-node_modules": "rimraf node_modules",
         "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./docs/openapi.yaml",
         "mocha-test": "mocha --require mocha-suppress-logs --recursive --exit",
-        "generate-api-client": "npx sc generate -l typescript-fetch -o src/api-client/ -i docs/openapi.yaml"
-    },
+
+        "generate-api-client": "npx sc generate -l typescript-fetch -o src/api-client/ -i docs/openapi.yaml",
+        "clean-node_modules": "rimraf node_modules"
+  },
+  
     "dependencies": {
         "@babel/core": "^7.16.0",
         "@emotion/react": "^11.9.0",
