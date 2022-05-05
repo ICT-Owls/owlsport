@@ -26,7 +26,7 @@ export default function CreateAccountView({
     repeatPassword,
 }) {
     return (
-        <div>
+        <>
             <Dialog open={showMe} onClose={() => handleVisibility(false)}>
                 <DialogTitle>Create an Account</DialogTitle>
                 <DialogContent>
@@ -98,6 +98,6 @@ export default function CreateAccountView({
                     </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </>
     );
 }

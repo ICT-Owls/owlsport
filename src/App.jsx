@@ -17,7 +17,7 @@ function App() {
     const [user, setUser] = React.useState(null);
 
     useEffect(() => {
-        auth.onAuthStateChanged((e) => setUser(e));
+        return auth.onAuthStateChanged((e) => setUser(e));
     }, []);
 
     useEffect(() => {
