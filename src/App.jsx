@@ -14,22 +14,22 @@ import EventDetailsView from './views/EventDetailsView';
 const userObject = {};
 //export userObject
 
-function App() {
+function App () {
     const [lightmode] = React.useState(true);
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-                <div className="App absolute flex h-screen w-screen justify-start">
+                <div className='App absolute flex h-screen w-screen justify-start'>
                     <Box
-                        className="bg-background-200"
+                        className='bg-background-200'
                         sx={{
                             width: '100%',
                             height: '100%',
                         }}
                     >
-                        <NavbarPresenter />
-                        <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-                        <ChatsPresenter />
+                        {/* <NavbarPresenter /> */}
+                        {/* <SidebarPresenter isLoggedIn={userObject.isLoggedIn} /> */}
+                        {/* <ChatsPresenter /> */}
                         <MainContentPresenter />
                         <EventDetailsPresenter />
                     </Box>
