@@ -5,6 +5,7 @@
     "scripts": {
         "start-dev": "node scripts/start-dev.js",
         "prepare": "npm run generate-api-client",
+        "lint": "npx eslint --no-error-on-unmatched-pattern --ext .js,.jsx src/ scripts/ test/ public/ config/",
         "build": "node scripts/build.js",
         "test": "node scripts/test.js",
         "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./docs/openapi.yaml",
@@ -89,12 +90,6 @@
         "webpack-manifest-plugin": "^4.0.2",
         "workbox-webpack-plugin": "^6.4.1"
     },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest"
-        ]
-    },
     "browserslist": {
         "production": [
             ">0.2%",
@@ -157,12 +152,6 @@
             "jest-watch-typeahead/testname"
         ],
         "resetMocks": true
-    },
-    "babel": {
-        "presets": [
-            "@babel/typescript",
-            "react-app"
-        ]
     },
     "devDependencies": {
         "@redocly/openapi-cli": "^1.0.0-beta.94",

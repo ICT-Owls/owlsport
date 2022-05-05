@@ -1,34 +1,37 @@
 {
     "extends": [
-         "eslint:recommended",
-         "plugin:react/recommended", 
-         "plugin:tailwindcss/recommended", 
-         "plugin:react/recommended"
-        ],
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:tailwindcss/recommended",
+        "plugin:react/recommended"
+    ],
     "parser": "@babel/eslint-parser",
     "rules": {
         "semi": [2, "always"],
-        "no-unused-vars": "warn",
-        "no-tabs": "warn",
-        "react/prop-types": "warn"
+        // vvvvvvvvvv Should change these to warn at some pint vvvvvvvvvvvv
+        "no-unused-vars": "off",
+        "react/prop-types": "off",
+        "tailwindcss/no-custom-classname": "off",
+        "tailwindcss/enforces-shorthand": "off",
+        "tailwindcss/classnames-order": "off",
+        // ^^^^^^^^^^ Should change these to warn at some pint ^^^^^^^^^^^^
+        "no-tabs": "warn"
     },
     "overrides": [
-      {
-        "files": [ "src/**/*" ],
-        "env": {
-          "browser": true
+        {
+            "files": ["src/**/*.js", "src/**/*.jsx", "src/**/*.css"],
+            "env": {
+                "browser": true
+            }
         }
-      }
     ],
-    "plugins": [
-        "react",
-        "tailwindcss"
-    ],
+    "plugins": ["react", "tailwindcss"],
     "parserOptions": {
         "babelOptions": {
-          "presets": [
-            ["babel-preset-react-app", false], "babel-preset-react-app/prod"
-          ]
+            "presets": [
+                ["babel-preset-react-app", false],
+                "babel-preset-react-app/prod"
+            ]
         }
     },
     "env": {
@@ -47,6 +50,9 @@
         }
     },
     "ignorePatterns": [
-        "node_modules/**/*", "build/**/*", "src/api-client/**/*", "server/**/*"
-    ]
+        "node_modules/**/*",
+        "build/**/*",
+        "src/api-client/**/*",
+        "server/**/*"
+    ],
 }
