@@ -1,37 +1,38 @@
 import React from 'react';
 import { Box, IconButton, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { Link } from 'react-router-dom';
 
 export default function NavbarView () {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
-        <div className='bg-primary fixed top-0 left-0 flex h-fit w-full justify-around bg-background-100 bg-opacity-90'>
-            <IconButton color='secondary' aria-label='Search' component='span'>
-                <img src='Logotype.png' className='h-10' alt='' />
-            </IconButton>
-            <Box
-                className='m-4 flex justify-start'
-                sx={{
-                    width: 1000,
-                    maxWidth: '100%',
-                }}
+        <div
+            className={
+                'bg-primary fixed flex h-fit w-full justify-around bg-background-100'
+            }
+        >
+            <Link
+                to="/"
+                className={'ml-8 mr-8 flex items-center justify-center'}
             >
+                <img src="Logotype.png" className={'h-10'} alt="" />
+            </Link>
+            <div className={'m-2 flex w-full justify-start'}>
                 <TextField
                     fullWidth
-                    error={true}
-                    helperText='test'
-                    label='fullWidth'
-                    id='fullWidth'
-                    color='secondary'
+                    placeholder="search"
+                    id="navbar-search"
+                    color="secondary"
+                    size="small"
                 />
                 <IconButton
                     color='secondary'
                     aria-label='Search'
                     component='span'
                 >
-                    <SearchIcon color='secondary' sx={{ fontSize: 40 }} />
+                    <SearchIcon color="secondary" />
                 </IconButton>
-            </Box>
+            </div>{' '}
             <div>{/* I act as a third item for formattings sake */}</div>
         </div>
     );
