@@ -14,6 +14,7 @@ export default function NavbarView () {
             <Link
                 to="/"
                 className={'ml-8 mr-8 flex items-center justify-center'}
+
             >
                 <img src="Logotype.png" className={'h-10'} alt="" />
             </Link>

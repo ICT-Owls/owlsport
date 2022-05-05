@@ -29,6 +29,7 @@ function App() {
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
                 <div className="App absolute flex h-full w-full flex-col justify-start bg-background-200 ">
+
                     <NavbarPresenter />
                     <div className="mt-14 flex">
                         <SidebarPresenter user={user} />
