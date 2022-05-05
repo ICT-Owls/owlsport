@@ -1,6 +1,5 @@
 import SidebarPresenter from './presenters/SidebarPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
-import ChatsPresenter from './presenters/ChatsPresenter';
 import MainContentPresenter from './presenters/MainContentPresenter';
 import EventDetailsPresenter from './presenters/EventDetailsPresenter';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
@@ -14,7 +13,7 @@ import { useEffect } from 'react';
 import { auth } from './helpers/Firebase';
 import EventDetailsView from './views/EventDetailsView';
 
-function App () {
+function App() {
     const [lightmode] = React.useState(true);
     const [user, setUser] = React.useState(null);
 
@@ -34,7 +33,6 @@ function App () {
                     <div className="mt-14 flex">
                         <SidebarPresenter user={user} />
                         <div className="ml-56 flex grow">
-                            <ChatsPresenter />
                             <MainContentPresenter user={user} />
                         </div>
                     </div>
