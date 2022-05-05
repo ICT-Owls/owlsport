@@ -116,8 +116,6 @@ paths:
                             schema:
                                 $ref: 'definitions.yaml#/components/schemas/User'
                 '401':
-                    description: 'Invalid body format'
-                '401':
                     description: 'Unauthenticated'
                 '409':
                     description: 'User already exists'
