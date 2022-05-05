@@ -40,7 +40,7 @@ export default function NavbarView () {
     return (
         <div
             className={
-                'bg-primary fixed flex h-fit w-full justify-around bg-background-100'
+                'bg-primary fixed flex h-fit w-full justify-around bg-background-100 z-50 shadow-sm'
             }
         >
             <Link

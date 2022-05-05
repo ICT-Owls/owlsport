@@ -15,12 +15,12 @@ import AvatarPresenter from '../presenters/AvatarPresenter';
 export default function EventListView(props) {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
-        <Container>
-            <Typography variant="h2">Events</Typography>
+        <Container sx={{paddingTop: '2rem'}}>
+            <Typography textAlign={'center'} variant="h3">Events</Typography>
             <List className={'overflow-hidden'}>
                 {props.events.map((e) => {
                     return (
-                        <ListItem key={e.id}>
+                        <ListItem key={e.id} sx={{ p: 0, mx: 0, my: '1rem' }}>
                             <Link
                                 href={'/events/' + e.id}
                                 underline="none"
@@ -30,6 +30,7 @@ export default function EventListView(props) {
                                     className={
                                         'max-h-32 bg-background-100 p-0 last:pb-0 hover:bg-background-200'
                                     }
+                                    elevation={2}
                                 >
                                     <div className={'flex grow flex-row p-0'}>
                                         <div
@@ -57,7 +58,7 @@ export default function EventListView(props) {
                                                     'mr-auto ml-4 border-r-4'
                                                 }
                                             >
-                                                <Typography variant="h4" mt={1}>
+                                                <Typography variant="h5" mt={1}>
                                                     {e.title}
                                                 </Typography>
                                                 <Typography variant="body1">

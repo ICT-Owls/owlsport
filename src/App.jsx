@@ -32,13 +32,10 @@ function App() {
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
                 <div className="App absolute flex h-full w-full flex-col justify-start bg-background-200 ">
-
                     <NavbarPresenter />
-                    <div className="mt-14 flex">
+                    <div className="mt-20 w-full content-center justify-center flex flex-row">
                         <SidebarPresenter user={user} />
-                        <div className="ml-56 flex grow bg-background-200">
-                            <MainContentPresenter user={user} />
-                        </div>
+                        <MainContentPresenter user={user} />
                     </div>
                 </div>
             </ThemeProvider>
