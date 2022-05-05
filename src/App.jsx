@@ -32,7 +32,7 @@ function App() {
                     <NavbarPresenter />
                     <div className="mt-14 flex">
                         <SidebarPresenter user={user} />
-                        <div className="ml-56 flex grow">
+                        <div className="ml-56 flex grow bg-background-200">
                             <MainContentPresenter user={user} />
                         </div>
                     </div>
