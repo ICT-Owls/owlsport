@@ -97,10 +97,6 @@ const uiConfig = {
     privacyPolicyUrl: '<your-privacy-policy-url>',
 };
 
-function writestuff(e) {
-    console.log(e);
-}
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
@@ -157,15 +153,31 @@ export const startLogin = () => {
     ui.start('#firebaseui-auth-container', uiConfig);
 };
 
-let callbackOnLogin = () => {
-    console.error('Login subscription is empty after login success');
-};
+/* API */
+let callbackOnLogin = [];
+let callbackOnEventChange = [];
 
 export function subscribeToLogin(callback) {
-    callbackOnLogin = callback;
+    callbackOnLogin.push(callback);
 }
+
+export function subscribeToEvents(callback) {
+    callbackOnEventChange.push(callback);
+}
+/* *** */
+
+// Implementation stuff
+
 function callOnLogin(user) {
-    callbackOnLogin(user);
+    for (const callback of callbackOnLogin) {
+        callback(user);
+    }
+}
+
+function callOnEventChange(eventId, change) {
+    for (const callback of callbackOnEventChange) {
+        callback(eventId, change);
+    }
 }
 
 export { app, registerUser, loginUser };
