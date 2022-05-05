@@ -3,17 +3,17 @@ info:
     title: 'Carpooling'
     version: '0.0.1'
 paths:
-    /user/auth:
+    /user/authe:
         get:
-            description: Returns information about authentication status
+            summary: 'Get auth status'
+            description: 'Returns information about authentication status'
             responses:
                 '200':
-                    description: Information about authentication status
+                    description: 'Information about authentication status'
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/AuthInfo'
-
+                                $ref: 'definitions.yaml#/components/schemas/AuthInfo'
     /user/{id}:
         get:
             summary: 'Get a user'
@@ -25,7 +25,7 @@ paths:
                   name: id
                   required: true
                   schema:
-                      $ref: 'definitions.yaml#/schemas/Id'
+                      $ref: 'definitions.yaml#/components/schemas/Id'
                   description: 'The user ID'
             responses:
                 '200':
@@ -33,7 +33,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/User'
+                                $ref: 'definitions.yaml#/components/schemas/User'
                 '400':
                     description: 'No id provided'
                 '401':
@@ -47,6 +47,13 @@ paths:
             description: 'Update a user with new data, omitted fields are unchanged.'
             tags:
                 - user
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: 'definitions.yaml#/components/schemas/Id'
+                  description: 'The user ID'
             requestBody:
                 description: 'The updated user object'
                 required: true
@@ -62,16 +69,14 @@ paths:
                                     type: array
                                     description: 'New friend list of user'
                                     items:
-                                        $ref: 'definitions.yaml#/schemas/Id'
+                                        $ref: 'definitions.yaml#/components/schemas/Id'
             responses:
                 '200':
                     description: 'Returns the updated user'
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/User'
-                '400':
-                    description: 'Invalid body format'
+                                $ref: 'definitions.yaml#/components/schemas/User'
                 '401':
                     description: 'Unauthenticated'
                 '404':
@@ -109,8 +114,8 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/User'
-                '400':
+                                $ref: 'definitions.yaml#/components/schemas/User'
+                '401':
                     description: 'Invalid body format'
                 '401':
                     description: 'Unauthenticated'
@@ -147,12 +152,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: array
-                                items:
-                                    $ref: 'definitions.yaml#/schemas/Event'
-                '401':
-                    description: 'Unauthenticated'
-
+                                $ref: 'definitions.yaml#/components/schemas/Event'
         post:
             summary: 'Create an event'
             description: 'Create a new event by a signed in user.'
@@ -164,22 +164,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            type: object
-                            properties:
-                                title:
-                                    type: string
-                                    description: 'Title of the event'
-                                description:
-                                    type: string
-                                    description: 'Description of the event'
-                                startDateTime:
-                                    type: integer
-                                    format: int32
-                                    description: 'Unix timestamp when the event starts'
-                                endDateTime:
-                                    type: integer
-                                    format: int32
-                                    description: 'Unix timestamp when the event ends'
+                            $ref: 'definitions.yaml#/components/schemas/Event'
             responses:
                 '200':
                     description: 'Returns the event id'
@@ -237,4 +222,13 @@ paths:
                 '400':
                     description: 'Invalid body'
                 '401':
-                    description: 'Unauthenticated or Unauthorized'
+                    description: 'Body is empty'
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: FBAuth
+
+security:
+    - bearerAuth: []

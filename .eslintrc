@@ -47,6 +47,6 @@
         }
     },
     "ignorePatterns": [
-        "node_modules/**/*", "build/**/*", "src/api-client/**/*"
+        "node_modules/**/*", "build/**/*", "src/api-client/**/*", "server/**/*"
     ]
 }
