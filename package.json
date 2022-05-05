@@ -6,11 +6,10 @@
         "start-dev": "node scripts/start-dev.js",
         "build": "node scripts/build.js",
         "test": "node scripts/test.js",
-        "start-prod": "node server/server.js",
-        "clean-node_modules": "rimraf node_modules",
         "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./docs/openapi.yaml",
-        "mocha-test": "env-cmd -e mochatest mocha --require mocha-suppress-logs --recursive --exit",
-        "generate-api-client": "openapi-generator-cli generate -i docs/openapi.yaml -g javascript -o generated-sources/openapi --additional-properties=npmName=restClient,supportsES6=true,npmVersion=8.5.5,withInterfaces=true"
+        "mocha-test": "mocha --require mocha-suppress-logs --recursive --exit",
+        "generate-api-client": "npx sc generate -l typescript-fetch -o src/api-client/ -i docs/openapi.yaml",
+        "clean-node_modules": "rimraf node_modules"
     },
     "dependencies": {
         "@babel/core": "^7.16.0",
@@ -46,15 +45,13 @@
         "eslint": "^8.3.0",
         "eslint-config-react-app": "^7.0.1",
         "eslint-webpack-plugin": "^3.1.1",
-        "express": "^4.18.0",
-        "express-validator": "^6.14.0",
         "file-loader": "^6.2.0",
         "firebase": "^9.6.11",
-        "firebase-admin": "^10.1.0",
         "firebaseui": "^6.0.1",
         "fs-extra": "^10.0.0",
         "html-webpack-plugin": "^5.5.0",
         "identity-obj-proxy": "^3.0.0",
+        "isomorphic-fetch": "^3.0.0",
         "jest": "^27.4.3",
         "jest-resolve": "^27.4.2",
         "jest-watch-typeahead": "^1.0.0",
@@ -67,6 +64,7 @@
         "postcss-preset-env": "^7.0.1",
         "prompts": "^2.4.2",
         "r": "^0.0.5",
+        "random-avatar-generator": "^2.0.0",
         "react": "^18.1.0",
         "react-app-polyfill": "^3.0.0",
         "react-dev-utils": "^12.0.1",
@@ -81,6 +79,8 @@
         "style-loader": "^3.3.1",
         "terser-webpack-plugin": "^5.2.5",
         "typescript": "^4.6.3",
+        "url": "^0.11.0",
+        "uuid": "^8.3.2",
         "web-vitals": "^2.1.4",
         "webpack": "^5.64.4",
         "webpack-dev-server": "^4.6.0",
@@ -158,18 +158,21 @@
     },
     "babel": {
         "presets": [
+            "@babel/typescript",
             "react-app"
         ]
     },
     "devDependencies": {
-        "@openapitools/openapi-generator-cli": "^2.5.1",
         "@redocly/openapi-cli": "^1.0.0-beta.94",
         "autoprefixer": "^10.4.5",
         "eslint-plugin-tailwindcss": "^3.5.0",
         "postcss": "^8.4.12",
+        "prettier": "^2.6.2",
+        "prettier-plugin-tailwindcss": "^0.1.10",
         "redoc-cli": "^0.13.10",
         "rimraf": "^3.0.2",
         "swagger-jsdoc": "^6.2.1",
+        "swagger-nodegen-cli": "^3.0.34",
         "tailwindcss": "^3.0.24",
         "webpack-cli": "^4.9.2"
     }

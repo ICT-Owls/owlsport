@@ -5,8 +5,11 @@ const { users } = require('../database.js');
 const express = require('express');
 const router = express.Router();
 
+/**
+ * Create a user from both the user object we receive from firebase authentication, but also additional info in the request body.
+ */
 router.post(
-    '/create',
+    '/',
     authorize,
     body('firstName').isString().withMessage('Invalid first name'),
     body('lastName').isString().withMessage('Invalid last name'),
@@ -17,10 +20,11 @@ router.post(
         const authUser = req.user;
 
         const userRef = users.child(authUser.uid);
-        const userSnapshot = await userRef.get();
 
+        // Doublecheck that the user does not exist yet in the realtime database
+        const userSnapshot = await userRef.get();
         if (userSnapshot.exists())
-            return res.status(400).send('User already exists');
+            return res.status(409).send('User already exists');
 
         await userRef.set({
             id: authUser.uid,
@@ -38,6 +42,9 @@ router.post(
     }
 );
 
+/**
+ * Get a user by their ID.
+ */
 router.get(
     '/:id',
     authorize,
@@ -54,7 +61,11 @@ router.get(
     }
 );
 
-router.post(
+/**
+ * Update a user.
+ * Only fields that can be updated are the email, and friends.
+ */
+router.patch(
     '/',
     authorize,
     body('email').optional().isEmail().withMessage('Invalid email'),

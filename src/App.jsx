@@ -2,36 +2,44 @@ import SidebarPresenter from './presenters/SidebarPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
 import ChatsPresenter from './presenters/ChatsPresenter';
 import MainContentPresenter from './presenters/MainContentPresenter';
+import EventDetailsPresenter from './presenters/EventDetailsPresenter';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import { StyledEngineProvider } from '@mui/material/styles';
 import { LightTheme, DarkTheme } from './Themes';
 import './App.css';
 import React from 'react';
 import { Box } from '@mui/material';
-
-const userObject = {};
-//export userObject
+import { subscribeToLogin } from './helpers/Firebase';
+import { useEffect } from 'react';
+import { auth } from './helpers/Firebase';
 
 function App() {
-    // eslint-disable-next-line
-    const [lightmode, setLightmode] = React.useState(true);
+    const [lightmode] = React.useState(true);
+    const [user, setUser] = React.useState(null);
+
+    useEffect(() => {
+        return auth.onAuthStateChanged((e) => setUser(e));
+    }, []);
+
+    useEffect(() => {
+        console.log('Current User Object: ', user);
+    }, [user]);
+
     return (
-        <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-            {/* eslint-disable-next-line */}
-            <div className="App absolute w-screen h-screen flex justify-start">
-                <Box
-                    sx={{
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'primary.light',
-                    }}
-                >
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
+                <div className="App absolute flex h-full w-full flex-col justify-start bg-background-200 ">
+
                     <NavbarPresenter />
-                    <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-                    <ChatsPresenter />
-                    <MainContentPresenter />
-                </Box>
-            </div>
-        </ThemeProvider>
+                    <div className="mt-14 flex">
+                        <SidebarPresenter user={user} />
+                        <div className="ml-56 flex grow bg-background-200">
+                            <MainContentPresenter user={user} />
+                        </div>
+                    </div>
+                </div>
+            </ThemeProvider>
+        </StyledEngineProvider>
     );
 }
 
