@@ -4,6 +4,7 @@
     "private": true,
     "scripts": {
         "start-dev": "node scripts/start-dev.js",
+        "prepare": "npm run generate-api-client",
         "build": "node scripts/build.js",
         "test": "node scripts/test.js",
         "preview-apidoc": "npx @redocly/openapi-cli preview-docs ./docs/openapi.yaml",
