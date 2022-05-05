@@ -48,7 +48,6 @@ const uiConfig = {
                     .userIdGet(authResult.user.uid, {
                         headers: { authorization: `Bearer ${idToken}` },
                     })
-                    .then((d) => callOnLogin({ ...d, accessToken: idToken }))
                     .catch((e) => {
                         if (e.status == 404) {
                             userApi
@@ -64,14 +63,12 @@ const uiConfig = {
                                         },
                                     }
                                 )
-                                .then((d) =>
-                                    callOnLogin({ ...d, accessToken: idToken })
-                                )
                                 .catch((e) => console.error(e));
                         } else {
                             console.error(e);
                         }
                     });
+                callStruct(callbackOnLogin);
             });
             return false;
         },
@@ -148,12 +145,36 @@ const loginUser = async function (email, password) {
     return user;
 };
 
+//Add new callbackStructs here for each "thing" you want to listen to
+let callbackOnLogin = {};
+function subscribeTo(callbackStruct, callback) {
+    // create uid, add it to callbackStruct
+    var id = uuidv4();
+    callbackStruct[id] = callback;
+
+    return () => {
+        //return function that removes field in callbackStruct
+        delete callbackStruct.id;
+    };
+}
+
+//Calls all callbacks in a callbackStruct
+function callStruct(callbackStruct) {
+    //check if object is empty first.
+    Object.keys(callbackStruct).length == 0
+        ? console.error(
+              'Firebase.js callback: Login subscription is empty after login success'
+          )
+        : //If there are some callbacks, call them all
+          Object.values(callbackStruct).forEach((e) => e());
+}
+
 // Initialize the FirebaseUI Widget using Firebase.
 var ui = new firebaseuiAuth.AuthUI(auth);
 
 export const startLogin = (callback) => {
     //Subscribe to run callback after signin. Also unsubs in the same callback
-    var unsub = subscribeToLogin(() => {
+    var unsub = subscribeTo(callbackOnLogin, () => {
         //call callback and unsub. Only
         callback();
         unsub();
@@ -166,19 +187,7 @@ export const logOut = () => {
 };
 
 /* API */
-let callbackOnLogin = [];
 let callbackOnEventChange = [];
-
-export function subscribeToLogin(callback) {
-    // create uid, add it to object
-    var id = uuidv4();
-    callbackOnLogin[id] = callback;
-
-    return () => {
-        //return function that removes field in object
-        delete callbackOnLogin.id;
-    };
-}
 
 export function subscribeToEvents(callback) {
     callbackOnEventChange.push(callback);
@@ -206,16 +215,6 @@ export async function getUser() {
 /* *** */
 
 // Implementation stuff
-
-function callOnLogin(user) {
-    //check if object is empty first.
-    Object.keys(callbackOnLogin).length == 0
-        ? console.error(
-              'Firebase.js callback: Login subscription is empty after login success'
-          )
-        : //If there are some callbacks, call them all
-          Object.values(callbackOnLogin).forEach((e) => e());
-}
 
 function callOnEventChange(eventId, change) {
     for (const callback of callbackOnEventChange) {
