@@ -2,6 +2,7 @@ import SidebarPresenter from './presenters/SidebarPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
 import ChatsPresenter from './presenters/ChatsPresenter';
 import MainContentPresenter from './presenters/MainContentPresenter';
+import EventDetailsPresenter from './presenters/EventDetailsPresenter';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { LightTheme, DarkTheme } from './Themes';
@@ -11,8 +12,9 @@ import { Box } from '@mui/material';
 import { subscribeToLogin } from './helpers/Firebase';
 import { useEffect } from 'react';
 import { auth } from './helpers/Firebase';
+import EventDetailsView from './views/EventDetailsView';
 
-function App() {
+function App () {
     const [lightmode] = React.useState(true);
     const [user, setUser] = React.useState(null);
 
@@ -27,9 +29,9 @@ function App() {
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-                <div className="App absolute flex h-screen w-screen justify-start">
+                <div className='App absolute flex h-screen w-screen justify-start'>
                     <Box
-                        className="bg-background-200"
+                        className='bg-background-200'
                         sx={{
                             width: '100%',
                             height: '100%',
@@ -39,6 +41,7 @@ function App() {
                         <SidebarPresenter user={user} />
                         <ChatsPresenter />
                         <MainContentPresenter user={user} />
+                        <EventDetailsPresenter />
                     </Box>
                 </div>
             </ThemeProvider>
