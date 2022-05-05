@@ -60,8 +60,9 @@ export default function EventCreatingView2() {
 
         //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
-        <div className='container absolut w-screen h-screen bg-black bg-opacity-10 flex justify-center'>
-            <div className='flex w-full  justify-center bg-white mt-24 '>
+        // <div className='container absolut w-screen h-screen bg-black bg-opacity-10 flex justify-center'>
+        <div>
+            <div className='flex w-full justify-center bg-white mt-24'>
                 <div className='m-8'>
                     <div className='justify-start ml-14 flex relative'>
 
@@ -179,7 +180,7 @@ export default function EventCreatingView2() {
 
                         </div>
 
-                        <div  className='md:w-3/5 content-center ml-8'>
+                        <div  className='md:w-3/5 content-center ml-4'>
                             <div className="bg-gray-100 relative rounded-lg p-8 sm:p-12">
                                 <TextareaAutosize
                                     aria-label="minimum height"
