@@ -5,7 +5,13 @@ const cors = require('cors');
 const express = require('express');
 const path = require('path');
 const app = express();
-const port = 30649;
+
+const port = parseInt(process.env.PORT);
+
+if (isNaN(port)) {
+    console.error("Environment variable PORT must be set!");
+    process.exit(1);
+}
 
 // TODO: Bad bad, fix later
 app.use(
@@ -40,6 +46,7 @@ const userRoute = require('./routes/userRoute.js');
 app.use('/user', userRoute);
 
 const eventRoute = require('./routes/eventRoute.js');
+const { exit } = require('process');
 app.use('/events', eventRoute);
 
 app.get('/', (_req, res) => {
