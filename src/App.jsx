@@ -8,12 +8,21 @@ import { LightTheme, DarkTheme } from './Themes';
 import './App.css';
 import React from 'react';
 import { Box } from '@mui/material';
+import { subscribeToLogin } from './helpers/Firebase';
+import { useEffect } from 'react';
 
 const userObject = {};
 //export userObject
 
 function App() {
     const [lightmode] = React.useState(true);
+    const [user, setUser] = React.useState(null);
+    subscribeToLogin(setUser);
+
+    useEffect(() => {
+        console.log(user);
+    }, [user]);
+
     return (
         <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
             <div className="flex absolute justify-start w-full h-screen App">

@@ -7,14 +7,19 @@ import {
     GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth as firebaseuiAuth } from 'firebaseui';
-//import { Configuration, UserApi } from '../api-client/index.ts';
+import {
+    Configuration as CarpoolingApiConfig,
+    UserApi,
+} from '../api-client/index.ts';
 
 import 'firebaseui/dist/firebaseui.css';
 
-/*const backendApiConfig = new Configuration({
+const backendApiConfig = new CarpoolingApiConfig({
     // Send request to same origin as the web page
     basePath: 'https://carpooling-backend-sy465fjv3q-lz.a.run.app',
-});*/
+});
+
+const userApi = new UserApi(backendApiConfig);
 
 const firebaseConfig = {
     apiKey: '***REMOVED***',
@@ -30,14 +35,40 @@ const firebaseConfig = {
 
 const uiConfig = {
     callbacks: {
-        signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+        signInSuccessWithAuthResult: function (authResult) {
             // User successfully signed in.
             // Return type determines whether we continue the redirect automatically
             // or whether we leave that to developer to handle.
 
-            console.log(authResult.getUser().getDisplayName());
-
-            return true;
+            authResult.user.getIdToken().then((idToken) => {
+                userApi
+                    .userIdGet(authResult.user.uid, {
+                        headers: { authorization: `Bearer ${idToken}` },
+                    })
+                    .then((d) => callOnLogin(d))
+                    .catch((e) => {
+                        if (e.status == 404) {
+                            userApi
+                                .userPost(
+                                    {
+                                        firstName: 'Kevin',
+                                        lastName: 'Kelvin',
+                                        dateOfBirth: 0,
+                                    },
+                                    {
+                                        headers: {
+                                            authorization: `Bearer ${idToken}`,
+                                        },
+                                    }
+                                )
+                                .then((d) => callOnLogin(d))
+                                .catch((e) => console.error(e));
+                        } else {
+                            console.error(e);
+                        }
+                    });
+            });
+            return false;
         },
         uiShown: function () {
             // The widget is rendered.
@@ -47,11 +78,16 @@ const uiConfig = {
     },
     // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
     signInFlow: 'popup',
-    signInSuccessUrl: '<url-to-redirect-to-on-success>',
     signInOptions: [
         // Leave the lines as is for the providers you want to offer your users.
-        EmailAuthProvider.PROVIDER_ID,
-        GoogleAuthProvider.PROVIDER_ID,
+        {
+            provider: EmailAuthProvider.PROVIDER_ID,
+            clientId: '***REMOVED***',
+        },
+        {
+            provider: GoogleAuthProvider.PROVIDER_ID,
+            clientId: '***REMOVED***',
+        },
     ],
     // Terms of service url.
     tosUrl: '<your-tos-url>',
@@ -59,10 +95,12 @@ const uiConfig = {
     privacyPolicyUrl: '<your-privacy-policy-url>',
 };
 
+function writestuff(e) {
+    console.log(e);
+}
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
-/*const userApi = new UserApi(backendApiConfig);*/
 
 const registerUser = async function (
     firstName,
@@ -116,5 +154,16 @@ export const startLogin = () => {
     // Initialize the FirebaseUI Widget using Firebase.
     ui.start('#firebaseui-auth-container', uiConfig);
 };
+
+let callbackOnLogin = () => {
+    console.error('Login subscription is empty after login success');
+};
+
+export function subscribeToLogin(callback) {
+    callbackOnLogin = callback;
+}
+function callOnLogin(user) {
+    callbackOnLogin(user);
+}
 
 export { app, registerUser, loginUser };
