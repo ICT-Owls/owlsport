@@ -2,12 +2,14 @@ import SidebarPresenter from './presenters/SidebarPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
 import ChatsPresenter from './presenters/ChatsPresenter';
 import MainContentPresenter from './presenters/MainContentPresenter';
+import EventDetailsPresenter from './presenters/EventDetailsPresenter';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { LightTheme, DarkTheme } from './Themes';
 import './App.css';
 import React from 'react';
 import { Box } from '@mui/material';
+import EventDetailsView from './views/EventDetailsView';
 
 const userObject = {};
 //export userObject
@@ -29,6 +31,7 @@ function App() {
                         <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
                         <ChatsPresenter />
                         <MainContentPresenter />
+                        <EventDetailsPresenter />
                     </Box>
                 </div>
             </ThemeProvider>
