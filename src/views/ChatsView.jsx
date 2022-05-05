@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Button, TextField, ListSubheader, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -27,12 +27,15 @@ function Item({ sender, content }) {
 function ChatSelection() {
     return <img src="Logotype.png" alt="" />;
 }
-
+import { getUser, subscribeToLogin } from '../helpers/Firebase';
 export default function ChatsView() {
-    var test;
-    function test2(e) {
-        return null;
-    }
+    const [user, setUser] = useState({ firstName: 'not signed in' });
+    getUser().then((e) => {
+        if (e) {
+            setUser(e);
+        }
+    });
+
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
         <div className="fixed bottom-0 right-0 flex justify-start">
@@ -40,7 +43,7 @@ export default function ChatsView() {
                 <div className="mb-2 w-96 rounded-xl border-2 border-secondary-100 bg-background-100">
                     <div className="flex h-auto w-auto flex-row justify-center child:h-14 child:w-14">
                         <img src="Logotype.png" alt="" />
-                        <h5>Eric</h5>
+                        <h5>{user.firstName}</h5>
                     </div>
                     <Divider variant="middle" className="bg-secondary-100" />
                     <div className="h-auto max-h-[50vh] overflow-y-auto">

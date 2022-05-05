@@ -42,6 +42,8 @@ const uiConfig = {
             // or whether we leave that to developer to handle.
 
             authResult.user.getIdToken().then((idToken) => {
+                localStorage.setItem('auth', idToken); // Store token in localstorage
+                localStorage.setItem('uid', authResult.user.uid);
                 userApi
                     .userIdGet(authResult.user.uid, {
                         headers: { authorization: `Bearer ${idToken}` },
@@ -98,10 +100,6 @@ const uiConfig = {
     privacyPolicyUrl: '<your-privacy-policy-url>',
 };
 
-function writestuff(e) {
-    console.log(e);
-}
-
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
@@ -153,7 +151,6 @@ const loginUser = async function (email, password) {
 // Initialize the FirebaseUI Widget using Firebase.
 var ui = new firebaseuiAuth.AuthUI(auth);
 
-//Function called when the signin window is mounted
 export const startLogin = (callback) => {
     //Subscribe to run callback after signin. Also unsubs in the same callback
     var unsub = subscribeToLogin(() => {
@@ -164,7 +161,13 @@ export const startLogin = (callback) => {
     ui.start('#firebaseui-auth-container', uiConfig);
 };
 
-let callbackOnLogin = {};
+export const logOut = () => {
+    localStorage.removeItem('auth');
+};
+
+/* API */
+let callbackOnLogin = [];
+let callbackOnEventChange = [];
 
 export function subscribeToLogin(callback) {
     // create uid, add it to object
@@ -176,6 +179,34 @@ export function subscribeToLogin(callback) {
         delete callbackOnLogin.id;
     };
 }
+
+export function subscribeToEvents(callback) {
+    callbackOnEventChange.push(callback);
+}
+
+export function isLoggedIn() {
+    return (
+        localStorage.getItem('auth') != null &&
+        localStorage.getItem('uid') != null
+    );
+}
+
+export async function getUser() {
+    const token = localStorage.getItem('auth');
+    const uid = localStorage.getItem('uid');
+    if (!token) return;
+
+    const user = await userApi.userIdGet(uid, {
+        headers: { authorization: `Bearer ${token}` },
+    });
+
+    return user;
+}
+
+/* *** */
+
+// Implementation stuff
+
 function callOnLogin(user) {
     //check if object is empty first.
     Object.keys(callbackOnLogin).length == 0
@@ -184,6 +215,12 @@ function callOnLogin(user) {
           )
         : //If there are some callbacks, call them all
           Object.values(callbackOnLogin).forEach((e) => e());
+}
+
+function callOnEventChange(eventId, change) {
+    for (const callback of callbackOnEventChange) {
+        callback(eventId, change);
+    }
 }
 
 export { app, registerUser, loginUser };
