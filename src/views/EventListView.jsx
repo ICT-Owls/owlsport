@@ -66,6 +66,7 @@ export default function EventListView(props) {
                                             </div>
                                             <MemberBox
                                                 members={e.members}
+                                                user={props.user}
                                                 className={'lg:min-w-full'}
                                             />
                                         </div>
@@ -130,7 +131,7 @@ function MemberBox(props) {
             }
         >
             {members.map((m) => (
-                <AvatarPresenter key={m.id} userId={m} />
+                <AvatarPresenter key={m} user={props.user} userId={m} />
             ))}
         </List>
     );
