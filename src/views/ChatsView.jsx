@@ -24,12 +24,12 @@ function Item({ sender, content }) {
     );
 }
 
-import { AvatarGenerator } from 'random-avatar-generator';
-const generator = new AvatarGenerator();
-function ChatSelection() {
-    const [avatar, setAvatar] = useState(generator.generateRandomAvatar());
 
-    return <img src={avatar} alt="" />;
+import { AvatarGenerator } from 'random-avatar-generator';
+const genAvatar = new AvatarGenerator().generateRandomAvatar;
+
+function ChatSelection() {
+    return <img src={genAvatar()} alt="" />;
 }
 export default function ChatsView() {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
@@ -38,7 +38,7 @@ export default function ChatsView() {
             <div className="m-3 flex w-fit flex-col justify-end">
                 <div className="mb-2 w-96 rounded-xl border-2 border-secondary-100 bg-background-100">
                     <div className="flex h-auto w-auto flex-row justify-center child:h-14 child:w-14">
-                        <img src="Logotype.png" alt="" />
+                        <img src={genAvatar()} alt="" />
                         <h5>Eric</h5>
                     </div>
                     <Divider variant="middle" className="bg-secondary-100" />
