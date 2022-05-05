@@ -1,5 +1,14 @@
 import React from 'react';
-export default function MainContentView() {
+import { Route, Routes } from 'react-router-dom';
+import EventListPresenter from '../presenters/EventListPresenter';
+export default function MainContentView(props) {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
-    return <h1>test</h1>;
+    return (
+        <Routes>
+            <Route
+                path="/events"
+                element={<EventListPresenter user={props.user} />}
+            />
+        </Routes>
+    );
 }

@@ -38,7 +38,7 @@ function App() {
                         <NavbarPresenter />
                         <SidebarPresenter user={user} />
                         <ChatsPresenter />
-                        <MainContentPresenter />
+                        <MainContentPresenter user={user} />
                     </Box>
                 </div>
             </ThemeProvider>
