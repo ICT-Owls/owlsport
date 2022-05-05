@@ -33,7 +33,7 @@ function App() {
                         <SidebarPresenter user={user} />
                         <div className="ml-56 flex grow">
                             <ChatsPresenter />
-                            <MainContentPresenter />
+                            <MainContentPresenter user={user} />
                         </div>
                     </div>
                 </div>

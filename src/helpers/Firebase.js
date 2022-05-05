@@ -10,6 +10,7 @@ import { auth as firebaseuiAuth } from 'firebaseui';
 import {
     Configuration as CarpoolingApiConfig,
     UserApi,
+    EventApi,
 } from '../api-client/index.ts';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -21,6 +22,7 @@ const backendApiConfig = new CarpoolingApiConfig({
 });
 
 const userApi = new UserApi(backendApiConfig);
+const eventApi = new EventApi(backendApiConfig);
 
 const firebaseConfig = {
     apiKey: '***REMOVED***',
@@ -222,4 +224,4 @@ function callOnEventChange(eventId, change) {
     }
 }
 
-export { app, registerUser, loginUser };
+export { app, userApi, eventApi, registerUser, loginUser };
