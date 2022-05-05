@@ -188,27 +188,14 @@ export default function EventCreatingView2() {
                                     placeholder="About"
                                     style={{ width: 600 }}
                                 />
-                                {/*<textarea*/}
-                                {/*    rows="12"*/}
-                                {/*    placeholder="About"*/}
-                                {/*    className="*/}
-                                {/*    w-full*/}
-                                {/*    rounded*/}
-                                {/*    p-3*/}
-                                {/*    font-family: 'Arial'*/}
-
-                                {/*    "*/}
-                                {/*    name="about"*/}
-                                {/*    id="about"*/}
-                                {/*></textarea>*/}
 
                                 <div className='m-6'>
                                     <iframe
                                         sx={{ border: "0" }}
                                         w-full
                                         h-full
-                                        // width="400"
-                                        // height="400"
+                                        //width="400"
+                                        //height="400"
                                         // style="border:0"
                                         loading="lazy"
                                         frameBorder="0"
@@ -217,85 +204,12 @@ export default function EventCreatingView2() {
                                         src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCGxW2vdNkBmPIc4GEer8Y85xAXPpfMjwY&q=Space+Needle,Seattle+WA">
                                     </iframe>
                                 </div>
-
-
-
                             </div>
-                            {/*<div className=''>*/}
-                            {/*    <TextField className='w-full '*/}
-                            {/*               label="Description"*/}
-                            {/*               id="Description"*/}
-                            {/*    />*/}
-                            {/*</div>*/}
-                            {/*<div className="h-full w-300">*/}
-                                {/*<Wrapper apiKey={"AIzaSyDXvjtauHrSqoYDwlFH_ST899pZVcWY7jo"}>*/}
-                                {/*    <MyMapComponent />*/}
-                                {/*</Wrapper>*/}
-
-                                {/*<div id='map' className="h-full w-300">*/}
-
-                                {/*</div>*/}
-                                {/*<script*/}
-                                {/*    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXvjtauHrSqoYDwlFH_ST899pZVcWY7jo&callback=initMap&v=weekly"*/}
-                                {/*    defer*/}
-                                {/*/>*/}
-
-                                {/*<iframe*/}
-                                {/*    sx={{ border: "0" }}*/}
-                                {/*    width="400"*/}
-                                {/*    height="300"*/}
-                                {/*    // style="border:0"*/}
-                                {/*    loading="lazy"*/}
-                                {/*    frameBorder="0"*/}
-                                {/*    allowFullScreen*/}
-                                {/*    referrerPolicy="no-referrer-when-downgrade"*/}
-                                {/*    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCGxW2vdNkBmPIc4GEer8Y85xAXPpfMjwY&q=Space+Needle,Seattle+WA">*/}
-                                {/*</iframe>*/}
-                            {/*</div>*/}
-
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-        // <div className="event">
-        //     <UserInfoView/>
-        //
-        //     <div className="content-center ">
-        //         <TextField
-        //             label="Event"
-        //             id="Event"
-        //         />
-        //     </div>
-        //
-        //     <LocalizationProvider dateAdapter={AdapterDateFns}>
-        //         <DateTimePicker
-        //             renderInput={(props) => <TextField {...props} />}
-        //             label="Select Date and Time"
-        //             value={value}
-        //             onChange={(newValue) => {
-        //                 setValue(newValue);
-        //             }}
-        //         />
-        //     </LocalizationProvider>
-        //
-        //     <div className="content-center">
-        //         <TextField
-        //             label="Description"
-        //             id="Description"
-        //         />
-        //     </div>
-        //
-        //     <div className='content-center'>
-        //         <div>
-        //             <img src='avatar.png' alt='avatar' />
-        //             <img src='avatar.png' alt='avatar' />
-        //             <img src='avatar.png' alt='avatar' />
-        //         </div>
-        //     </div>
-        //
-        //
-        // </div>
+
     );
 }
