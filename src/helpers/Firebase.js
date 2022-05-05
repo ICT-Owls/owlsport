@@ -45,7 +45,7 @@ const uiConfig = {
                     .userIdGet(authResult.user.uid, {
                         headers: { authorization: `Bearer ${idToken}` },
                     })
-                    .then((d) => callOnLogin(d))
+                    .then((d) => callOnLogin({ ...d, accessToken: idToken }))
                     .catch((e) => {
                         if (e.status == 404) {
                             userApi
@@ -61,7 +61,9 @@ const uiConfig = {
                                         },
                                     }
                                 )
-                                .then((d) => callOnLogin(d))
+                                .then((d) =>
+                                    callOnLogin({ ...d, accessToken: idToken })
+                                )
                                 .catch((e) => console.error(e));
                         } else {
                             console.error(e);
