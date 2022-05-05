@@ -24,9 +24,15 @@ export default async (expressServer) => {
             console.log(connectionParams);
 
             websocketConnection.on('message', (message) => {
-                const parsedMessage = JSON.parse(message);
+                let parsedMessage='';
+                try {
+                    parsedMessage = JSON.parse(message);
+                } catch {
+                    websocketConnection.send('{"error": "Invalid JSON"}')
+                    
+                    return;
+                }
                 console.log(parsedMessage);
-                websocketConnection.send(JSON.stringify({ message: 'testestestest' }));
             });
 
             websocketConnection.on('error', (error) => {
@@ -37,7 +43,6 @@ export default async (expressServer) => {
             websocketConnection.on('open', (e) => {
                 console.log("opened!");
             });
-
         }
     );
 
