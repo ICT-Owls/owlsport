@@ -9,6 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Cache
+        uses: actions/cache@v3.0.2
+        with:
+          path: node_modules
+          key: node_modules
+      - run: npm i
       - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
