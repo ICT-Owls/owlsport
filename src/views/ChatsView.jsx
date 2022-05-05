@@ -24,8 +24,12 @@ function Item({ sender, content }) {
     );
 }
 
+import { AvatarGenerator } from 'random-avatar-generator';
+const generator = new AvatarGenerator();
 function ChatSelection() {
-    return <img src="Logotype.png" alt="" />;
+    const [avatar, setAvatar] = useState(generator.generateRandomAvatar());
+
+    return <img src={avatar} alt="" />;
 }
 export default function ChatsView() {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
@@ -41,14 +45,6 @@ export default function ChatsView() {
                     <div className="h-auto max-h-[50vh] overflow-y-auto">
                         <Item content="test"></Item>
                         <Item content="test" sender="other"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
                         <Item content="test"></Item>
                         <Item content="test"></Item>
                         <Item content="test"></Item>
@@ -83,21 +79,6 @@ export default function ChatsView() {
             </div>
 
             <div className="flex h-auto max-h-[80vh] w-auto flex-col-reverse justify-start overflow-scroll child:h-14 child:w-14">
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
                 <ChatSelection />
                 <ChatSelection />
                 <ChatSelection />
