@@ -12,8 +12,6 @@ import { Box } from '@mui/material';
 import { subscribeToLogin } from './helpers/Firebase';
 import { useEffect } from 'react';
 import { auth } from './helpers/Firebase';
-import EventDetailsView from './views/EventDetailsView';
-import { Route, Routes } from 'react-router-dom';
 
 function App() {
     const [lightmode] = React.useState(true);
@@ -35,9 +33,6 @@ function App() {
                     <div className="mt-14 flex">
                         <SidebarPresenter user={user} />
                         <div className="ml-56 flex grow">
-                            <Routes>
-                                <Route path="/" element={<ChatsPresenter />} />
-                            </Routes>
                             <MainContentPresenter user={user} />
                         </div>
                     </div>
