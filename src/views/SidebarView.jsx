@@ -18,7 +18,7 @@ export default function SidebarView({
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
         <>
-            <div className="sidebar">
+            <div className={'fixed h-full bg-background-200'}>
                 <IconButton
                     href="/test"
                     color="secondary"

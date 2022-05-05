@@ -27,19 +27,15 @@ function App() {
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-                <div className="App absolute flex h-screen w-screen justify-start">
-                    <Box
-                        className="bg-background-200"
-                        sx={{
-                            width: '100%',
-                            height: '100%',
-                        }}
-                    >
-                        <NavbarPresenter />
+                <div className="App absolute flex h-full w-full flex-col justify-start ">
+                    <NavbarPresenter />
+                    <div className="mt-14 flex">
                         <SidebarPresenter user={user} />
-                        <ChatsPresenter />
-                        <MainContentPresenter user={user} />
-                    </Box>
+                        <div className="ml-56 flex grow">
+                            <ChatsPresenter />
+                            <MainContentPresenter user={user} />
+                        </div>
+                    </div>
                 </div>
             </ThemeProvider>
         </StyledEngineProvider>
