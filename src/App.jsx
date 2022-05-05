@@ -13,8 +13,9 @@ import { subscribeToLogin } from './helpers/Firebase';
 import { useEffect } from 'react';
 import { auth } from './helpers/Firebase';
 import EventDetailsView from './views/EventDetailsView';
+import { Route, Routes } from 'react-router-dom';
 
-function App () {
+function App() {
     const [lightmode] = React.useState(true);
     const [user, setUser] = React.useState(null);
 
@@ -29,12 +30,14 @@ function App () {
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-                <div className="App absolute flex h-full w-full flex-col justify-start ">
+                <div className="App absolute flex h-full w-full flex-col justify-start bg-background-200 ">
                     <NavbarPresenter />
                     <div className="mt-14 flex">
                         <SidebarPresenter user={user} />
                         <div className="ml-56 flex grow">
-                            <ChatsPresenter />
+                            <Routes>
+                                <Route path="/" element={<ChatsPresenter />} />
+                            </Routes>
                             <MainContentPresenter user={user} />
                         </div>
                     </div>
