@@ -59,9 +59,9 @@ function sendPush(request: express.Request) {
                 url: `r.head_commit.url`,
                 color: 438737,
                 author: {
-                    name: r.actor.login,
-                    url: r.actor.html_url,
-                    icon_url: r.actor.avatar_url,
+                    name: r.sender.login,
+                    url: r.sender.html_url,
+                    icon_url: r.sender.avatar_url,
                 },
                 footer: {
                     text: 'Powered by SolidSports™',
