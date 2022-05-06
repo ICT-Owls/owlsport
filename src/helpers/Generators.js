@@ -38,3 +38,10 @@ export function generateEvent() {
         creationDate: Date.now(),
     };
 }
+
+import { AvatarGenerator } from 'random-avatar-generator';
+const avatarGenerator = new AvatarGenerator();
+let avatarCount = 1234;
+export function generateAvatar() {
+    return avatarGenerator.generateRandomAvatar(avatarCount++);
+}
