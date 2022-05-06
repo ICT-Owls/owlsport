@@ -45,7 +45,7 @@ function sendWorkFlowRun(request: ExpressRequest) {
 
     webhookclient.send(message);
 }
-function sendPush(request: express.Request) {
+function sendPush(request: express.Request) : WebhookMessageOptions{
     const r = request.body;
     const message: WebhookMessageOptions = {
         embeds: [
@@ -73,6 +73,7 @@ function sendPush(request: express.Request) {
     };
 
     webhookclient.send(message);
+    return message;
 }
 
 /**
@@ -82,18 +83,18 @@ router.post('/', (req: ExpressRequest, res: ExpressResponse) => {
     switch (req.get('X-Github-Event')) {
         case undefined:
             res.status(404).send('Missing X-Github-Event header');
-            return;
+            break;
         case '':
             res.status(404).send('Empty X-Github-Event header');
-            return;
+            break;
         case 'push':
-            sendPush(req);
+            const msg = sendPush(req);
+            res.status(202).send('Redirected message to Discord as ' + JSON.stringify(msg));
             break;
         default:
             res.status(501).send('Github event type not implemented');
-            return;
+            break;
     }
-    res.status(202).send('Accepted');
 });
 
 type AllowedMentionType = 'roles' | 'users' | 'everyone';
