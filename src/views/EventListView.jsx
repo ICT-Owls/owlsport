@@ -6,17 +6,58 @@ import {
     List,
     ListItem,
     Typography,
+    Box,
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    DialogContentText,
+    Slide,
 } from '@mui/material';
-import { Box } from '@mui/system';
+
 import PropTypes from 'prop-types';
 import React from 'react';
 import AvatarPresenter from '../presenters/AvatarPresenter';
+import { EventCreatingPresenter } from '../presenters/EventCreatingPresenter';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function EventListView(props) {
+    const [createOpen, setCreateOpen] = React.useState(false);
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
-        <Container sx={{paddingTop: '2rem'}}>
-            <Typography textAlign={'center'} variant="h3">Events</Typography>
+        <Container sx={{ paddingTop: '2rem' }}>
+            <Dialog
+                open={createOpen}
+                onClose={() => {
+                    setCreateOpen(false);
+                }}
+                maxWidth="xl"
+                fullWidth={true}
+            >
+                <Container padding="1rem">
+                    <EventCreatingPresenter
+                        callback={() => {
+                            setCreateOpen(false);
+                        }}
+                    />
+                </Container>
+            </Dialog>
+
+            <Typography textAlign={'center'} variant="h3">
+                Events
+            </Typography>
+            <Box className={'flex flex-col items-start'}>
+                <Button
+                    className="w-fit justify-start self-start"
+                    onClick={() => setCreateOpen(true)}
+                >
+                    + Create Event
+                </Button>
+            </Box>
             <List className={'overflow-hidden'}>
                 {props.events.map((e) => {
                     return (
