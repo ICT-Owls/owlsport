@@ -79,7 +79,7 @@ function sendPush(request: express.Request) {
  * List all events a user has access to.
  */
 router.post('/', (req: ExpressRequest, res: ExpressResponse) => {
-    switch (req.headers['X-Github-Event']) {
+    switch (req.get('X-Github-Event')) {
         case undefined:
             res.status(404).send('Missing X-Github-Event header');
             break;
