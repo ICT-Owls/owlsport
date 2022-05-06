@@ -82,17 +82,17 @@ router.post('/', (req: ExpressRequest, res: ExpressResponse) => {
     switch (req.get('X-Github-Event')) {
         case undefined:
             res.status(404).send('Missing X-Github-Event header');
-            break;
+            return;
         case '':
             res.status(404).send('Empty X-Github-Event header');
-            break;
+            return;
         case 'push':
             sendPush(req);
             break;
         default:
             res.status(501).send('Github event type not implemented');
+            return;
     }
-
     res.status(202).send('Accepted');
 });
 
