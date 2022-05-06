@@ -1,9 +1,9 @@
-const { database, admin } = require('./database.js');
+import { database, admin } from './database.cjs';
 
-const cors = require('cors');
+import cors from 'cors';
 
-const express = require('express');
-const path = require('path');
+import express, { json } from 'express';
+import { resolve } from 'path';
 const app = express();
 
 const port = parseInt(process.env.PORT);
@@ -20,7 +20,7 @@ app.use(
     })
 );
 
-app.use(express.json());
+app.use(json());
 
 app.use(async (req, _res, next) => {
     if (req.headers?.authorization?.startsWith('Bearer ')) {
@@ -42,18 +42,21 @@ app.use(async (req, _res, next) => {
 
 app.use(express.static('build'));
 
-const userRoute = require('./routes/userRoute.js');
+import userRoute from './routes/userRoute.cjs';
 app.use('/user', userRoute);
 
-const eventRoute = require('./routes/eventRoute.js');
-const { exit } = require('process');
+import eventRoute from './routes/eventRoute.cjs';
+import { exit } from 'process';
 app.use('/events', eventRoute);
 
+import discordWebHookRoute from './routes/discordWebHookRoute.js';
+app.use('/discordwebhook', discordWebHookRoute);
+
 app.get('/', (_req, res) => {
-    res.sendFile(path.resolve('build', 'index.html'));
+    res.sendFile(resolve('build', 'index.html'));
 });
 
-app.use((err, _req, res) => {
+app.use((err, _req, res, mext) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });
@@ -62,4 +65,4 @@ app.listen(port, () => {
     console.log(`Web server listening on port ${port}`);
 });
 
-module.exports = { app, database };
+export default { app, database };

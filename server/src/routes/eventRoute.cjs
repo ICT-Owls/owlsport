@@ -1,6 +1,6 @@
 const { body, param } = require('express-validator');
-const { validate, authorize } = require('../utils.js');
-const { events } = require('../database.js');
+const { validate, authorize } = require('../utils.cjs');
+const { events } = require('../database.cjs');
 
 const express = require('express');
 const router = express.Router();
