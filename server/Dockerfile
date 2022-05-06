@@ -11,6 +11,7 @@ COPY src ./src
 COPY test ./test
 COPY package.json ./
 COPY .babelrc ./
+COPY tsconfig.json ./
 
 RUN echo 'Installing node packages...'
 RUN ["npm", "i"]
