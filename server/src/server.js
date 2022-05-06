@@ -9,7 +9,7 @@ const app = express();
 const port = parseInt(process.env.PORT);
 
 if (isNaN(port)) {
-    console.error("Environment variable PORT must be set!");
+    console.error('Environment variable PORT must be set!');
     process.exit(1);
 }
 
