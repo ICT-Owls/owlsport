@@ -1,7 +1,9 @@
 import { type WebhookMessageOptions, WebhookClient } from 'discord.js';
 
-import express, {Request as ExpressRequest, Response as ExpressResponse} from 'express';
-
+import express, {
+    Request as ExpressRequest,
+    Response as ExpressResponse,
+} from 'express';
 
 const router = express.Router();
 
@@ -20,32 +22,11 @@ const webhookclient: WebhookClient = new WebhookClient({
 
 function sendWorkFlowRun(request: ExpressRequest) {
     const r = request.body;
-    const message: WebhookMessageOptions = {
-        embeds: [
-            {
-                title: `[${r.repository.name}:${r.workflow_run.head_branch}] 1 new commit`,
-                description: `\`${r.workflow_run.head_sha.substring(0, 7)}\` ${
-                    r.head_commit.message
-                } - ${r.actor.login}`,
-                url: `https://github.com/${r.repository.full_name}/commit/${r.workflow_run.head_sha}`,
-                color: 438737,
-                author: {
-                    name: r.actor.login,
-                    url: r.actor.html_url,
-                    icon_url: r.actor.avatar_url,
-                },
-                footer: {
-                    text: 'Powered by SolidSports™',
-                },
-                timestamp: r.run_started_at,
-            },
-        ],
-        attachments: [],
-    };
-
+    const message: WebhookMessageOptions = {};
     webhookclient.send(message);
 }
-function sendPush(request: express.Request) : WebhookMessageOptions{
+
+function sendPush(request: express.Request): WebhookMessageOptions {
     const r = request.body;
     const message: WebhookMessageOptions = {
         embeds: [
@@ -69,8 +50,9 @@ function sendPush(request: express.Request) : WebhookMessageOptions{
                 timestamp: r.head_commit.timestamp,
             },
         ],
-        attachments: [],
     };
+
+    // R
 
     webhookclient.send(message);
     return message;
@@ -89,7 +71,9 @@ router.post('/', (req: ExpressRequest, res: ExpressResponse) => {
             break;
         case 'push':
             const msg = sendPush(req);
-            res.status(202).send('Redirected message to Discord as ' + JSON.stringify(msg));
+            res.status(202).send(
+                'Redirected message to Discord as ' + JSON.stringify(msg)
+            );
             break;
         default:
             res.status(501).send('Github event type not implemented');
