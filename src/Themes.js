@@ -31,10 +31,10 @@ var LightTheme = createTheme({
             main: '#ec1e24',
         },
         secondary: {
-            main: '#666',
+            main: '#111',
         },
         background: {
-            default: '#e0e0e0',
+            default: '#e8eaec',
         },
     },
     components: {
@@ -47,6 +47,14 @@ var LightTheme = createTheme({
             defaultProps: {
                 LinkComponent: LinkBehavior,
             },
+        },
+        MuiTypography: {
+            styleOverrides: ({ ownerState }) => ({
+                ...(ownerState.variant === 'h5' && {
+                    fontSize: '1rem',
+                    color: '#f00',
+                }),
+            }),
         },
     },
 });

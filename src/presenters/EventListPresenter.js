@@ -12,7 +12,14 @@ export default function EventListPresenter(props) {
                         authorization: `Bearer ${props.user.accessToken}`,
                     },
                 })
-                .then((data) => setEvents(data))
+                .then((data) =>
+                    setEvents(
+                        data.map((e) => {
+                            if (!e.members) e.members = ['nomembers'];
+                            return e;
+                        })
+                    )
+                )
                 .catch((err) => console.error(err));
         }
     }, [props.user]);

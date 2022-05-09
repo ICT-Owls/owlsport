@@ -17,38 +17,32 @@ function Item({ sender, content }) {
                     : ' justify-end child:bg-primary-100')
             }
         >
-            <span className="m-4 w-auto max-w-full break-words rounded-3xl p-2 pb-3 text-xl">
+            <span className="m-4 w-auto max-w-full break-words rounded-2xl p-2 pb-3 text-xl">
                 {content}
             </span>
         </div>
     );
 }
 
+import { generateAvatar } from '../helpers/Generators';
+
 function ChatSelection() {
-    return <img src="Logotype.png" alt="" />;
+    return <img src={generateAvatar()} alt="" />;
 }
 export default function ChatsView() {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
-        <div className="fixed bottom-0 right-0 flex justify-start">
+        <div className="fixed bottom-5 right-5 flex justify-start">
             <div className="m-3 flex w-fit flex-col justify-end">
-                <div className="mb-2 w-96 rounded-xl border-2 border-secondary-100 bg-background-100">
-                    <div className="flex h-auto w-auto flex-row justify-center child:h-14 child:w-14">
-                        <img src="Logotype.png" alt="" />
-                        <h5>Eric</h5>
+                <div className="w-96 rounded-xl border-2 border-secondary-100 bg-background-100 shadow-md outline-1 outline-background-200 outline-double">
+                    <div className="px-10 pt-3 flex h-auto w-auto flex-row justify-start items-center child:w-14">
+                        <img src={generateAvatar()} alt="" />
+                        <h2 className='h-fit'>Eric</h2>
                     </div>
                     <Divider variant="middle" className="bg-secondary-100" />
-                    <div className="h-auto max-h-[50vh] overflow-y-auto">
+                    <div className="h-auto scrollbar-thin max-h-[50vh] overflow-y-auto">
                         <Item content="test"></Item>
                         <Item content="test" sender="other"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
                         <Item content="test"></Item>
                         <Item content="test"></Item>
                         <Item content="test"></Item>
@@ -82,15 +76,7 @@ export default function ChatsView() {
                 />
             </div>
 
-            <div className="flex h-auto max-h-[80vh] w-auto flex-col-reverse justify-start overflow-scroll child:h-14 child:w-14">
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
+            <div className="flex scrollbar scrollbar-track-primary-100 self-end overflow-x-hidden h-auto max-h-[65vh] w-auto flex-col justify-start overflow-scroll child:h-14 child:w-14">
                 <ChatSelection />
                 <ChatSelection />
                 <ChatSelection />
