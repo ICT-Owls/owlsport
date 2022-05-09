@@ -9,7 +9,7 @@ import './App.css';
 import React from 'react';
 import { Box, Dialog } from '@mui/material';
 import { EventCreatingPresenter } from './presenters/EventCreatingPresenter';
-import ParticipantSelectorPresenter from './components/participantselector/ParticipantSelectorPresenter';
+import ParticipantSelectorPresenter from './presenters/ParticipantSelectorPresenter';
 
 const userObject = {};
 //export userObject
@@ -33,7 +33,10 @@ function App() {
                         <EventCreatingPresenter />
                         <MainContentPresenter />
                         <Dialog open={true} fullWidth={true}>
-                            <ParticipantSelectorPresenter buttonText='Oh no' placeholderText='Type in email address' />
+                            <ParticipantSelectorPresenter
+                                buttonText="Oh no"
+                                placeholderText="Type in email address"
+                            />
                         </Dialog>
                     </Box>
                 </div>
