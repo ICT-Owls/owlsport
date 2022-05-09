@@ -52,6 +52,37 @@ components:
                 - dateOfBirth
                 - friends
                 - creationDate
+        Location:
+            type: object
+            required:
+                - longtitude
+                - latitude
+            properties:
+                longtitude:
+                    type: float
+                    description: 'Longtitude of the location'
+                latitude:
+                    type: float
+                    description: 'Latitude of the location'
+                address:
+                    type: string
+                    description: 'Address of the location'
+        EventMember:
+            type: object
+            required:
+                - id
+                - requiresCarpooling
+            properties:
+                id:
+                    $ref: '#/components/schemas/Id'
+                    description: 'Id if the event member'
+                location:
+                    $ref: '#/components/schemas/Location'
+                    description: 'The location of the event member'
+                requiresCarpooling:
+                    type: boolean
+                    default: false
+                    description: 'If the member required carpooling to the event'
         Event:
             type: object
             required:
@@ -63,6 +94,7 @@ components:
                 - startDateTime
                 - endDateTime
                 - creationDate
+                - location
             properties:
                 creatorId:
                     $ref: '#/components/schemas/Id'
@@ -71,10 +103,13 @@ components:
                     $ref: '#/components/schemas/Id'
                     description: 'Id of the event'
                 members:
-                    type: object
-                    additionalProperties:
+                    type: array
+                    items:
                         $ref: '#/components/schemas/EventMember'
                     description: 'Id of the users participating in this event'
+                location:
+                    $ref: '#/components/schemas/Location'
+                    description: 'Location of the event'
                 title:
                     type: string
                 description:
@@ -87,20 +122,4 @@ components:
                     format: int32
                 creationDate:
                     type: number
-                    description: 'UNIX timestamp of when the event was created'
-                location:
-                    $ref: '#/components/schemas/Location'
-                    description: 'Location of the event'
-        Location:
-            type: object
-            required:
-                - name
-                - longitude
-                - latitude
-            properties:
-                name:
-                    type: string
-                longitude:
-                    type: number
-                latitude:
-                    type: number
+                    description: 'UNIX timestamp of when the event was created, in milliseconds.'
