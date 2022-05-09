@@ -148,6 +148,24 @@ describe('Users', function () {
         });
     });
 
+    describe('/GET /user/email/:email', function () {
+        it('return 401 without authentication', async function () {
+            var res = await chai.request(app).get('/user/email/test@test.com');
+            assert.equal(res.status, 401);
+        });
+
+        it('return 404 with unknown email', async function () {
+            var res = await get('/user/email/test@nonexistant.ru');
+            assert.equal(res.status, 404);
+        });
+
+        it('return user with valid email', async function () {
+            var res = await get(`/user/email/${testUser.email}`);
+            assert.equal(res.status, 200);
+            assert.deepEqual(res.body, testUser);
+        });
+    });
+
     describe('/PATCH /user', function () {
         it('return 401 without authentication', async function () {
             var res = await chai.request(app).patch('/user').send({
@@ -267,6 +285,7 @@ describe('Users', function () {
                 description: 'description',
                 startDateTime: 0,
                 endDateTime: 1000,
+                members: ['123'],
             };
             var res = await post('/events').send(event);
             assert.equal(res.status, 200);
@@ -275,6 +294,7 @@ describe('Users', function () {
             assert.equal(res.body.startDateTime, event.startDateTime);
             assert.equal(res.body.endDateTime, event.endDateTime);
             assert.equal(res.body.creatorId, testUser.id);
+            assert.deepEqual(res.body.members, ['123']);
             assert.exists(res.body.id);
             assert.exists(res.body.creationDate);
         });

@@ -17,6 +17,7 @@ router.post(
     body('startDateTime').isInt(),
     body('endDateTime').isInt(),
     body('members').isArray(),
+	body('members.*').isString(),
     body('location').custom(validateLocation),
     validate,
     async (req, res) => {

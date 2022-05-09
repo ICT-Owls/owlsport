@@ -6,21 +6,62 @@ import {
     List,
     ListItem,
     Typography,
+    Box,
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    DialogContentText,
+    Slide,
 } from '@mui/material';
-import { Box } from '@mui/system';
+
 import PropTypes from 'prop-types';
 import React from 'react';
 import AvatarPresenter from '../presenters/AvatarPresenter';
+import { EventCreatingPresenter } from '../presenters/EventCreatingPresenter';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function EventListView(props) {
+    const [createOpen, setCreateOpen] = React.useState(false);
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
-        <Container>
-            <Typography variant="h2">Events</Typography>
+        <Container sx={{ paddingTop: '2rem' }}>
+            <Dialog
+                open={createOpen}
+                onClose={() => {
+                    setCreateOpen(false);
+                }}
+                maxWidth="xl"
+                fullWidth={true}
+            >
+                <Container padding="1rem">
+                    <EventCreatingPresenter
+                        callback={() => {
+                            setCreateOpen(false);
+                        }}
+                    />
+                </Container>
+            </Dialog>
+
+            <Typography textAlign={'center'} variant="h3">
+                Events
+            </Typography>
+            <Box className={'flex flex-col items-start'}>
+                <Button
+                    className="w-fit justify-start self-start"
+                    onClick={() => setCreateOpen(true)}
+                >
+                    + Create Event
+                </Button>
+            </Box>
             <List className={'overflow-hidden'}>
                 {props.events.map((e) => {
                     return (
-                        <ListItem key={e.id}>
+                        <ListItem key={e.id} sx={{ p: 0, mx: 0, my: '1rem' }}>
                             <Link
                                 href={'/events/' + e.id}
                                 underline="none"
@@ -30,6 +71,7 @@ export default function EventListView(props) {
                                     className={
                                         'max-h-32 bg-background-100 p-0 last:pb-0 hover:bg-background-200'
                                     }
+                                    elevation={2}
                                 >
                                     <div className={'flex grow flex-row p-0'}>
                                         <div
@@ -57,7 +99,7 @@ export default function EventListView(props) {
                                                     'mr-auto ml-4 border-r-4'
                                                 }
                                             >
-                                                <Typography variant="h4" mt={1}>
+                                                <Typography variant="h5" mt={1}>
                                                     {e.title}
                                                 </Typography>
                                                 <Typography variant="body1">
