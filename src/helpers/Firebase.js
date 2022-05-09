@@ -205,13 +205,26 @@ export function isLoggedIn() {
 export async function getUser() {
     const token = localStorage.getItem('auth');
     const uid = localStorage.getItem('uid');
-    if (!token) return;
+    if (!token || !uid) return;
 
     const user = await userApi.userIdGet(uid, {
         headers: { authorization: `Bearer ${token}` },
     });
 
     return user;
+}
+
+export async function createEvent(eventInfo) {
+    const token = localStorage.getItem('auth');
+    const uid = localStorage.getItem('uid');
+    if (!token || !uid) return;
+
+    eventInfo.members = [uid]; // temp
+    
+    await eventApi.eventsPost(eventInfo, {
+        headers: { authorization: `Bearer ${token}` },
+    });
+
 }
 
 /* *** */

@@ -15,7 +15,7 @@ module.exports = {
                     300: '#474747',
                 },
                 background: {
-                    200: '#e0e0e0',
+                    200: '#e8eaec',
                     100: '#ffffff',
                 },
             },
@@ -26,6 +26,7 @@ module.exports = {
             addVariant('child', '& > *');
             addVariant('child-hover', '& > *:hover');
         },
+        require('tailwind-scrollbar'),
     ],
 };
 ('');
