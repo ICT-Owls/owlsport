@@ -26,7 +26,7 @@ const generateTestCredentials = async function () {
 
     const credentials = await signInWithEmailAndPassword(
         auth,
-        'test@test.com',
+        'unittest@test.com',
         'testing'
     );
     return credentials;
@@ -71,7 +71,17 @@ describe('Users', function () {
         const userRef = database.ref(`/users/${credentials.user.uid}`);
         await userRef.remove();
 
-        await database.ref('/events').remove();
+        const eventsRef = await database.ref('/events').get();
+        const userEvents = Object.values(eventsRef.val()).filter(
+            (e) =>
+                e.creatorId == credentials.user.uid ||
+                e.members?.includes(credentials.user.uid)
+        );
+
+        for (const event of userEvents) {
+            const ref = database.ref(`/events/${event.id}`);
+            await ref.remove();
+        }
     });
 
     describe('/POST /user', function () {
