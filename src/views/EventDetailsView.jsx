@@ -3,32 +3,27 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import LocationOnIcon from '@mui/icons-material/LocationOn'; //Location Icon
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
-import { Grid, MenuItem } from '@mui/material';
-import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import AvatarGroup from '@mui/material/AvatarGroup';
+import { useState } from 'react';
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { TransitionGroup } from 'react-transition-group';
 
 export default function EventDetailsView () {
     const [open, setOpen] = React.useState(false);
     const [scroll, setScroll] = React.useState('paper');
+
+    const [currentButtonText, setCurrentButtonText] = useState('Show More');
 
     const handleClose = () => {
         setOpen(false);
@@ -43,7 +38,7 @@ export default function EventDetailsView () {
             }
         }
     }, [open]);
-    function CarPooler () {
+    function CarPooler (props) {
         return (
             <div className='flex justify-start ml-4'>
                 {/* <Card sx={{ minWidth: 150 }}> */}
@@ -54,7 +49,7 @@ export default function EventDetailsView () {
                         </div>
 
                         <Typography gutterBottom variant='h6' component='div'>
-                            Eric Ericsson
+                            Eric {props.number}
                         </Typography>
                     </div>
 
@@ -93,8 +88,72 @@ export default function EventDetailsView () {
         );
     }
 
+    const FRUITS = [
+        <CarPooler number={3} key={3}></CarPooler>,
+        <CarPooler number={2} key={2}></CarPooler>,
+        <CarPooler number={1} key={1}></CarPooler>,
+        <CarPooler number={4} key={4}></CarPooler>,
+    ];
+
+    function renderItem ({ item, handleRemoveFruit }) {
+        return (
+            <ListItem
+                secondaryAction={
+                    <IconButton
+                        edge='end'
+                        aria-label='delete'
+                        title='Delete'
+                        onClick={() => handleRemoveFruit()}
+                    ></IconButton>
+                }
+            >
+                <ListItemText primary={item} />
+            </ListItem>
+        );
+    }
+
+    const [fruitsInBasket, setFruitsInBasket] = React.useState(
+        FRUITS.slice(0, 2)
+    );
+
+    const handleAddFruit = () => {
+        setFruitsInBasket(FRUITS);
+    };
+
+    const handleRemoveFruit = () => {
+        setFruitsInBasket(FRUITS.slice(0, 2));
+        // setFruitsInBasket(prev => [...prev.filter(i => i !== item)]);
+    };
+
+    const addFruitButton = (
+        <Button
+            variant='contained'
+            // disabled={fruitsInBasket.length >= FRUITS.length}
+            onClick={() => {
+                if (currentButtonText === 'Show more') {
+                    handleAddFruit();
+                } else {
+                    handleRemoveFruit();
+                }
+
+                handleButtonTextChange();
+            }}
+        >
+            {currentButtonText}
+        </Button>
+    );
+
+    const handleButtonTextChange = () => {
+        if (currentButtonText === 'Show more') {
+            setCurrentButtonText('Show less');
+        } else {
+            setCurrentButtonText('Show more');
+        }
+    };
+
     return (
         <div>
+            {FRUITS.map(item => item)}
             <Button
                 onClick={() => {
                     setScroll('paper');
@@ -146,10 +205,24 @@ export default function EventDetailsView () {
                             <div>Carpooling</div>
                             <div>Events</div>
                         </div>
-                        <div className='flex flex-row justify-around py-3 my-3'>
-                            <CarPooler></CarPooler>
-                            <CarPooler></CarPooler>
-                            <CarPooler></CarPooler>
+                        <div className='flex overflow-scroll flex-row justify-around py-3 my-3'>
+                            <div>
+                                {addFruitButton}
+                                <Box sx={{ mt: 1 }}>
+                                    <List>
+                                        <TransitionGroup>
+                                            {FRUITS.map(item => (
+                                                <Collapse key={item}>
+                                                    {renderItem({
+                                                        item,
+                                                        handleRemoveFruit,
+                                                    })}
+                                                </Collapse>
+                                            ))}
+                                        </TransitionGroup>
+                                    </List>
+                                </Box>
+                            </div>
                         </div>
                         <Divider variant='middle' />
                         <div className='my-1 w-fit h-fit text-xs text-gray-700'>
