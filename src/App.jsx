@@ -34,7 +34,7 @@ function App() {
                         <MainContentPresenter />
                         <Dialog open={true} fullWidth={true}>
                             <ParticipantSelectorPresenter
-                                buttonText="Oh no"
+                                buttonText="Submit"
                                 placeholderText="Type in email address"
                             />
                         </Dialog>
