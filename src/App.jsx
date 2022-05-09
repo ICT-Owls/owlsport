@@ -13,17 +13,34 @@ import './App.css';
 import React from 'react';
 import { Box } from '@mui/material';
 import { subscribeToLogin } from './helpers/Firebase';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { auth } from './helpers/Firebase';
+import { setUser as setModelUser, subscribeToUser } from './models/Model';
 
 function App() {
     const [lightmode] = React.useState(true);
-    const [user, setUser] = React.useState(null);
 
+    //-------OBS------
+    //You dont need to pass this prop down your tree, simply subscribe to the model instead
+
+    const [user, setUser] = useState(null);
+
+    //Runs on initial page load, has cleanup which unsubs
     useEffect(() => {
-        return auth.onAuthStateChanged((e) => setUser(e));
+        //Subscribe to model, this is how you would do it in any component
+        var unsubFromModel = subscribeToUser((e) => setUser(e));
+
+        //Specific to App.jsx, subscribes to auth such that auth changes model when app is mounted
+        var unsubFromAuth = auth.onAuthStateChanged((e) => setModelUser(e));
+
+        //Unsubscribes from auth and model on unmount
+        return () => {
+            unsubFromAuth();
+            unsubFromModel();
+        };
     }, []);
 
+    //logs if current user changes
     useEffect(() => {
         console.log('Current User Object: ', user);
     }, [user]);
@@ -33,7 +50,7 @@ function App() {
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
                 <div className="App absolute flex h-full w-full flex-col justify-start bg-background-200 ">
                     <NavbarPresenter />
-                    <div className="mt-20 w-full content-center justify-center flex flex-row">
+                    <div className="mt-20 flex w-full flex-row content-center justify-center">
                         <SidebarPresenter user={user} />
                         <MainContentPresenter user={user} />
                     </div>
