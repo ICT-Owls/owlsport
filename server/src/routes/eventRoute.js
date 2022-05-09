@@ -1,5 +1,5 @@
-const { body, param } = require('express-validator');
-const { validate, authorize } = require('../utils.js');
+const { body, param, oneOf } = require('express-validator');
+const { validate, authorize, validateLocation } = require('../utils.js');
 const { events } = require('../database.js');
 
 const express = require('express');
@@ -16,9 +16,18 @@ router.post(
     body('description').isString(),
     body('startDateTime').isInt(),
     body('endDateTime').isInt(),
+    body('members').isArray(),
+    body('location').custom(validateLocation),
     validate,
     async (req, res) => {
-        const { title, description, startDateTime, endDateTime } = req.body;
+        const {
+            title,
+            description,
+            members,
+            startDateTime,
+            endDateTime,
+            location,
+        } = req.body;
         const authUser = req.user;
 
         const eventRef = events.push();
@@ -30,7 +39,8 @@ router.post(
             startDateTime: startDateTime,
             endDateTime: endDateTime,
             creationDate: Date.now(),
-            members: [],
+            members: members,
+            location: location,
         });
 
         const event = await eventRef.get();
@@ -83,14 +93,31 @@ router.patch(
     body('title').optional().isString(),
     body('description').optional().isString(),
     body('members').optional().isArray(),
-    body('members.*').isString(),
+    body('members.*.id').isString(),
+    body('members.*.location').optional().custom(validateLocation),
+    body('members.*.requiresCarpooling').isBoolean(),
+    body('location').optional().custom(validateLocation),
     body('startDateTime').optional().isInt({ min: 0 }),
     body('endDateTime').optional().isInt({ min: 0 }),
+    oneOf([
+        body('title').exists(),
+        body('description').exists(),
+        body('members').exists(),
+        body('location').exists(),
+        body('startDateTime').exists(),
+        body('endDateTime').exists(),
+    ]),
     validate,
     async (req, res) => {
         const id = req.params.id;
-        const { title, description, members, startDateTime, endDateTime } =
-            req.body;
+        const {
+            title,
+            description,
+            members,
+            location,
+            startDateTime,
+            endDateTime,
+        } = req.body;
 
         const eventRef = events.child(id);
         const eventSnapshot = await eventRef.get();
@@ -101,7 +128,7 @@ router.patch(
 
         // Check who created the event
         // Only the event creator can update events
-        if (!eventSnapshot.creatorId != req.user.id)
+        if (eventSnapshot.val().creatorId != req.user.uid)
             return res.status(401).send('Unauthorized');
 
         var update = {};
@@ -110,6 +137,7 @@ router.patch(
         if (members) update.members = members;
         if (startDateTime) update.startDateTime = startDateTime;
         if (endDateTime) update.endDateTime = endDateTime;
+        if (location) update.location = location;
 
         await eventRef.update(update);
 
