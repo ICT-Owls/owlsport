@@ -34,6 +34,7 @@ const generateTestCredentials = async function () {
 
 var testToken = undefined;
 var testUser = undefined;
+var testEvent = undefined;
 
 const get = function (path) {
     return chai
@@ -157,7 +158,7 @@ describe('Users', function () {
         });
 
         it('return 400 with empty body', async function () {
-            var res = await patch('/user');
+            var res = await patch('/user').send({});
             assert.equal(res.status, 400);
         });
 
@@ -262,11 +263,24 @@ describe('Users', function () {
         });
 
         it('return 200 with valid body', async function () {
+            const member = {
+                id: '123',
+                requiresCarpooling: false,
+            };
+
+            const location = {
+                longtitude: 1,
+                latitude: 2,
+                address: 'Kth',
+            };
+
             const event = {
                 title: 'title',
                 description: 'description',
                 startDateTime: 0,
                 endDateTime: 1000,
+                members: [member],
+                location: location,
             };
             var res = await post('/events').send(event);
             assert.equal(res.status, 200);
@@ -275,8 +289,12 @@ describe('Users', function () {
             assert.equal(res.body.startDateTime, event.startDateTime);
             assert.equal(res.body.endDateTime, event.endDateTime);
             assert.equal(res.body.creatorId, testUser.id);
+            assert.deepEqual(res.body.members, [member]);
+            assert.deepEqual(res.body.location, location);
             assert.exists(res.body.id);
             assert.exists(res.body.creationDate);
+
+            testEvent = res.body;
         });
     });
 
@@ -284,6 +302,22 @@ describe('Users', function () {
         it('return 401 without authentication', async function () {
             var res = await chai.request(app).patch('/events/sslokgdonhgos');
             assert.equal(res.status, 401);
+        });
+
+        it('return 400 with empty body', async function () {
+            var res = await patch(`/events/${testEvent.id}`).send({});
+            assert.equal(res.status, 400);
+        });
+
+        it('return 400 with invalid fields', async function () {
+            var res = await patch(`/events/${testEvent.id}`).send({
+                title: 'title',
+                description: 'description',
+                startDateTime: 1,
+                endDateTime: 'test',
+                members: [],
+            });
+            assert.equal(res.status, 400);
         });
     });
 
