@@ -266,7 +266,7 @@ describe('Users', function () {
             assert.equal(res.body.startDateTime, event.startDateTime);
             assert.equal(res.body.endDateTime, event.endDateTime);
             assert.equal(res.body.creatorId, testUser.id);
-            assert.containsAllKeys(res.body.members, ['123']);
+            assert.deepEqual(res.body.members, ['123']);
             assert.exists(res.body.id);
             assert.exists(res.body.creationDate);
         });
