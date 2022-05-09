@@ -25,7 +25,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function EventListView(props) {
+export default function EventListView({ events, user }) {
     const [createOpen, setCreateOpen] = React.useState(false);
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
@@ -59,73 +59,88 @@ export default function EventListView(props) {
                 </Button>
             </Box>
             <List className={'overflow-hidden'}>
-                {props.events.map((e) => {
-                    return (
-                        <ListItem key={e.id} sx={{ p: 0, mx: 0, my: '1rem' }}>
-                            <Link
-                                href={'/events/' + e.id}
-                                underline="none"
-                                className={'grow'}
-                            >
-                                <Card
-                                    className={
-                                        'max-h-32 bg-background-100 p-0 last:pb-0 hover:bg-background-200'
-                                    }
-                                    elevation={2}
+                {events.map(
+                    ({
+                        id,
+                        title,
+                        description,
+                        members,
+                        location,
+                        startDateTime,
+                        endDateTime,
+                    }) => {
+                        return (
+                            <ListItem key={id} sx={{ p: 0, mx: 0, my: '1rem' }}>
+                                <Link
+                                    href={'/events/' + id}
+                                    underline="none"
+                                    className={'grow'}
                                 >
                                     <Card
                                         className={
                                             'max-h-32 bg-background-100 p-0 last:pb-0 hover:bg-background-200'
                                         }
+                                        elevation={2}
                                     >
-                                        <div
-                                            className={'flex grow flex-row p-0'}
+                                        <Card
+                                            className={
+                                                'max-h-32 bg-background-100 p-0 last:pb-0 hover:bg-background-200'
+                                            }
                                         >
                                             <div
                                                 className={
-                                                    'flex aspect-square h-32 flex-col items-center justify-center'
-                                                }
-                                            >
-                                                <Typography variant="h5" mt={1}>
-                                                    {e.title}
-                                                </Typography>
-                                                <Typography variant="body1">
-                                                    Location Here
-                                                </Typography>
-                                            </div>
-                                            <Divider
-                                                orientation="vertical"
-                                                flexItem
-                                            />
-                                            <div
-                                                className={
-                                                    'flex grow flex-col md:flex-row lg:flex-row'
+                                                    'flex grow flex-row p-0'
                                                 }
                                             >
                                                 <div
                                                     className={
-                                                        'mr-auto ml-4 border-r-4'
+                                                        'flex aspect-square h-32 flex-col items-center justify-center'
                                                     }
                                                 >
-                                                    <Typography
-                                                        variant="h4"
-                                                        mt={1}
-                                                    >
-                                                        {title}
-                                                    </Typography>
-                                                    <Typography variant="body1">
-                                                        {location.address
-                                                            ? location.address
-                                                            : `${location.longtitude} - ${location.latitude}`}
-                                                    </Typography>
+                                                    <DateBox
+                                                        dateTime={startDateTime}
+                                                    />
+                                                    <hr className="m-0 w-1/3" />
+                                                    <DateBox
+                                                        dateTime={endDateTime}
+                                                    />
                                                 </div>
-                                                <MemberBox
-                                                    members={members}
-                                                    user={user}
-                                                    className={'lg:min-w-full'}
+                                                <Divider
+                                                    orientation="vertical"
+                                                    flexItem
                                                 />
+                                                <div
+                                                    className={
+                                                        'flex grow flex-col md:flex-row lg:flex-row'
+                                                    }
+                                                >
+                                                    <div
+                                                        className={
+                                                            'mr-auto ml-4 border-r-4'
+                                                        }
+                                                    >
+                                                        <Typography
+                                                            variant="h4"
+                                                            mt={1}
+                                                        >
+                                                            {title}
+                                                        </Typography>
+                                                        <Typography variant="body1">
+                                                            {location.address
+                                                                ? location.address
+                                                                : `${location.longtitude} - ${location.latitude}`}
+                                                        </Typography>
+                                                    </div>
+                                                    <MemberBox
+                                                        members={members}
+                                                        user={user}
+                                                        className={
+                                                            'lg:min-w-full'
+                                                        }
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
+                                        </Card>
                                     </Card>
                                 </Link>
                             </ListItem>
