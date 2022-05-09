@@ -219,12 +219,9 @@ export async function createEvent(eventInfo) {
     const uid = localStorage.getItem('uid');
     if (!token || !uid) return;
 
-    eventInfo.members = [uid]; // temp
-    
     await eventApi.eventsPost(eventInfo, {
         headers: { authorization: `Bearer ${token}` },
     });
-
 }
 
 /* *** */

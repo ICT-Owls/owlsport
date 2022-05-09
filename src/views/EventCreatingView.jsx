@@ -62,14 +62,21 @@ function MyMapComponent({ center, zoom }) {
 //     );
 // };
 
-export default function EventCreatingView2(props) {
-    const [value, setValue] = React.useState(new Date());
-    const [title, setTitle] = React.useState('');
-    const [description, setDescription] = React.useState('');
-    const [startDateTime, setStartDateTime] = React.useState(0);
-    const [endDateTime, setEndDateTime] = React.useState(0);
-    const [members, setMembers] = React.useState([]);
-
+export default function EventCreatingView2({
+    title,
+    setTitle,
+    description,
+    setDescription,
+    location,
+    setLocation,
+    startDateTime,
+    setStartDateTime,
+    endDateTime,
+    setEndDateTime,
+    members,
+    setMembers,
+    submit,
+}) {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
         // <div className='container absolut w-screen h-screen bg-black bg-opacity-10 flex justify-center'>
@@ -126,9 +133,8 @@ export default function EventCreatingView2(props) {
                                     dark:bg-slate-700
                                     dark:text-gray-50
                                     "
-                                        value={value}
+                                        value={startDateTime}
                                         onChange={(date) => {
-                                            setValue(date);
                                             setEndDateTime(
                                                 endDateTime +
                                                     date.valueOf() -
@@ -173,19 +179,14 @@ export default function EventCreatingView2(props) {
                                     id="outlined-basic"
                                     label="Location"
                                     variant="outlined"
+                                    onChange={(e) =>
+                                        setLocation({
+                                            longtitude: 0,
+                                            latitude: 0,
+                                            address: e.target.value,
+                                        })
+                                    }
                                 />
-                                {/*<input*/}
-                                {/*    type="text"*/}
-                                {/*    placeholder="Location"*/}
-                                {/*    className="*/}
-                                {/*    w-full*/}
-                                {/*    rounded*/}
-                                {/*    p-3*/}
-                                {/*    focus:border-primary*/}
-                                {/*                                       "*/}
-                                {/*    name="location"*/}
-                                {/*    id="location"*/}
-                                {/*/>*/}
                             </div>
 
                             <div className="m-6">
@@ -228,16 +229,7 @@ export default function EventCreatingView2(props) {
                                     transition
                                     duration-500
                                     "
-                                            onClick={() => {
-                                                props.callback({
-                                                    members: members,
-                                                    startDateTime:
-                                                        startDateTime,
-                                                    endDateTime: endDateTime,
-                                                    description: description,
-                                                    title: title,
-                                                });
-                                            }}
+                                            onClick={submit}
                                         >
                                             Create
                                         </Button>
@@ -262,11 +254,7 @@ export default function EventCreatingView2(props) {
                                 <div className="m-6">
                                     <iframe
                                         sx={{ border: '0' }}
-                                        w-full
-                                        h-full
-                                        //width="400"
-                                        //height="400"
-                                        // style="border:0"
+                                        className="h-full w-full"
                                         loading="lazy"
                                         frameBorder="0"
                                         allowFullScreen
