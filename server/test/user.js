@@ -7,7 +7,6 @@ chai.use(chaiHttp);
 
 const { initializeApp } = require('firebase/app');
 const { getAuth, signInWithEmailAndPassword } = require('firebase/auth');
-const { AssuredWorkload } = require('@mui/icons-material');
 
 const generateTestCredentials = async function () {
     const firebaseConfig = {
