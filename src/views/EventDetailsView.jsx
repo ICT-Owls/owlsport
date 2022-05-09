@@ -46,7 +46,8 @@ export default function EventDetailsView () {
     function CarPooler () {
         return (
             <div className='flex justify-start ml-4'>
-                <Card sx={{ minWidth: 350 }}>
+                {/* <Card sx={{ minWidth: 150 }}> */}
+                <Card>
                     <div className='flex ml-4 m-2'>
                         <div className='mr-2'>
                             <Avatar alt='Erik' img src='Logotype.png' />
@@ -76,11 +77,11 @@ export default function EventDetailsView () {
                             <Button
                                 variant='contained'
                                 className='
-                                hover: bg-primary
-                                rounded
-                                border border-primary
-                                transition
-                                duration-500
+                                hover: rounded
+                                border
+                                transition duration-500
+                                bg-primary
+                                border-primary
                                 '
                             >
                                 JOIN
@@ -93,58 +94,6 @@ export default function EventDetailsView () {
     }
 
     return (
-        // <div className='flex flex-col justify-around bg-gray-100'>
-        //     <div className='flex flex-row justify-evenly'>
-        //         <div className='flex flex-col justify-start my-3'>
-        //             <div className='text-2xl'>Cool match</div>
-        //             <div className='text-xs'>Organized by Eric Erricson</div>
-        //         </div>
-        //         <div className='flex flex-col justify-start my-3'>
-        //             <Button
-        //                 className='mb-5 w-52 bg-gray-300'
-        //                 sx={{ color: 'black' }}
-        //             >
-        //                 Request ride
-        //             </Button>
-        //             <div className='my-1 w-fit h-fit text-xs text-gray-400'>
-        //                 Thur, April 26, 2066 at 22:30 - Thur, April 26, 2066 at
-        //                 23:30
-        //             </div>
-        //             <div className='my-1 w-fit h-fit text-xs text-gray-400'>
-        //                 kungsträdgården
-        //             </div>
-        //         </div>
-        //         <div className='my-5 w-14 h-14 bg-primary-100'>
-        //             <div className=' text-xl'>APR 23</div>
-        //         </div>
-        //     </div>
-
-        //     <div className='flex flex-row justify-around py-3 my-3 bg-gray-300'>
-        //         <div>Description</div>
-        //         <div>Carpooling</div>
-        //         <div>Events</div>
-        //     </div>
-        //     <div className='flex flex-row justify-around py-3 my-3 bg-gray-100'>
-        //         <CarPooler></CarPooler>
-        //         <CarPooler></CarPooler>
-        //         <CarPooler></CarPooler>
-        //     </div>
-        //     <Divider variant='middle' />
-        //     <div className='my-1 w-fit h-fit text-xs text-gray-700'>
-        //         Lorem Ipsum is simply dummy text of the printing and typesetting
-        //         industry. Lorem Ipsum has been the industries standard dummy
-        //         text ever since the 1500s, when an unknown printer took a galley
-        //         of type and scrambled it to make a type specimen book. It has
-        //         survived not only five centuries, but also the leap into
-        //         electronic typesetting, remaining essentially unchanged. It was
-        //         popularised in the 1960s with the release of Letraset sheets
-        //         containing Lorem Ipsum passages, and more recently with desktop
-        //         publishing software like Aldus PageMaker including versions of
-        //         Lorem Ipsum.
-        //     </div>
-        // </div>
-
-        //The above and below code must be merged
         <div>
             <Button
                 onClick={() => {
@@ -166,13 +115,13 @@ export default function EventDetailsView () {
                 <DialogContent>
                     <div className='flex flex-col justify-around bg-gray-100'>
                         <div className='flex flex-row justify-evenly'>
-                            <div className='flex flex-col justify-start my-3'>
+                            <div className='flex flex-col justify-start my-3 mx-10'>
                                 <div className='text-2xl'>Cool match</div>
                                 <div className='text-xs'>
                                     Organized by Eric Erricson
                                 </div>
                             </div>
-                            <div className='flex flex-col justify-start my-3'>
+                            <div className='flex flex-col justify-start my-3 mx-10'>
                                 <Button
                                     className='mb-5 w-52 bg-gray-300'
                                     sx={{ color: 'black' }}
@@ -187,7 +136,7 @@ export default function EventDetailsView () {
                                     kungsträdgården
                                 </div>
                             </div>
-                            <div className='my-5 w-14 h-14 bg-primary-100'>
+                            <div className='my-5 mx-10 w-14 h-14 bg-primary-100'>
                                 <div className=' text-xl'>APR 23</div>
                             </div>
                         </div>
@@ -197,7 +146,7 @@ export default function EventDetailsView () {
                             <div>Carpooling</div>
                             <div>Events</div>
                         </div>
-                        <div className='flex flex-row justify-around py-3 my-3 bg-gray-100'>
+                        <div className='flex flex-row justify-around py-3 my-3'>
                             <CarPooler></CarPooler>
                             <CarPooler></CarPooler>
                             <CarPooler></CarPooler>
@@ -217,6 +166,9 @@ export default function EventDetailsView () {
                             software like Aldus PageMaker including versions of
                             Lorem Ipsum.
                         </div>
+                        <Divider variant='middle' />
+
+                        <div> MAP </div>
                     </div>
                 </DialogContent>
 
@@ -225,50 +177,5 @@ export default function EventDetailsView () {
                 </DialogActions>
             </Dialog>
         </div>
-
-        // <div className='flex justify-start ml-4 m-20'>
-        //     <Card sx={{ minWidth: 350 }}>
-        //         <div className='flex ml-4 m-2'>
-        //             <div className='mr-2'>
-        //                 <Avatar alt='Erik' img src='Logotype.png' />
-        //             </div>
-
-        //             <Typography gutterBottom variant='h6' component='div'>
-        //                 Eric Ericsson
-        //             </Typography>
-        //         </div>
-
-        //         <div className='flex ml-4'>
-        //             <IconButton aria-label='location' size='small'>
-        //                 <LocationOnIcon fontSize='small' />
-        //                 <p>Location</p>
-        //             </IconButton>
-        //         </div>
-
-        //         <div className='justify-start flex ml-4 '>
-        //             <AvatarGroup max={4}>
-        //                 <Avatar alt='Erik' img src='Logotype.png' />
-        //                 <Avatar alt='Erik' img src='Logotype.png' />
-        //                 <Avatar alt='Erik' img src='Logotype.png' />
-        //                 <Avatar alt='Erik' img src='Logotype.png' />
-        //             </AvatarGroup>
-
-        //             <div className='flex ml-20'>
-        //                 <Button
-        //                     variant='contained'
-        //                     className='
-        //                                     hover: bg-primary
-        //                                     rounded
-        //                                     border border-primary
-        //                                     transition
-        //                                     duration-500
-        //                                     '
-        //                 >
-        //                     JOIN
-        //                 </Button>
-        //             </div>
-        //         </div>
-        //     </Card>
-        // </div>
     );
 }
