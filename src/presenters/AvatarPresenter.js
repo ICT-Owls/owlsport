@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import { userApi } from '../helpers/Firebase';
 import AvatarView from '../views/AvatarView';
-export default function AvatarPresenter(props) {
+export default function AvatarPresenter({ user, userId }) {
     const [member, setMember] = React.useState(undefined);
 
     useEffect(() => {
-        if (props.user)
+        if (user)
             userApi
-                .userIdGet(props.userId, {
+                .userIdGet(userId, {
                     headers: {
-                        authorization: `Bearer ${props.user.accessToken}`,
+                        authorization: `Bearer ${user.accessToken}`,
                     },
                 })
                 .then((data) => setMember(data))
                 .catch((err) => console.error(err));
-    }, [props.user]);
+    }, [user]);
 
     // Hooks, logic, etc goes here. These presenters manipulate data, transform it into usable functions and values, then passes those to a view.
     // No visual code here.
