@@ -17,6 +17,9 @@ router.post(
     body('startDateTime').isInt(),
     body('endDateTime').isInt(),
     body('members').isArray(),
+    body('members.*.id').isString(),
+    body('members.*.location').optional().custom(validateLocation),
+    body('members.*.requiresCarpooling').isBoolean(),
     body('location').custom(validateLocation),
     validate,
     async (req, res) => {
@@ -28,6 +31,7 @@ router.post(
             endDateTime,
             location,
         } = req.body;
+
         const authUser = req.user;
 
         const eventRef = events.push();
