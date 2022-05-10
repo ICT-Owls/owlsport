@@ -103,12 +103,14 @@ const EventCreatingView2 = (props) => {
     const { user } = props;
 
     const handleAddUser = (options) => {
-        console.log(options);
         options.forEach((option) => {
             if (option in usersForEvent)
                 return;
             setUsersForEvent((prev) => [option.label, ...prev]);
         });
+
+        // TODO: also store the email property of the UserOption object, turning this function into:
+        // setUsersForEvent((prev) => [...options, ...prev]);
     };
 
     const handleRemoveUser = (item) => {
