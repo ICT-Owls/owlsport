@@ -1,56 +1,27 @@
-import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import ParticipantSelectorPresenter, {
-    UserOption,
-} from '../presenters/ParticipantSelectorPresenter';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
-    Button,
     Box,
-    DialogTitle,
-    DialogContent,
+    Button,
     Collapse,
-    ListItem,
-    FormControl,
-    InputLabel,
-    List,
+    DialogContent,
     IconButton,
+    List,
+    ListItem,
     ListItemText,
-    MenuItem,
-    Select,
     TextareaAutosize,
 } from '@mui/material';
-import { TransitionGroup } from 'react-transition-group';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Wrapper } from '@googlemaps/react-wrapper';
-import { useEffect, useRef } from 'react';
-
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import * as React from 'react';
+import { useEffect, useRef } from 'react';
+import { TransitionGroup } from 'react-transition-group';
+import ParticipantSelectorPresenter from '../presenters/ParticipantSelectorPresenter';
 import AvatarView from './AvatarView';
 
-import PropTypes from 'prop-types';
-import AvatarPresenter from '../presenters/AvatarPresenter';
-import { EventCreatingPresenter } from '../presenters/EventCreatingPresenter';
-
-// TODO: this function is a duplicate from EventListView.jsx
-// Export it from that file!!!
-function MemberBox(props) {
-    const members = props.members;
-    return (
-        <List
-            className={
-                'flex flex-row flex-wrap items-center justify-center last:mr-2 child:m-1'
-            }
-        >
-            {members.map((m) => (
-                <AvatarPresenter key={m} user={props.user} userId={m} />
-            ))}
-        </List>
-    );
-}
+const USERS = ['🍏 Mamad', '🍌 Samson', '🍍 Hugo', '🥥 Nima', '🍉 Francis'];
 
 function MyMapComponent({ center, zoom }) {
     console.log('MyMapComponent', center, zoom);
@@ -89,19 +60,31 @@ function renderItem({ item, handleRemoveUser }) {
 // Props:
 //    user
 //export default function EventCreatingView2 = props => {
-const EventCreatingView2 = (props) => {
-    const [value, setValue] = React.useState(new Date());
-    const [title, setTitle] = React.useState('');
-    const [description, setDescription] = React.useState('');
-    const [startDateTime, setStartDateTime] = React.useState(0);
-    const [endDateTime, setEndDateTime] = React.useState(0);
-    const [members, setMembers] = React.useState([]);
-    const [usersForEvent, setUsersForEvent] = React.useState([]);
-
-    const { user } = props;
-
+const EventCreatingView = ({
+    title,
+    setTitle,
+    description,
+    setDescription,
+    startDateTime,
+    setStartDateTime,
+    endDateTime,
+    setEndDateTime,
+    members,
+    setMembers,
+    location,
+    setLocation,
+    submit,
+    user,
+}) => {
+    const [usersForEvent, setUsersForEvent] = React.useState(USERS.slice(0, 3));
     const handleAddUser = (options) => {
-        setUsersForEvent((prev) => [...options, ...prev]);
+        options.forEach((option) => {
+            if (option in usersForEvent) return;
+            setUsersForEvent((prev) => [option.label, ...prev]);
+        });
+
+        // TODO: also store the email property of the UserOption object, turning this function into:
+        // setUsersForEvent((prev) => [...options, ...prev]);
     };
 
     const handleRemoveUser = (item) => {
@@ -112,31 +95,11 @@ const EventCreatingView2 = (props) => {
         <>
             <DialogContent>
                 <div className="flex flex-row justify-center">
-                    {/*<div className="ml-14 flex justify-start">*/}
-                    {/*    <div className="">*/}
-                    {/*        <img*/}
-                    {/*            src="avatar.png"*/}
-                    {/*            className="h-12"*/}
-                    {/*            alt="avatar"*/}
-                    {/*        />*/}
-                    {/*    </div>*/}
-
-                    {/*    <div className="ml-8">*/}
-                    {/*        <h5 className="">James Bond</h5>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                     {user ? (
-                        <>
-                            <Box alignContent={'center'} maxHeight="56px">
-                                <AvatarView
-                                    maxHeight="100%"
-                                    user={{
-                                        firstName: 'Test',
-                                        lastName: 'Testson',
-                                    }}
-                                />
-                            </Box>
-                        </>
+                        <Box alignContent={'center'} maxHeight="56px">
+                            {console.log(user)}
+                            <AvatarView maxHeight="100%" user={user} />
+                        </Box>
                     ) : (
                         <>ERROR!</>
                     )}
@@ -149,6 +112,7 @@ const EventCreatingView2 = (props) => {
                                     id="outlined-basic"
                                     label="Event"
                                     variant="outlined"
+                                    value={title}
                                     onChange={(e) => {
                                         setTitle(e.target.value);
                                     }}
@@ -177,9 +141,9 @@ const EventCreatingView2 = (props) => {
                                     dark:bg-slate-700
                                     dark:text-gray-50
                                     "
-                                        value={value}
+                                        value={startDateTime}
                                         onChange={(newValue) => {
-                                            setValue(newValue);
+                                            setStartDateTime(newValue);
                                         }}
                                     />
                                 </LocalizationProvider>
@@ -204,9 +168,9 @@ const EventCreatingView2 = (props) => {
                                     dark:bg-slate-700
                                     dark:text-gray-50
                                     "
-                                        value={value}
-                                        onChange={(newValue) => {
-                                            setValue(newValue);
+                                        value={startDateTime}
+                                        onChange={(newDate) => {
+                                            setStartDateTime(newDate);
                                         }}
                                         renderInput={(params) => (
                                             <TextField {...params} />
@@ -234,9 +198,9 @@ const EventCreatingView2 = (props) => {
                                     dark:bg-slate-700
                                     dark:text-gray-50
                                     "
-                                        value={value}
-                                        onChange={(newValue) => {
-                                            setValue(newValue);
+                                        value={endDateTime}
+                                        onChange={(newDate) => {
+                                            setEndDateTime(newDate);
                                         }}
                                         renderInput={(params) => (
                                             <TextField {...params} />
@@ -244,33 +208,6 @@ const EventCreatingView2 = (props) => {
                                     />
                                 </LocalizationProvider>
                             </div>
-
-                            {/*<div className="mb-6">*/}
-                            {/*    <FormControl fullWidth>*/}
-                            {/*        <InputLabel id="demo-simple-select-label">*/}
-                            {/*            Hours*/}
-                            {/*        </InputLabel>*/}
-                            {/*        <Select*/}
-                            {/*            labelId="demo-simple-select-label"*/}
-                            {/*            id="demo-simple-select"*/}
-                            {/*            value="1"*/}
-                            {/*            label="Duration"*/}
-                            {/*            onChange={(event) => {*/}
-                            {/*                setEndDateTime(*/}
-                            {/*                    startDateTime +*/}
-                            {/*                        (isNaN(event.target.value)*/}
-                            {/*                            ? 1*/}
-                            {/*                            : event.target.value) **/}
-                            {/*                            3600000*/}
-                            {/*                );*/}
-                            {/*            }}*/}
-                            {/*        >*/}
-                            {/*            <MenuItem value={1}>One</MenuItem>*/}
-                            {/*            <MenuItem value={2}>Two</MenuItem>*/}
-                            {/*            <MenuItem value={3}>Three</MenuItem>*/}
-                            {/*        </Select>*/}
-                            {/*    </FormControl>*/}
-                            {/*</div>*/}
 
                             <div className="mb-6">
                                 <TextField
@@ -292,14 +229,6 @@ const EventCreatingView2 = (props) => {
                                 {/*    id="location"*/}
                                 {/*/>*/}
                             </div>
-
-                            {/*<div className="m-6">*/}
-                            {/*    <MemberBox*/}
-                            {/*        members={members}*/}
-                            {/*        user={props.user}*/}
-                            {/*        className={'lg:min-w-full'}*/}
-                            {/*    />*/}
-                            {/*</div>*/}
 
                             <div className="m-6">
                                 <ParticipantSelectorPresenter
@@ -336,16 +265,7 @@ const EventCreatingView2 = (props) => {
                                     transition
                                     duration-500
                                     "
-                                            onClick={() => {
-                                                props.callback({
-                                                    members: members,
-                                                    startDateTime:
-                                                        startDateTime,
-                                                    endDateTime: endDateTime,
-                                                    description: description,
-                                                    title: title,
-                                                });
-                                            }}
+                                            onClick={submit}
                                         >
                                             Create
                                         </Button>
@@ -362,19 +282,17 @@ const EventCreatingView2 = (props) => {
                                     maxRows={25}
                                     placeholder="About"
                                     style={{ width: 400 }}
-                                    onChange={(e) => {
-                                        setDescription(e.target.value);
-                                    }}
+                                    value={description}
+                                    onChange={(e) =>
+                                        setDescription(e.target.value)
+                                    }
                                 />
 
                                 <div className="mt-8">
                                     <iframe
-                                        sx={{ border: '0' }}
-                                        w-full
-                                        h-full
+                                        className="b-0 h-full w-full"
                                         width="400"
                                         height="300"
-                                        // style="border:0"
                                         loading="lazy"
                                         frameBorder="0"
                                         allowFullScreen
@@ -391,4 +309,4 @@ const EventCreatingView2 = (props) => {
     );
 };
 
-export default EventCreatingView2;
+export default EventCreatingView;
