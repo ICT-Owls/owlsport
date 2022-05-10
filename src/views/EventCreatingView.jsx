@@ -21,7 +21,9 @@ import { TransitionGroup } from 'react-transition-group';
 import ParticipantSelectorPresenter from '../presenters/ParticipantSelectorPresenter';
 import AvatarView from './AvatarView';
 
-const USERS = ['🍏 Mamad', '🍌 Samson', '🍍 Hugo', '🥥 Nima', '🍉 Francis'];
+import PropTypes from 'prop-types';
+import AvatarPresenter from '../presenters/AvatarPresenter';
+import { EventCreatingPresenter } from '../presenters/EventCreatingPresenter';
 
 function MyMapComponent({ center, zoom }) {
     console.log('MyMapComponent', center, zoom);
@@ -76,15 +78,10 @@ const EventCreatingView = ({
     submit,
     user,
 }) => {
-    const [usersForEvent, setUsersForEvent] = React.useState(USERS.slice(0, 3));
+    const [usersForEvent, setUsersForEvent] = React.useState([]);
+   
     const handleAddUser = (options) => {
-        options.forEach((option) => {
-            if (option in usersForEvent) return;
-            setUsersForEvent((prev) => [option.label, ...prev]);
-        });
-
-        // TODO: also store the email property of the UserOption object, turning this function into:
-        // setUsersForEvent((prev) => [...options, ...prev]);
+        setUsersForEvent((prev) => [...options, ...prev]);
     };
 
     const handleRemoveUser = (item) => {
