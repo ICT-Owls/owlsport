@@ -35,7 +35,6 @@ export default function ParticipantSelectorPresenter(
         let active = true;
 
         setValid(emailRegEx.test(inputValue));
-        console.log(emailRegEx.test(inputValue));
 
         const newOptions = [
             { label: 'Erik Eriksson', email: 'erik@erik.erik' },
@@ -66,15 +65,13 @@ export default function ParticipantSelectorPresenter(
     }, [inputValue]);
 
     const handleSelect = () => {
-        if (emailRegEx.test(inputValue)) {
-            setSelection([
-                ...selection,
-                { label: inputValue, email: inputValue },
-            ]);
-        }
+        const fullSelection = emailRegEx.test(inputValue)
+            ? [...selection, { label: inputValue, email: inputValue }]
+            : selection;
 
-        props.onSubmit?.(selection); // Call callback
+        props.onSubmit?.(fullSelection); // Call callback
         setSelection([]); // Clear input
+        setInputValue('');
     };
 
     return (

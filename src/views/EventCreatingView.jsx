@@ -21,10 +21,6 @@ import { TransitionGroup } from 'react-transition-group';
 import ParticipantSelectorPresenter from '../presenters/ParticipantSelectorPresenter';
 import AvatarView from './AvatarView';
 
-import PropTypes from 'prop-types';
-import AvatarPresenter from '../presenters/AvatarPresenter';
-import { EventCreatingPresenter } from '../presenters/EventCreatingPresenter';
-
 function MyMapComponent({ center, zoom }) {
     console.log('MyMapComponent', center, zoom);
     if (center === undefined) center = { lat: -25.344, lng: 131.031 };

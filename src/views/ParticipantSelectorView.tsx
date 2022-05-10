@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 
 import { UserOption } from '../presenters/ParticipantSelectorPresenter';
 
@@ -62,7 +62,7 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
     const [open, setOpen] = React.useState(false);
 
     const handleChange = (
-        _event: any,
+        _event: SyntheticEvent,
         newValue: UserOption[] | UserOption | null
     ) => {
         if (newValue == null) {
@@ -89,7 +89,6 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
                 multiple={props.multiple}
                 openOnFocus={true}
                 clearOnBlur={false}
-                autoSelect
                 open={open}
                 onOpen={() => {
                     setOpen(true);
