@@ -50,19 +50,16 @@ export function initModel() {
     //  return(()=>{unsub1(); unsub2();})
 }
 
-//Read value from local storage. This is exported if you want to poll the local storage for some reason
-
-//Please note that if you intend to use this, make sure you have a good reason not to use a Hook
+//Read value from local storage.
 function fromLocalStorage(target) {
     return JSON.parse(localStorage.getItem(target));
 }
-
-//-------- Internal funcs --------
 
 //Write new value to localstorage
 function toLocalStorage(target, value) {
     localStorage.setItem(target, JSON.stringify(value));
 }
+//-------- Internal funcs --------
 
 //Subscribes to the changes on some value with a callback. Returns the unsubscribe function
 function subscribeTo(target, callback) {
@@ -78,7 +75,7 @@ function subscribeTo(target, callback) {
 
 // Sets a new value for target and calls its callbacks
 function setValue(target, value) {
-    if (fromLocalStorage(target)) {
+    if (!fromLocalStorage(target)) {
         console.error('setValue: cannot find Target: ', target);
         return;
     } else if (value !== fromLocalStorage(target)) {
