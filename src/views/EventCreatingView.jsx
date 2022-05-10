@@ -3,24 +3,57 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-//import { FormControlUnstyled } from '@mui/base';
 import {
     Button,
+    Box,
+    DialogTitle,
+    DialogContent, Collapse, ListItem,
     FormControl,
-    Grid,
     InputLabel,
+    List, IconButton, ListItemText,
     MenuItem,
     Select,
     TextareaAutosize,
 } from '@mui/material';
-//import { Grid } from '@material-ui/core';
-//import SearchIcon from '@mui/icons-material/Search';
+import { TransitionGroup } from 'react-transition-group';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { useEffect, useRef } from 'react';
 
-// function UserInfoView() {
-//     return (null);
-// }
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import AvatarView from './AvatarView';
+
+import PropTypes from 'prop-types';
+import AvatarPresenter from '../presenters/AvatarPresenter';
+import { EventCreatingPresenter } from '../presenters/EventCreatingPresenter';
+
+const USERS = [
+    '🍏 Mamad',
+    '🍌 Samson',
+    '🍍 Hugo',
+    '🥥 Nima',
+    '🍉 Francis',
+];
+
+
+// TODO: this function is a duplicate from EventListView.jsx
+// Export it from that file!!!
+function MemberBox(props) {
+    const members = props.members;
+    return (
+        <List
+            className={
+                'flex flex-row flex-wrap items-center justify-center last:mr-2 child:m-1'
+            }
+        >
+            {members.map((m) => (
+                <AvatarPresenter key={m} user={props.user} userId={m} />
+            ))}
+        </List>
+    );
+}
+
 function MyMapComponent({ center, zoom }) {
     console.log('MyMapComponent', center, zoom);
     if (center === undefined) center = { lat: -25.344, lng: 131.031 };
@@ -37,32 +70,29 @@ function MyMapComponent({ center, zoom }) {
     return <div ref={ref} id="map" />;
 }
 
-// const InputBox = params => {
-//     const {placeholder, name, id} = params;
-//     return (
-//         <input
-//             type="text"
-//             placeholder={placeholder}
-//             className="
-//                 w-full
-//                 rounded
-//                 p-3
-//                 text-gray-800
-//                 dark:text-gray-50
-//                 dark:bg-slate-700
-//                 border-gray-500
-//                 dark:border-slate-600
-//                 outline-none
-//                 focus-visible:shadow-none
-//                 focus:border-primary
-//                 "
-//             name="event"
-//             id="event"
-//         />
-//     );
-// };
-
-export default function EventCreatingView2(props) {
+function renderItem({ item, handleRemoveUser }) {
+    return (
+        <ListItem
+            secondaryAction={
+                <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    title="Delete"
+                    onClick={() => handleRemoveUser(item)}
+                >
+                    <DeleteIcon />
+                </IconButton>
+            }
+        >
+            <ListItemText primary={item} />
+        </ListItem>
+    );
+}
+// Props:
+//    user
+//export default function EventCreatingView2 = props => {
+const EventCreatingView2 = props => {
+    console.log('props=',props);
     const [value, setValue] = React.useState(new Date());
     const [title, setTitle] = React.useState('');
     const [description, setDescription] = React.useState('');
@@ -70,28 +100,61 @@ export default function EventCreatingView2(props) {
     const [endDateTime, setEndDateTime] = React.useState(0);
     const [members, setMembers] = React.useState([]);
 
+    const {user} = props;
+
+    const [usersForEvent, setUsersForEvent] = React.useState(USERS.slice(0, 3));
+    const handleAddUser = () => {
+        const nextHiddenItem = USERS.find((i) => !usersForEvent.includes(i));
+        if (nextHiddenItem) {
+            setUsersForEvent((prev) => [nextHiddenItem, ...prev]);
+        }
+    };
+
+    const handleRemoveUser = (item) => {
+        setUsersForEvent((prev) => [...prev.filter((i) => i !== item)]);
+    };
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
-        // <div className='container absolut w-screen h-screen bg-black bg-opacity-10 flex justify-center'>
-        <div>
-            <div className="mt-24 flex w-full justify-center bg-white">
-                <div className="m-8">
-                    <div className="relative ml-14 flex justify-start">
-                        {/*Avatar/UserID*/}
-                        <div className="">
-                            <img
-                                src="avatar.png"
-                                className="h-12"
-                                alt="avatar"
-                            />
-                        </div>
+        <>
+            <DialogContent>
+                <div className="flex-row flex justify-center">
+                    {/*<div className="ml-14 flex justify-start">*/}
+                    {/*    <div className="">*/}
+                    {/*        <img*/}
+                    {/*            src="avatar.png"*/}
+                    {/*            className="h-12"*/}
+                    {/*            alt="avatar"*/}
+                    {/*        />*/}
+                    {/*    </div>*/}
 
-                        <div className="ml-8">
-                            <h5 className="">James Bond</h5>
-                        </div>
-                    </div>
-                    <div className='data-aos-duration="2000 flex w-full px-12'>
-                        <div className="relative rounded-lg bg-gray-100 p-8 sm:p-12">
+                    {/*    <div className="ml-8">*/}
+                    {/*        <h5 className="">James Bond</h5>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {user ? (
+                        <>
+                            <Box
+                                alignContent={'center'}
+                                maxHeight="56px"
+                            >
+                                <AvatarView
+                                    maxHeight="100%"
+                                    user={{
+                                        firstName: 'Test',
+                                        lastName: 'Testson',
+                                    }}
+                                />
+                            </Box>
+                        </>
+                    ) : (
+                        <>
+                            ERROR!
+                        </>
+                    )}
+
+
+                    <div className='flex w-full px-12'>
+                        <div className="rounded-lg bg-gray-100 p-8 sm:p-12">
                             <div className="mb-6">
                                 <TextField
                                     fullWidth
@@ -108,11 +171,11 @@ export default function EventCreatingView2(props) {
                                 <LocalizationProvider
                                     dateAdapter={AdapterDateFns}
                                 >
-                                    <DateTimePicker
+                                    <DatePicker
                                         renderInput={(props) => (
                                             <TextField {...props} />
                                         )}
-                                        label="Select Date and Time"
+                                        label="Select Date"
                                         className="
                                     focus:border-primary
                                     w-full
@@ -127,51 +190,98 @@ export default function EventCreatingView2(props) {
                                     dark:text-gray-50
                                     "
                                         value={value}
-                                        onChange={(date) => {
-                                            setValue(date);
-                                            setEndDateTime(
-                                                endDateTime +
-                                                    date.valueOf() -
-                                                    startDateTime
-                                            );
-                                            setStartDateTime(date.valueOf());
+                                        onChange={(newValue) => {
+                                            setValue(newValue);
                                         }}
+                                    />
+
+                                </LocalizationProvider>
+                            </div>
+
+                            <div className="mb-6">
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <TimePicker
+                                        label="Start time"
+                                        className="
+                                    focus:border-primary
+                                    w-full
+                                    rounded
+                                    border-gray-500
+                                    p-3
+                                    text-gray-800
+                                    outline-none
+                                    focus-visible:shadow-none
+                                    dark:border-slate-600
+                                    dark:bg-slate-700
+                                    dark:text-gray-50
+                                    "
+                                        value={value}
+                                        onChange={(newValue) => {
+                                            setValue(newValue);
+                                        }}
+                                        renderInput={(params) => <TextField {...params} />}
                                     />
                                 </LocalizationProvider>
                             </div>
 
                             <div className="mb-6">
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">
-                                        Hours
-                                    </InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value="1"
-                                        label="Duration"
-                                        onChange={(event) => {
-                                            setEndDateTime(
-                                                startDateTime +
-                                                    (isNaN(event.target.value)
-                                                        ? 1
-                                                        : event.target.value) *
-                                                        3600000
-                                            );
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <TimePicker
+                                        label="End time"
+                                        className="
+                                    focus:border-primary
+                                    w-full
+                                    rounded
+                                    border-gray-500
+                                    p-3
+                                    text-gray-800
+                                    outline-none
+                                    focus-visible:shadow-none
+                                    dark:border-slate-600
+                                    dark:bg-slate-700
+                                    dark:text-gray-50
+                                    "
+                                        value={value}
+                                        onChange={(newValue) => {
+                                            setValue(newValue);
                                         }}
-                                    >
-                                        <MenuItem value={1}>One</MenuItem>
-                                        <MenuItem value={2}>Two</MenuItem>
-                                        <MenuItem value={3}>Three</MenuItem>
-                                    </Select>
-                                </FormControl>
+                                        renderInput={(params) => <TextField {...params} />}
+                                    />
+                                </LocalizationProvider>
                             </div>
+
+                            {/*<div className="mb-6">*/}
+                            {/*    <FormControl fullWidth>*/}
+                            {/*        <InputLabel id="demo-simple-select-label">*/}
+                            {/*            Hours*/}
+                            {/*        </InputLabel>*/}
+                            {/*        <Select*/}
+                            {/*            labelId="demo-simple-select-label"*/}
+                            {/*            id="demo-simple-select"*/}
+                            {/*            value="1"*/}
+                            {/*            label="Duration"*/}
+                            {/*            onChange={(event) => {*/}
+                            {/*                setEndDateTime(*/}
+                            {/*                    startDateTime +*/}
+                            {/*                        (isNaN(event.target.value)*/}
+                            {/*                            ? 1*/}
+                            {/*                            : event.target.value) **/}
+                            {/*                            3600000*/}
+                            {/*                );*/}
+                            {/*            }}*/}
+                            {/*        >*/}
+                            {/*            <MenuItem value={1}>One</MenuItem>*/}
+                            {/*            <MenuItem value={2}>Two</MenuItem>*/}
+                            {/*            <MenuItem value={3}>Three</MenuItem>*/}
+                            {/*        </Select>*/}
+                            {/*    </FormControl>*/}
+                            {/*</div>*/}
 
                             <div className="mb-6">
                                 <TextField
                                     fullWidth
                                     id="outlined-basic"
-                                    label="Location"
+                                    label="Address"
                                     variant="outlined"
                                 />
                                 {/*<input*/}
@@ -188,30 +298,31 @@ export default function EventCreatingView2(props) {
                                 {/*/>*/}
                             </div>
 
+                            {/*<div className="m-6">*/}
+                            {/*    <MemberBox*/}
+                            {/*        members={members}*/}
+                            {/*        user={props.user}*/}
+                            {/*        className={'lg:min-w-full'}*/}
+                            {/*    />*/}
+                            {/*</div>*/}
+
                             <div className="m-6">
-                                <div className="flex justify-center space-x-2">
-                                    <div>
-                                        <img
-                                            src="avatar.png"
-                                            className="h-12"
-                                            alt="avatar"
-                                        />
-                                    </div>
-                                    <div>
-                                        <img
-                                            src="avatar.png"
-                                            className="h-12"
-                                            alt="avatar"
-                                        />
-                                    </div>
-                                    <div>
-                                        <img
-                                            src="avatar.png"
-                                            className="h-12"
-                                            alt="avatar"
-                                        />
-                                    </div>
-                                </div>
+                                <Button
+                                    variant="contained"
+                                    disabled={usersForEvent.length >= USERS.length}
+                                    onClick={handleAddUser}
+                                >
+                                    Add user
+                                </Button>
+                                <List className=''>
+                                    <TransitionGroup>
+                                        {usersForEvent.map((item) => (
+                                            <Collapse key={item}>
+                                                {renderItem({ item, handleRemoveUser })}
+                                            </Collapse>
+                                        ))}
+                                    </TransitionGroup>
+                                </List>
                             </div>
 
                             <form className="">
@@ -250,22 +361,22 @@ export default function EventCreatingView2(props) {
                             <div className="relative rounded-lg bg-gray-100 p-8 sm:p-12">
                                 <TextareaAutosize
                                     aria-label="minimum height"
-                                    minRows={15}
+                                    minRows={14}
                                     maxRows={20}
                                     placeholder="About"
-                                    style={{ width: 600 }}
+                                    style={{ width: 400 }}
                                     onChange={(e) => {
                                         setDescription(e.target.value);
                                     }}
                                 />
 
-                                <div className="m-6">
+                                <div className="mt-8">
                                     <iframe
                                         sx={{ border: '0' }}
                                         w-full
                                         h-full
-                                        //width="400"
-                                        //height="400"
+                                        width="400"
+                                        height="300"
                                         // style="border:0"
                                         loading="lazy"
                                         frameBorder="0"
@@ -278,7 +389,9 @@ export default function EventCreatingView2(props) {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+        </DialogContent>
+        </>
     );
-}
+};
+
+export default EventCreatingView2;

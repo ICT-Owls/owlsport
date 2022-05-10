@@ -31,6 +31,9 @@ export default function EventListView(props) {
     return (
         <Container sx={{ paddingTop: '2rem' }}>
             <Dialog
+                // for keeping CSS style in EventCreating.jsx
+                disablePortal={true}
+
                 open={createOpen}
                 onClose={() => {
                     setCreateOpen(false);
@@ -40,7 +43,8 @@ export default function EventListView(props) {
             >
                 <Container padding="1rem">
                     <EventCreatingPresenter
-                        callback={() => {
+                        user={props.user}
+                        callback= {() => {
                             setCreateOpen(false);
                         }}
                     />

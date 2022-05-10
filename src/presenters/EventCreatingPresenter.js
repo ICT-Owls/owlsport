@@ -5,6 +5,8 @@ import { createEvent } from '../helpers/Firebase';
 export const EventCreatingPresenter = (
     props /*: {onCreateEvent: (event) => void} */
 ) => {
+    console.log('props=',props);
+
     const submitToServer = (event) => {
         event.id = event.title;
         event.creatorId = localStorage.getItem('uid');
@@ -13,7 +15,7 @@ export const EventCreatingPresenter = (
     };
 
     return (
-        <EventCreatingView
+        <EventCreatingView user={props.user}
             callback={
                 props.onCreateEvent
                     ? (e) => {
