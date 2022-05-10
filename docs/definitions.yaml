@@ -88,3 +88,19 @@ components:
                 creationDate:
                     type: number
                     description: 'UNIX timestamp of when the event was created'
+                location:
+                    $ref: '#/components/schemas/Location'
+                    description: 'Location of the event'
+        Location:
+            type: object
+            required:
+                - name
+                - longitude
+                - latitude
+            properties:
+                name:
+                    type: string
+                longitude:
+                    type: number
+                latitude:
+                    type: number
