@@ -15,7 +15,7 @@ export default function EventListPresenter(props) {
                 .then((data) =>
                     setEvents(
                         data.map((e) => {
-                            if (!e.members) e.members = ['nomembers'];
+                            if (!e.members) e.members = [];
                             return e;
                         })
                     )
