@@ -1,8 +1,6 @@
 import React from 'react';
 
-import {
-    UserOption,
-} from '../presenters/ParticipantSelectorPresenter';
+import { UserOption } from '../presenters/ParticipantSelectorPresenter';
 
 import {
     Button,
@@ -10,12 +8,15 @@ import {
     Autocomplete,
     TextField,
     CircularProgress,
+    createFilterOptions,
 } from '@mui/material';
 
 import { AutocompleteRenderInputParams } from '@mui/material';
 
+const filter = createFilterOptions<UserOption>();
+
 export type ParticipantSelectorProps = {
-    valid: boolean;  // Is the current text input a valid user?
+    valid: boolean; // Is the current text input a valid user?
     options: UserOption[]; // Available options in drop-down menu
     placeholderText?: string; // Text to display when textfield is empty
     buttonText?: string; // Text to display on the button
@@ -23,7 +24,7 @@ export type ParticipantSelectorProps = {
     inputValue?: string; // Text in textfield
     setInputValue?: (textInput: string) => void;
     value?: UserOption[]; // Selected options
-    setValue?: (selection: UserOption[]) => void; 
+    setValue?: (selection: UserOption[]) => void;
     onSubmit?: () => void; // Will be called when the button is pressed
     multiple?: boolean; // Allow multiple options to be selected?
 };
@@ -109,6 +110,23 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
                         loading={props.loading}
                     />
                 )}
+                filterOptions={(options, params) => {
+                    const filtered = filter(options, params);
+
+                    const { inputValue } = params;
+                    // Suggest the creation of a new value
+                    const isExisting = options.some(
+                        (option) => inputValue === option.label
+                    );
+                    if (inputValue !== '' && !isExisting) {
+                        filtered.push({
+                            label: inputValue,
+                            email: inputValue,
+                        });
+                    }
+
+                    return filtered;
+                }}
             />
 
             <Button
