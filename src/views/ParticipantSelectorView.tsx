@@ -34,6 +34,7 @@ const UserTextField = (props: {
     params: AutocompleteRenderInputParams;
     placeholderText?: string;
     loading: boolean;
+    valid: boolean;
 }) => {
     return (
         <TextField
@@ -108,6 +109,7 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
                         params={params}
                         placeholderText={props.placeholderText}
                         loading={props.loading}
+                        valid={props.valid}
                     />
                 )}
                 filterOptions={(options, params) => {
@@ -118,13 +120,12 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
                     const isExisting = options.some(
                         (option) => inputValue === option.label
                     );
-                    if (inputValue !== '' && !isExisting) {
+                    if (inputValue !== '' && !isExisting && props.valid) {
                         filtered.push({
                             label: inputValue,
                             email: inputValue,
                         });
                     }
-
                     return filtered;
                 }}
             />
