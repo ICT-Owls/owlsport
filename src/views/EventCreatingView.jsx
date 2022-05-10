@@ -53,7 +53,7 @@ function renderItem({ item, handleRemoveUser }) {
                 </IconButton>
             }
         >
-            <ListItemText primary={item} />
+            <ListItemText primary={item.label} />
         </ListItem>
     );
 }
@@ -240,7 +240,7 @@ const EventCreatingView = ({
                                 <List className="m-2 h-32 overflow-y-auto">
                                     <TransitionGroup>
                                         {usersForEvent.map((item) => (
-                                            <Collapse key={item}>
+                                            <Collapse key={item.email}>
                                                 {renderItem({
                                                     item,
                                                     handleRemoveUser,
