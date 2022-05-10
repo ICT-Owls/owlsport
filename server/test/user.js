@@ -7,6 +7,7 @@ chai.use(chaiHttp);
 
 const { initializeApp } = require('firebase/app');
 const { getAuth, signInWithEmailAndPassword } = require('firebase/auth');
+const { events } = require('../src/database.js');
 
 const generateTestCredentials = async function () {
     const firebaseConfig = {
@@ -308,14 +309,61 @@ describe('Users', function () {
         });
     });
 
-    describe('/PATCH /events', function () {
+    describe('/PATCH /events/:id', function () {
         it('return 401 without authentication', async function () {
             var res = await chai.request(app).patch('/events/sslokgdonhgos');
             assert.equal(res.status, 401);
         });
+
+        it('return 400 with empty body', async function () {
+            var res = await patch(`/events/${testEvent.id}`).send({});
+            assert.equal(res.status, 400);
+        });
+
+        it('return 200 with valid body', async function () {
+            const event = {
+                title: 'newtitle',
+            };
+            var res = await patch(`/events/${testEvent.id}`).send(event);
+            assert.equal(res.status, 200);
+            assert.deepEqual(res.body, { ...testEvent, ...event });
+        });
     });
 
-    describe('/GET /events', function () {
+    describe('/PATCH /events/:id/self', function () {
+        it('return 401 without authentication', async function () {
+            var res = await chai
+                .request(app)
+                .patch('/events/sslokgdonhgos/self');
+            assert.equal(res.status, 401);
+        });
+
+        it('return 400 with empty body', async function () {
+            // Setup
+            const setupRes = await patch(`/events/${testEvent.id}`).send({
+                members: {
+                    [testUser.id]: {
+                        id: testUser.id,
+                        location: undefined,
+                        requriesCarpooling: false,
+                    },
+                },
+            });
+
+            var res = await patch(`/events/${testEvent.id}/self`).send({});
+            assert.equal(res.status, 400);
+        });
+
+        it('return 200 with valid body', async function () {
+            var res = await patch(`/events/${testEvent.id}/self`).send({
+                requiresCarpooling: true,
+            });
+            assert.equal(res.status, 200);
+            assert.equal(res.body.requiresCarpooling, true);
+        });
+    });
+
+    describe('/GET /events/:id', function () {
         it('return 401 without authentication', async function () {
             var res = await chai.request(app).get('/events');
             assert.equal(res.status, 401);
