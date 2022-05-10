@@ -26,9 +26,9 @@ export type ParticipantSelectorProps = {
     placeholderText?: string;
     buttonText?: string;
     loading: boolean;
-    /* eslint-disable-next-line */ // Why is ESLint getting upset about this??
     setInputValue?: (textInput: string) => void;
     inputValue?: string;
+    multiple?: boolean;
 };
 
 const UserTextField = (props: {

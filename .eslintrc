@@ -15,7 +15,6 @@
         "tailwindcss/enforces-shorthand": "off",
         "tailwindcss/classnames-order": "off",
         // ^^^^^^^^^^ Should change these to warn at some pint ^^^^^^^^^^^^
-        "@typescript-eslint/no-unused-vars": "warn", // temp fix to "node.params is not iterable" error
         "no-tabs": "warn"
     },
     "overrides": [
@@ -24,6 +23,10 @@
             "env": {
                 "browser": true
             }
+        },
+        {
+            "files": ["src/**/*.ts", "src/**/*.tsx"],
+            "parser": "@typescript-eslint/parser"
         }
     ],
     "plugins": ["react", "tailwindcss", "@typescript-eslint"],

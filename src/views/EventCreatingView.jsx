@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import ParticipantSelectorPresenter from '../presenters/ParticipantSelectorPresenter';
 import {
     Button,
     Box,
@@ -105,6 +106,7 @@ const EventCreatingView2 = props => {
     const [usersForEvent, setUsersForEvent] = React.useState(USERS.slice(0, 3));
     const handleAddUser = () => {
         const nextHiddenItem = USERS.find((i) => !usersForEvent.includes(i));
+        
         if (nextHiddenItem) {
             setUsersForEvent((prev) => [nextHiddenItem, ...prev]);
         }
@@ -307,13 +309,7 @@ const EventCreatingView2 = props => {
                             {/*</div>*/}
 
                             <div className="m-6">
-                                <Button
-                                    variant="contained"
-                                    disabled={usersForEvent.length >= USERS.length}
-                                    onClick={handleAddUser}
-                                >
-                                    Add user
-                                </Button>
+                                <ParticipantSelectorPresenter placeholderText='Invite user' buttonText='Invite' multiple />
                                 <List className='m-2 overflow-y-auto h-32'>
                                     <TransitionGroup>
                                         {usersForEvent.map((item) => (

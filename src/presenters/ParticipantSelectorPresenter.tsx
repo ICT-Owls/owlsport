@@ -4,6 +4,7 @@ import ParticipantSelectorView from '../views/ParticipantSelectorView';
 export type ParticipantSelectorPresenterProps = {
     placeholderText?: string;
     buttonText?: string;
+    multiple?: boolean;
 };
 
 export type UserOption = {
@@ -63,6 +64,7 @@ export default function ParticipantSelectorPresenter(
             loading={loading}
             setInputValue={setInputValue}
             inputValue={inputValue}
+            multiple={props.multiple}
         />
     );
 }
