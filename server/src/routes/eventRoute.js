@@ -167,4 +167,34 @@ router.patch(
     }
 );
 
+router.patch(
+    '/:id/self',
+    authorize,
+    param('id').isString(),
+    body('location').optional().custom(validateLocation),
+    body('requiresCarpooling').optional().isBoolean(),
+    oneOf([body('location').exists(), body('requiresCarpooling').exists()]),
+    validate,
+    async (req, res) => {
+        const id = req.params.id;
+        const { location, requiresCarpooling } = req.body;
+
+        const memberRef = events.child(`${id}/members/${req.user.uid}`);
+        const memberSnapshot = await memberRef.get();
+
+        // Check if the event exists
+        if (!memberSnapshot.exists())
+            return res.status(404).send('Event not found');
+
+        var update = {};
+        if (location) update.location = location;
+        if (requiresCarpooling) update.requiresCarpooling = requiresCarpooling;
+
+        await memberRef.update(update);
+
+        const updatedMember = await memberRef.get();
+        res.send(updatedMember.val());
+    }
+);
+
 module.exports = router;
