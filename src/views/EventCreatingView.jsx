@@ -314,7 +314,7 @@ const EventCreatingView2 = props => {
                                 >
                                     Add user
                                 </Button>
-                                <List className=''>
+                                <List className='m-2 overflow-y-auto h-32'>
                                     <TransitionGroup>
                                         {usersForEvent.map((item) => (
                                             <Collapse key={item}>
@@ -361,8 +361,8 @@ const EventCreatingView2 = props => {
                             <div className="relative rounded-lg bg-gray-100 p-8 sm:p-12">
                                 <TextareaAutosize
                                     aria-label="minimum height"
-                                    minRows={14}
-                                    maxRows={20}
+                                    minRows={20}
+                                    maxRows={25}
                                     placeholder="About"
                                     style={{ width: 400 }}
                                     onChange={(e) => {
