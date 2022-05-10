@@ -16,9 +16,12 @@ router.post(
     body('description').isString(),
     body('startDateTime').isInt(),
     body('endDateTime').isInt(),
+    body('members').isArray(),
+    body('members.*').isString(),
     validate,
     async (req, res) => {
-        const { title, description, startDateTime, endDateTime } = req.body;
+        const { title, description, startDateTime, endDateTime, members } =
+            req.body;
         const authUser = req.user;
 
         const eventRef = events.push();
@@ -30,7 +33,7 @@ router.post(
             startDateTime: startDateTime,
             endDateTime: endDateTime,
             creationDate: Date.now(),
-            members: [],
+            members: members,
         });
 
         const event = await eventRef.get();

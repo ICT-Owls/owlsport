@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -24,17 +24,17 @@ LinkBehavior.propTypes = {
     ]).isRequired,
 };
 
-export const LightTheme = createTheme({
+var LightTheme = createTheme({
     palette: {
         type: 'light',
         primary: {
             main: '#ec1e24',
         },
         secondary: {
-            main: '#666',
+            main: '#111',
         },
         background: {
-            default: '#e0e0e0',
+            default: '#e8eaec',
         },
     },
     components: {
@@ -48,6 +48,18 @@ export const LightTheme = createTheme({
                 LinkComponent: LinkBehavior,
             },
         },
+        MuiTypography: {
+            styleOverrides: ({ ownerState }) => ({
+                ...(ownerState.variant === 'h5' && {
+                    fontSize: '1rem',
+                    color: '#f00',
+                }),
+            }),
+        },
     },
 });
-export const DarkTheme = LightTheme;
+
+LightTheme = responsiveFontSizes(LightTheme);
+const DarkTheme = LightTheme;
+
+export { LightTheme, DarkTheme };

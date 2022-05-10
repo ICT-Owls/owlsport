@@ -13,11 +13,6 @@ const validate = function async(req, res, next) {
     }
 };
 
-const testing = process.env.DEV || false;
-
-/**
- * Express middleware that returns 401 if the request comes from an unauthenticated user.
- */
 const authorize = async function (req, res, next) {
     if (!req.user) return res.status(401).send('Unauthenticated');
     else next();

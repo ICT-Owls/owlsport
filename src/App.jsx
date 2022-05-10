@@ -1,38 +1,42 @@
+/*  Presenters  */
 import SidebarPresenter from './presenters/SidebarPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
 import ChatsPresenter from './presenters/ChatsPresenter';
 import MainContentPresenter from './presenters/MainContentPresenter';
 import EventDetailsPresenter from './presenters/EventDetailsPresenter';
+import { EventCreatingPresenter } from './presenters/EventCreatingPresenter';
+
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { LightTheme, DarkTheme } from './Themes';
 import './App.css';
 import React from 'react';
 import { Box } from '@mui/material';
-import EventDetailsView from './views/EventDetailsView';
+import { subscribeToLogin } from './helpers/Firebase';
+import { useEffect } from 'react';
+import { auth } from './helpers/Firebase';
 
-const userObject = {};
-//export userObject
-
-function App () {
+function App() {
     const [lightmode] = React.useState(true);
+    const [user, setUser] = React.useState(null);
+
+    useEffect(() => {
+        return auth.onAuthStateChanged((e) => setUser(e));
+    }, []);
+
+    useEffect(() => {
+        console.log('Current User Object: ', user);
+    }, [user]);
+
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-                <div className='App absolute flex h-screen w-screen justify-start'>
-                    <Box
-                        className='bg-background-200'
-                        sx={{
-                            width: '100%',
-                            height: '100%',
-                        }}
-                    >
-                        {/* <NavbarPresenter /> */}
-                        {/* <SidebarPresenter isLoggedIn={userObject.isLoggedIn} /> */}
-                        {/* <ChatsPresenter /> */}
-                        <MainContentPresenter />
-                        <EventDetailsPresenter />
-                    </Box>
+                <div className="App absolute flex h-full w-full flex-col justify-start bg-background-200 ">
+                    <NavbarPresenter />
+                    <div className="mt-20 w-full content-center justify-center flex flex-row">
+                        <SidebarPresenter user={user} />
+                        <MainContentPresenter user={user} />
+                    </div>
                 </div>
             </ThemeProvider>
         </StyledEngineProvider>
