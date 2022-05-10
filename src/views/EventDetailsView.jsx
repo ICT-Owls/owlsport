@@ -10,7 +10,6 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import { TransitionGroup } from 'react-transition-group';
 import {
     formatDateMonthDay,
     formatFullDate,
