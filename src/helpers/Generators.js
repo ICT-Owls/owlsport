@@ -17,7 +17,7 @@ export function generateMember() {
         id: generateString(24),
         firstName: generateString(12),
         lastName: generateString(12),
-        avatar: 'https://eu2.contabostorage.com/4e6f8f9f774a4457b299ab2042e6b8cb:carpooling/man.png',
+        avatar: generateAvatar(),
     };
 }
 
