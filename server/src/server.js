@@ -20,6 +20,9 @@ app.use(
     })
 );
 
+// Enable pre-flight for all requests
+app.options('*', cors());
+
 app.use(json());
 
 app.use(async (req, _res, next) => {
