@@ -35,8 +35,6 @@ import PropTypes from 'prop-types';
 import AvatarPresenter from '../presenters/AvatarPresenter';
 import { EventCreatingPresenter } from '../presenters/EventCreatingPresenter';
 
-const USERS = ['🍏 Mamad', '🍌 Samson', '🍍 Hugo', '🥥 Nima', '🍉 Francis'];
-
 // TODO: this function is a duplicate from EventListView.jsx
 // Export it from that file!!!
 function MemberBox(props) {
@@ -84,7 +82,7 @@ function renderItem({ item, handleRemoveUser }) {
                 </IconButton>
             }
         >
-            <ListItemText primary={item} />
+            <ListItemText primary={item.label} />
         </ListItem>
     );
 }
@@ -98,19 +96,12 @@ const EventCreatingView2 = (props) => {
     const [startDateTime, setStartDateTime] = React.useState(0);
     const [endDateTime, setEndDateTime] = React.useState(0);
     const [members, setMembers] = React.useState([]);
-    const [usersForEvent, setUsersForEvent] = React.useState(USERS.slice(0, 3));
+    const [usersForEvent, setUsersForEvent] = React.useState([]);
 
     const { user } = props;
 
     const handleAddUser = (options) => {
-        options.forEach((option) => {
-            if (option in usersForEvent)
-                return;
-            setUsersForEvent((prev) => [option.label, ...prev]);
-        });
-
-        // TODO: also store the email property of the UserOption object, turning this function into:
-        // setUsersForEvent((prev) => [...options, ...prev]);
+        setUsersForEvent((prev) => [...options, ...prev]);
     };
 
     const handleRemoveUser = (item) => {
@@ -320,7 +311,7 @@ const EventCreatingView2 = (props) => {
                                 <List className="m-2 h-32 overflow-y-auto">
                                     <TransitionGroup>
                                         {usersForEvent.map((item) => (
-                                            <Collapse key={item}>
+                                            <Collapse key={item.email}>
                                                 {renderItem({
                                                     item,
                                                     handleRemoveUser,
