@@ -13,32 +13,16 @@ import './App.css';
 import React from 'react';
 import { Box } from '@mui/material';
 import { subscribeToLogin } from './helpers/Firebase';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import { auth } from './helpers/Firebase';
-import { setUser as setModelUser, subscribeToUser } from './models/Model';
+import { initModel, useUser } from './models/Model';
 
-function App() {
+export default function App() {
     const [lightmode] = React.useState(true);
+    const [user] = useUser();
 
-    //-------OBS------
-    //You dont need to pass this prop down your tree, simply subscribe to the model instead
-
-    const [user, setUser] = useState(null);
-
-    //Runs on initial page load, has cleanup which unsubs
-    useEffect(() => {
-        //Subscribe to model, this is how you would do it in any component
-        var unsubFromModel = subscribeToUser((e) => setUser(e));
-
-        //Specific to App.jsx, subscribes to auth such that auth changes model when app is mounted
-        var unsubFromAuth = auth.onAuthStateChanged((e) => setModelUser(e));
-
-        //Unsubscribes from auth and model on unmount
-        return () => {
-            unsubFromAuth();
-            unsubFromModel();
-        };
-    }, []);
+    //Initalize model
+    useLayoutEffect(() => initModel(), []);
 
     //logs if current user changes
     useEffect(() => {
@@ -59,130 +43,3 @@ function App() {
         </StyledEngineProvider>
     );
 }
-
-// function Events() {
-//     return (
-//         <>
-//             <h1>EVENTS PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function About() {
-//     return (
-//         <>
-//             <h1>ABOUT PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function Whatever() {
-//     return (
-//         <>
-//             <h1>WHATEVER PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function Login() {
-//     userObject.isLoggedIn = true;
-//     return (
-//         <>
-//             <h1>LOGIN PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function Signup() {
-//     return (
-//         <>
-//             <h1>SIGNUP PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function Logout() {
-//     userObject.isLoggedIn = false;
-//     return (
-//         <>
-//             <h1>LOGOUT PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function Account() {
-//     return (
-//         <>
-//             <h1>ACCOUNT PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function App() {
-//     userObject.isLoggedIn = false;
-
-//     return (
-//         <BrowserRouter>
-//             <div className="App">
-//                 {/* A <Switch> looks through its children <Route>s and
-//             renders the first one that matches the current URL.*/}
-//                 <Routes>
-//                     <Route exact path="/" element={<Home />}>
-//                         <Route exact path="/" element={<Home />} />
-//                     </Route>
-//                     <Route path="/events" element={<Events />}>
-//                         <Route path="/events" element={<Events />} />
-//                     </Route>
-//                     <Route path="/about" element={<About />}>
-//                         <Route path="/about" element={<About />} />
-//                     </Route>
-//                     <Route path="/whatever" element={<Whatever />}>
-//                         <Route path="/whatever" element={<Whatever />} />
-//                     </Route>
-//                     <Route path="/login" element={<Login />}>
-//                         <Route path="/login" element={<Login />} />
-//                     </Route>
-//                     <Route path="/signup" element={<Signup />}>
-//                         <Route path="/signup" element={<Signup />} />
-//                     </Route>
-//                     <Route path="/logout" element={<Logout />}>
-//                         <Route path="/logout" element={<Logout />} />
-//                     </Route>
-//                     <Route path="/account" element={<Account />}>
-//                         <Route path="/account" element={<Account />} />
-//                     </Route>
-//                 </Routes>
-//             </div>
-//         </BrowserRouter>
-//     );
-// }
-
-export default App;
