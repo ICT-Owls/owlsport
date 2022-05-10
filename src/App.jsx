@@ -18,11 +18,10 @@ import { auth } from './helpers/Firebase';
 import { initModel, useUser } from './models/Model';
 
 export default function App() {
-    const [lightmode] = React.useState(true);
-    const [user] = useUser();
-
     //Initalize model
     useLayoutEffect(() => initModel(), []);
+    const [lightmode] = React.useState(true);
+    const [user] = useUser();
 
     //logs if current user changes
     useEffect(() => {
