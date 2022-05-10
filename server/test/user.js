@@ -34,6 +34,7 @@ const generateTestCredentials = async function () {
 
 var testToken = undefined;
 var testUser = undefined;
+var testEvent = undefined;
 
 const get = function (path) {
     return chai
@@ -72,10 +73,9 @@ describe('Users', function () {
         await userRef.remove();
 
         const eventsRef = await database.ref('/events').get();
+        if (!eventsRef.val()) return;
         const userEvents = Object.values(eventsRef.val()).filter(
-            (e) =>
-                e.creatorId == credentials.user.uid ||
-                e.members?.includes(credentials.user.uid)
+            (e) => e.creatorId == credentials.user.uid
         );
 
         for (const event of userEvents) {
@@ -155,7 +155,7 @@ describe('Users', function () {
         });
 
         it('return 404 with unknown email', async function () {
-            var res = await get('/user/email/test@nonexistant.ru');
+            var res = await get('/user/email/test@nonexistant.com');
             assert.equal(res.status, 404);
         });
 
@@ -285,18 +285,26 @@ describe('Users', function () {
                 description: 'description',
                 startDateTime: 0,
                 endDateTime: 1000,
-                members: ['123'],
+                members: {},
+                location: {
+                    longtitude: 0,
+                    latitude: 0,
+                    address: 'stockholm',
+                },
             };
             var res = await post('/events').send(event);
+
             assert.equal(res.status, 200);
             assert.equal(res.body.title, event.title);
             assert.equal(res.body.description, event.description);
             assert.equal(res.body.startDateTime, event.startDateTime);
             assert.equal(res.body.endDateTime, event.endDateTime);
+            assert.deepEqual(res.body.location, event.location);
             assert.equal(res.body.creatorId, testUser.id);
-            assert.deepEqual(res.body.members, ['123']);
             assert.exists(res.body.id);
             assert.exists(res.body.creationDate);
+
+            testEvent = res.body;
         });
     });
 
