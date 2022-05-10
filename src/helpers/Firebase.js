@@ -102,51 +102,6 @@ const uiConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-const registerUser = async function (
-    firstName,
-    lastName,
-    dateOfBirth,
-    email,
-    password
-) {
-    // Validate or whatever first
-
-    const credentials = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-    );
-
-    const user = await fetch('http://localhost:3001/user/create', {
-        method: 'POST',
-        headers: {
-            authorization: `Bearer ${credentials.user.accessToken}`,
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-        },
-        body: JSON.stringify({
-            firstName: firstName,
-            lastName: lastName,
-            dateOfBirth: dateOfBirth,
-        }),
-    }).then((r) => r.json());
-
-    return user;
-};
-
-const loginUser = async function (email, password) {
-    const credentials = await signInWithEmailAndPassword(auth, email, password);
-    const user = await fetch(
-        `http://localhost:3001/user/${credentials.user.uid}`,
-        {
-            headers: {
-                authorization: `Bearer ${credentials.user.accessToken}`,
-            },
-        }
-    ).then((r) => r.json());
-    return user;
-};
-
 //Add new callbackStructs here for each "thing" you want to listen to
 let callbackOnLogin = {};
 function subscribeTo(callbackStruct, callback) {
@@ -237,4 +192,4 @@ function callOnEventChange(eventId, change) {
     }
 }
 
-export { app, userApi, eventApi, registerUser, loginUser };
+export { app, userApi, eventApi };
