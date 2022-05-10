@@ -77,12 +77,14 @@ const EventCreatingView = ({
     user,
 }) => {
     const [usersForEvent, setUsersForEvent] = React.useState(USERS.slice(0, 3));
-    const handleAddUser = () => {
-        const nextHiddenItem = USERS.find((i) => !usersForEvent.includes(i));
+    const handleAddUser = (options) => {
+        options.forEach((option) => {
+            if (option in usersForEvent) return;
+            setUsersForEvent((prev) => [option.label, ...prev]);
+        });
 
-        if (nextHiddenItem) {
-            setUsersForEvent((prev) => [nextHiddenItem, ...prev]);
-        }
+        // TODO: also store the email property of the UserOption object, turning this function into:
+        // setUsersForEvent((prev) => [...options, ...prev]);
     };
 
     const handleRemoveUser = (item) => {
@@ -152,7 +154,7 @@ const EventCreatingView = ({
                                     dateAdapter={AdapterDateFns}
                                 >
                                     <TimePicker
-                                        label="End time"
+                                        label="Start time"
                                         className="
                                     focus:border-primary
                                     w-full
@@ -167,8 +169,38 @@ const EventCreatingView = ({
                                     dark:text-gray-50
                                     "
                                         value={startDateTime}
-                                        onChange={(newTime) => {
-                                            setStartDateTime(newTime);
+                                        onChange={(newDate) => {
+                                            setStartDateTime(newDate);
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField {...params} />
+                                        )}
+                                    />
+                                </LocalizationProvider>
+                            </div>
+
+                            <div className="mb-6">
+                                <LocalizationProvider
+                                    dateAdapter={AdapterDateFns}
+                                >
+                                    <TimePicker
+                                        label="End time"
+                                        className="
+                                    focus:border-primary
+                                    w-full
+                                    rounded
+                                    border-gray-500
+                                    p-3
+                                    text-gray-800
+                                    outline-none
+                                    focus-visible:shadow-none
+                                    dark:border-slate-600
+                                    dark:bg-slate-700
+                                    dark:text-gray-50
+                                    "
+                                        value={endDateTime}
+                                        onChange={(newDate) => {
+                                            setEndDateTime(newDate);
                                         }}
                                         renderInput={(params) => (
                                             <TextField {...params} />
@@ -200,6 +232,7 @@ const EventCreatingView = ({
 
                             <div className="m-6">
                                 <ParticipantSelectorPresenter
+                                    onSubmit={handleAddUser}
                                     placeholderText="Invite user"
                                     buttonText="Invite"
                                     multiple

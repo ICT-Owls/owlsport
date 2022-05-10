@@ -1,12 +1,18 @@
+/*
+ * Component for selecting a user. Either by entering an email address, or by selecting the name of one of your contacts
+ */
+
 import React from 'react';
 import ParticipantSelectorView from '../views/ParticipantSelectorView';
 
 export type ParticipantSelectorPresenterProps = {
-    placeholderText?: string;
-    buttonText?: string;
-    multiple?: boolean;
+    placeholderText?: string;   // Show this when the textfield is empty
+    buttonText?: string;        // Show this text on the button
+    multiple?: boolean;         // Can select multiple values?
+    onSubmit?: (selectedOptions: UserOption[]) => void; // Called with a list of all selected options when the button is pressed
 };
 
+// An option that can be selected. The label property is for display purposes, and the name "label" is used by MUI
 export type UserOption = {
     label: string;
     email: string;
@@ -15,10 +21,11 @@ export type UserOption = {
 export default function ParticipantSelectorPresenter(
     props: ParticipantSelectorPresenterProps
 ) {
-    const [options, setOptions] = React.useState<UserOption[]>([]);
-    const [isValid, setValid] = React.useState(false);
-    const [inputValue, setInputValue] = React.useState('');
-    const [loaded, setLoaded] = React.useState(false);
+    const [options, setOptions] = React.useState<UserOption[]>([]); // List of options to suggest to the user
+    const [isValid, setValid] = React.useState(false); 
+    const [inputValue, setInputValue] = React.useState(''); // The current text in the textfield
+    const [selection, setSelection] = React.useState<UserOption[]>([]); // The selected options
+    const [loaded, setLoaded] = React.useState(false);  // Is the previous loading operation complete?
 
     const loading = (!loaded || options.length <= 1) && inputValue !== '';
 
@@ -55,6 +62,11 @@ export default function ParticipantSelectorPresenter(
         };
     }, [inputValue]);
 
+    const handleSelect = () => {
+        props.onSubmit?.(selection);
+        setSelection([]);
+    };
+
     return (
         <ParticipantSelectorView
             valid={isValid}
@@ -63,8 +75,11 @@ export default function ParticipantSelectorPresenter(
             options={options}
             loading={loading}
             setInputValue={setInputValue}
+            setValue={setSelection}
             inputValue={inputValue}
+            value={selection}
             multiple={props.multiple}
+            onSubmit={handleSelect}
         />
     );
 }

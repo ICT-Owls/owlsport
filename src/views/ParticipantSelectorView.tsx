@@ -1,36 +1,34 @@
-import React, { SetStateAction, Dispatch } from 'react';
-
-import ParticipantSelectorPresenter, {
-    UserOption,
-} from '../presenters/ParticipantSelectorPresenter';
-import Show from '../helpers/Show';
+import React from 'react';
 
 import {
-    Dialog,
-    DialogTitle,
+    UserOption,
+} from '../presenters/ParticipantSelectorPresenter';
+
+import {
     Button,
     Box,
     Autocomplete,
-    Divider,
     TextField,
-    Container,
-    ListItem,
     CircularProgress,
 } from '@mui/material';
 
 import { AutocompleteRenderInputParams } from '@mui/material';
 
 export type ParticipantSelectorProps = {
-    valid: boolean;
-    options: UserOption[];
-    placeholderText?: string;
-    buttonText?: string;
-    loading: boolean;
+    valid: boolean;  // Is the current text input a valid user?
+    options: UserOption[]; // Available options in drop-down menu
+    placeholderText?: string; // Text to display when textfield is empty
+    buttonText?: string; // Text to display on the button
+    loading: boolean; // Are the options currently being loaded in?
+    inputValue?: string; // Text in textfield
     setInputValue?: (textInput: string) => void;
-    inputValue?: string;
-    multiple?: boolean;
+    value?: UserOption[]; // Selected options
+    setValue?: (selection: UserOption[]) => void; 
+    onSubmit?: () => void; // Will be called when the button is pressed
+    multiple?: boolean; // Allow multiple options to be selected?
 };
 
+// Renderer for the text field
 const UserTextField = (props: {
     params: AutocompleteRenderInputParams;
     placeholderText?: string;
@@ -61,6 +59,21 @@ const UserTextField = (props: {
 const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
     const [open, setOpen] = React.useState(false);
 
+    const handleChange = (
+        _event: any,
+        newValue: UserOption[] | UserOption | null
+    ) => {
+        if (newValue == null) {
+            props?.setValue?.([]);
+            return;
+        }
+        if (Array.isArray(newValue)) {
+            props?.setValue?.(newValue);
+            return;
+        }
+        props?.setValue?.([newValue]);
+    };
+
     return (
         <Box
             maxWidth="100%"
@@ -71,6 +84,7 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
             }}
         >
             <Autocomplete
+                multiple={props.multiple}
                 openOnFocus={true}
                 clearOnBlur={false}
                 open={open}
@@ -80,9 +94,11 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
                 onClose={() => {
                     setOpen(false);
                 }}
-                onInputChange={(event, newValue: string) =>
+                onInputChange={(_event, newValue: string) =>
                     props?.setInputValue?.(newValue)
                 }
+                onChange={handleChange}
+                value={props.value}
                 inputValue={props.inputValue}
                 options={props.options}
                 fullWidth={true}
@@ -95,7 +111,13 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
                 )}
             />
 
-            <Button>{props.buttonText ? props.buttonText : 'Select'}</Button>
+            <Button
+                onClick={() => {
+                    props?.onSubmit?.();
+                }}
+            >
+                {props.buttonText ? props.buttonText : 'Select'}
+            </Button>
         </Box>
     );
 };
