@@ -1,21 +1,16 @@
 import {
+    Box,
+    Button,
     Card,
     Container,
+    Dialog,
     Divider,
     Link,
     List,
     ListItem,
-    Typography,
-    Box,
-    Button,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    DialogContentText,
     Slide,
+    Typography,
 } from '@mui/material';
-
 import PropTypes from 'prop-types';
 import React from 'react';
 import AvatarPresenter from '../presenters/AvatarPresenter';
