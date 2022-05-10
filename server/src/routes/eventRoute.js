@@ -16,6 +16,16 @@ router.post(
     body('description').isString(),
     body('startDateTime').isInt(),
     body('endDateTime').isInt(),
+    body('members').custom((members) => {
+        return Object.entries(members).every(([id, member]) => {
+            return (
+                id == member.id &&
+                validateLocation(member.location) &&
+                member.hasOwnProperty('requiresCarpooling')
+            );
+        });
+    }),
+    body('location').custom(validateLocation),
     validate,
     async (req, res) => {
         const { title, description, startDateTime, endDateTime } = req.body;
@@ -30,7 +40,14 @@ router.post(
             startDateTime: startDateTime,
             endDateTime: endDateTime,
             creationDate: Date.now(),
-            members: [],
+            members: {
+                [authUser.uid]: {
+                    id: authUser.uid,
+                    requiresCarpooling: false,
+                },
+                ...members,
+            },
+            location: location,
         });
 
         const event = await eventRef.get();
@@ -82,8 +99,18 @@ router.patch(
     param('id').isString(),
     body('title').optional().isString(),
     body('description').optional().isString(),
-    body('members').optional().isArray(),
-    body('members.*').isString(),
+    body('members')
+        .optional()
+        .custom((members) => {
+            return Object.entries(members).every(([id, member]) => {
+                return (
+                    id == member.id &&
+                    validateLocation(member.location) &&
+                    member.hasOwnProperty('requiresCarpooling')
+                );
+            });
+        }),
+    body('location').optional().custom(validateLocation),
     body('startDateTime').optional().isInt({ min: 0 }),
     body('endDateTime').optional().isInt({ min: 0 }),
     validate,

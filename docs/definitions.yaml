@@ -71,9 +71,9 @@ components:
                     $ref: '#/components/schemas/Id'
                     description: 'Id of the event'
                 members:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Id'
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/EventMember'
                     description: 'Id of the users participating in this event'
                 title:
                     type: string
