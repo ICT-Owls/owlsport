@@ -4,7 +4,8 @@ import ParticipantSelectorView from '../views/ParticipantSelectorView';
 export type ParticipantSelectorPresenterProps = {
     placeholderText?: string;
     buttonText?: string;
-    multiple?: boolean;
+    multiple?: boolean; // Can select multiple values?
+    onSubmit?: (selectedOptions: UserOption[]) => void;
 };
 
 export type UserOption = {
@@ -18,6 +19,7 @@ export default function ParticipantSelectorPresenter(
     const [options, setOptions] = React.useState<UserOption[]>([]);
     const [isValid, setValid] = React.useState(false);
     const [inputValue, setInputValue] = React.useState('');
+    const [selection, setSelection] = React.useState<UserOption[]>([]);
     const [loaded, setLoaded] = React.useState(false);
 
     const loading = (!loaded || options.length <= 1) && inputValue !== '';
@@ -55,6 +57,11 @@ export default function ParticipantSelectorPresenter(
         };
     }, [inputValue]);
 
+    const handleSelect = () => {
+        props.onSubmit?.(selection);
+        setSelection([]);
+    };
+
     return (
         <ParticipantSelectorView
             valid={isValid}
@@ -63,8 +70,11 @@ export default function ParticipantSelectorPresenter(
             options={options}
             loading={loading}
             setInputValue={setInputValue}
+            setValue={setSelection}
             inputValue={inputValue}
+            value={selection}
             multiple={props.multiple}
+            onSubmit={handleSelect}
         />
     );
 }

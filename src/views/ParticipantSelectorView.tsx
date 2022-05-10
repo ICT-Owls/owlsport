@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 
 import { AutocompleteRenderInputParams } from '@mui/material';
+import { handleBreakpoints } from '@mui/system';
 
 export type ParticipantSelectorProps = {
     valid: boolean;
@@ -27,7 +28,10 @@ export type ParticipantSelectorProps = {
     buttonText?: string;
     loading: boolean;
     setInputValue?: (textInput: string) => void;
+    setValue?: (selection: UserOption[]) => void;
+    onSubmit?: () => void;
     inputValue?: string;
+    value?: UserOption[];
     multiple?: boolean;
 };
 
@@ -61,6 +65,21 @@ const UserTextField = (props: {
 const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
     const [open, setOpen] = React.useState(false);
 
+    const handleChange = (
+        _event: any,
+        newValue: UserOption[] | UserOption | null
+    ) => {
+        if (newValue == null) {
+            props?.setValue?.([]);
+            return;
+        }
+        if (Array.isArray(newValue)) {
+            props?.setValue?.(newValue);
+            return;
+        }
+        props?.setValue?.([newValue]);
+    };
+
     return (
         <Box
             maxWidth="100%"
@@ -71,6 +90,7 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
             }}
         >
             <Autocomplete
+                multiple={props.multiple}
                 openOnFocus={true}
                 clearOnBlur={false}
                 open={open}
@@ -80,9 +100,11 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
                 onClose={() => {
                     setOpen(false);
                 }}
-                onInputChange={(event, newValue: string) =>
+                onInputChange={(_event, newValue: string) =>
                     props?.setInputValue?.(newValue)
                 }
+                onChange={handleChange}
+                value={props.value}
                 inputValue={props.inputValue}
                 options={props.options}
                 fullWidth={true}
@@ -95,7 +117,13 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
                 )}
             />
 
-            <Button>{props.buttonText ? props.buttonText : 'Select'}</Button>
+            <Button
+                onClick={() => {
+                    props?.onSubmit?.();
+                }}
+            >
+                {props.buttonText ? props.buttonText : 'Select'}
+            </Button>
         </Box>
     );
 };

@@ -3,15 +3,21 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import ParticipantSelectorPresenter from '../presenters/ParticipantSelectorPresenter';
+import ParticipantSelectorPresenter, {
+    UserOption,
+} from '../presenters/ParticipantSelectorPresenter';
 import {
     Button,
     Box,
     DialogTitle,
-    DialogContent, Collapse, ListItem,
+    DialogContent,
+    Collapse,
+    ListItem,
     FormControl,
     InputLabel,
-    List, IconButton, ListItemText,
+    List,
+    IconButton,
+    ListItemText,
     MenuItem,
     Select,
     TextareaAutosize,
@@ -29,14 +35,7 @@ import PropTypes from 'prop-types';
 import AvatarPresenter from '../presenters/AvatarPresenter';
 import { EventCreatingPresenter } from '../presenters/EventCreatingPresenter';
 
-const USERS = [
-    '🍏 Mamad',
-    '🍌 Samson',
-    '🍍 Hugo',
-    '🥥 Nima',
-    '🍉 Francis',
-];
-
+const USERS = ['🍏 Mamad', '🍌 Samson', '🍍 Hugo', '🥥 Nima', '🍉 Francis'];
 
 // TODO: this function is a duplicate from EventListView.jsx
 // Export it from that file!!!
@@ -92,24 +91,24 @@ function renderItem({ item, handleRemoveUser }) {
 // Props:
 //    user
 //export default function EventCreatingView2 = props => {
-const EventCreatingView2 = props => {
-    console.log('props=',props);
+const EventCreatingView2 = (props) => {
     const [value, setValue] = React.useState(new Date());
     const [title, setTitle] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [startDateTime, setStartDateTime] = React.useState(0);
     const [endDateTime, setEndDateTime] = React.useState(0);
     const [members, setMembers] = React.useState([]);
-
-    const {user} = props;
-
     const [usersForEvent, setUsersForEvent] = React.useState(USERS.slice(0, 3));
-    const handleAddUser = () => {
-        const nextHiddenItem = USERS.find((i) => !usersForEvent.includes(i));
-        
-        if (nextHiddenItem) {
-            setUsersForEvent((prev) => [nextHiddenItem, ...prev]);
-        }
+
+    const { user } = props;
+
+    const handleAddUser = (options) => {
+        console.log(options);
+        options.forEach((option) => {
+            if (option in usersForEvent)
+                return;
+            setUsersForEvent((prev) => [option.label, ...prev]);
+        });
     };
 
     const handleRemoveUser = (item) => {
@@ -119,7 +118,7 @@ const EventCreatingView2 = props => {
     return (
         <>
             <DialogContent>
-                <div className="flex-row flex justify-center">
+                <div className="flex flex-row justify-center">
                     {/*<div className="ml-14 flex justify-start">*/}
                     {/*    <div className="">*/}
                     {/*        <img*/}
@@ -135,10 +134,7 @@ const EventCreatingView2 = props => {
                     {/*</div>*/}
                     {user ? (
                         <>
-                            <Box
-                                alignContent={'center'}
-                                maxHeight="56px"
-                            >
+                            <Box alignContent={'center'} maxHeight="56px">
                                 <AvatarView
                                     maxHeight="100%"
                                     user={{
@@ -149,13 +145,10 @@ const EventCreatingView2 = props => {
                             </Box>
                         </>
                     ) : (
-                        <>
-                            ERROR!
-                        </>
+                        <>ERROR!</>
                     )}
 
-
-                    <div className='flex w-full px-12'>
+                    <div className="flex w-full px-12">
                         <div className="rounded-lg bg-gray-100 p-8 sm:p-12">
                             <div className="mb-6">
                                 <TextField
@@ -196,12 +189,13 @@ const EventCreatingView2 = props => {
                                             setValue(newValue);
                                         }}
                                     />
-
                                 </LocalizationProvider>
                             </div>
 
                             <div className="mb-6">
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <LocalizationProvider
+                                    dateAdapter={AdapterDateFns}
+                                >
                                     <TimePicker
                                         label="Start time"
                                         className="
@@ -221,13 +215,17 @@ const EventCreatingView2 = props => {
                                         onChange={(newValue) => {
                                             setValue(newValue);
                                         }}
-                                        renderInput={(params) => <TextField {...params} />}
+                                        renderInput={(params) => (
+                                            <TextField {...params} />
+                                        )}
                                     />
                                 </LocalizationProvider>
                             </div>
 
                             <div className="mb-6">
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <LocalizationProvider
+                                    dateAdapter={AdapterDateFns}
+                                >
                                     <TimePicker
                                         label="End time"
                                         className="
@@ -247,7 +245,9 @@ const EventCreatingView2 = props => {
                                         onChange={(newValue) => {
                                             setValue(newValue);
                                         }}
-                                        renderInput={(params) => <TextField {...params} />}
+                                        renderInput={(params) => (
+                                            <TextField {...params} />
+                                        )}
                                     />
                                 </LocalizationProvider>
                             </div>
@@ -309,12 +309,20 @@ const EventCreatingView2 = props => {
                             {/*</div>*/}
 
                             <div className="m-6">
-                                <ParticipantSelectorPresenter placeholderText='Invite user' buttonText='Invite' multiple />
-                                <List className='m-2 overflow-y-auto h-32'>
+                                <ParticipantSelectorPresenter
+                                    onSubmit={handleAddUser}
+                                    placeholderText="Invite user"
+                                    buttonText="Invite"
+                                    multiple
+                                />
+                                <List className="m-2 h-32 overflow-y-auto">
                                     <TransitionGroup>
                                         {usersForEvent.map((item) => (
                                             <Collapse key={item}>
-                                                {renderItem({ item, handleRemoveUser })}
+                                                {renderItem({
+                                                    item,
+                                                    handleRemoveUser,
+                                                })}
                                             </Collapse>
                                         ))}
                                     </TransitionGroup>
@@ -385,7 +393,7 @@ const EventCreatingView2 = props => {
                         </div>
                     </div>
                 </div>
-        </DialogContent>
+            </DialogContent>
         </>
     );
 };
