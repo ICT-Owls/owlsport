@@ -1,3 +1,6 @@
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { Avatar, AvatarGroup, Card, IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -14,11 +17,7 @@ import {
     formatLocation,
     formatUsername,
 } from '../helpers/Format';
-import AvatarPresenter from '../presenters/AvatarPresenter';
 import AvatarView from './AvatarView';
-
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 export default function EventDetailsView({ event, creator, user }) {
     const [open, setOpen] = React.useState(true);
@@ -67,7 +66,10 @@ export default function EventDetailsView({ event, creator, user }) {
                         </div>
 
                         <div>
-                            <Button className="black mb-5 w-52 bg-primary-100 text-background-100">
+                            <Button
+                                variant="contained"
+                                className="black mb-5 w-52 bg-primary-100 text-background-100"
+                            >
                                 Request ride
                             </Button>
                         </div>
@@ -97,14 +99,14 @@ export default function EventDetailsView({ event, creator, user }) {
                         <div>Carpooling</div>
                         <div>Events</div>
                     </div>
-                    <div className="my-3 flex flex-row justify-around overflow-scroll py-3">
-                        <div>
-                            <Box sx={{ mt: 1 }}>
-                                <List>
-                                    <TransitionGroup></TransitionGroup>
-                                </List>
-                            </Box>
-                        </div>
+                    <div className="h-max-48 h-48 overflow-y-scroll">
+                        <List className="flex flex-row flex-wrap justify-center">
+                            {CarpoolerView({
+                                driver: user,
+                                seats: 4,
+                                passengers: [user, user],
+                            })}
+                        </List>
                     </div>
                     <Divider variant="middle" />
 
@@ -122,5 +124,74 @@ export default function EventDetailsView({ event, creator, user }) {
                 <Button onClick={handleClose}>Save and exit</Button>
             </DialogActions>
         </Dialog>
+    );
+}
+
+function CarpoolerView({ driver, seats, passengers }) {
+    const free = seats - passengers.length;
+    return (
+        <div className="m-2 inline-flex justify-start">
+            {/* <Card sx={{ minWidth: 150 }}> */}
+            <Card>
+                <div className="m-2 ml-4 flex flex-col">
+                    <div className="mr-2 flex flex-row items-center">
+                        <AvatarView user={driver} />
+
+                        <Typography
+                            className="ml-2"
+                            variant="h6"
+                            component="div"
+                        >
+                            {formatUsername(driver)}
+                        </Typography>
+                    </div>
+
+                    <div className="flex">
+                        <IconButton
+                            aria-label="location"
+                            className="m-0"
+                            size="small"
+                        >
+                            <LocationOnIcon fontSize="small" />
+                            <p>Location</p>
+                        </IconButton>
+                    </div>
+
+                    <div className=" flex justify-start ">
+                        <AvatarGroup max={seats}>
+                            {[...Array(free)].map((i) => (
+                                <Avatar
+                                    key={i}
+                                    alt="Free Seat"
+                                    src="Logotype.png"
+                                />
+                            ))}
+                            {passengers.map((passenger) => (
+                                <AvatarView
+                                    key={passenger.id}
+                                    user={passenger}
+                                />
+                            ))}
+                        </AvatarGroup>
+
+                        <div className="ml-20 flex">
+                            <Button
+                                variant="contained"
+                                className="
+							hover:
+							border-primary
+							rounded
+							border bg-primary-100
+							transition
+							duration-500
+							"
+                            >
+                                JOIN
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            </Card>
+        </div>
     );
 }
