@@ -75,10 +75,7 @@ function subscribeTo(target, callback) {
 
 // Sets a new value for target and calls its callbacks
 function setValue(target, value) {
-    if (!fromLocalStorage(target)) {
-        console.error('setValue: cannot find Target: ', target);
-        return;
-    } else if (value !== fromLocalStorage(target)) {
+    if (value !== fromLocalStorage(target)) {
         toLocalStorage(target, value);
         callStruct(target);
     }
@@ -99,6 +96,14 @@ function callStruct(target) {
 
 //Creates a useState hook that subscribes to model 'target' and updates model & any other states on the same target if changed
 function useCustomHook(target) {
+    if (fromLocalStorage(target) === null || dataStruct[target] === undefined) {
+        console.error(
+            'useCustomHook: Cannot find target: ',
+            target,
+            '. Make sure that it is defined in the datastruct and that it is available in localstorage'
+        );
+        return undefined;
+    }
     const [val, setVal] = useState(fromLocalStorage(target));
     useEffect(() => {
         return subscribeTo(target, (e) => {
