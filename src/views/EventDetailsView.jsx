@@ -1,254 +1,126 @@
-import * as React from 'react';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import LocationOnIcon from '@mui/icons-material/LocationOn'; //Location Icon
 import Divider from '@mui/material/Divider';
-import Card from '@mui/material/Card';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import AvatarGroup from '@mui/material/AvatarGroup';
-import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import DeleteIcon from '@mui/icons-material/Delete';
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
 import { TransitionGroup } from 'react-transition-group';
+import {
+    formatDateMonthDay,
+    formatFullDate,
+    formatLocation,
+    formatUsername,
+} from '../helpers/Format';
+import AvatarPresenter from '../presenters/AvatarPresenter';
+import AvatarView from './AvatarView';
 
-export default function EventDetailsView () {
-    const [open, setOpen] = React.useState(false);
-    const [scroll, setScroll] = React.useState('paper');
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
-    const [currentButtonText, setCurrentButtonText] = useState('Show More');
+export default function EventDetailsView({ event, creator, user }) {
+    const [open, setOpen] = React.useState(true);
+
+    if (!event || !creator) return null;
+
+    const {
+        title,
+        description,
+        location,
+        members,
+        startDateTime,
+        endDateTime,
+    } = event;
+
+    const startDate = new Date(startDateTime);
+    const endDate = new Date(endDateTime);
 
     const handleClose = () => {
         setOpen(false);
     };
 
-    const descriptionElementRef = React.useRef(null);
-    React.useEffect(() => {
-        if (open) {
-            const { current: descriptionElement } = descriptionElementRef;
-            if (descriptionElement !== null) {
-                descriptionElement.focus();
-            }
-        }
-    }, [open]);
-    function CarPooler (props) {
-        return (
-            <div className='flex justify-start ml-4'>
-                {/* <Card sx={{ minWidth: 150 }}> */}
-                <Card>
-                    <div className='flex ml-4 m-2'>
-                        <div className='mr-2'>
-                            <Avatar alt='Erik' img src='Logotype.png' />
+    return (
+        <Dialog
+            disablePortal
+            open={open}
+            onClose={handleClose}
+            scroll={'body'}
+            aria-labelledby="scroll-dialog-title"
+            aria-describedby="scroll-dialog-description"
+            maxWidth={'lg'}
+            fullWidth={true}
+        >
+            <DialogContent>
+                <div className="flex flex-col justify-around">
+                    <div className="flex flex-row items-center justify-between">
+                        {/*TOP BAR*/}
+                        <div className="flex flex-col">
+                            <h2 className="m-1 text-3xl font-bold">{title}</h2>
+                            <div className="flex flex-row items-center">
+                                <AvatarView user={creator} />
+                                <Typography className="m-2">
+                                    Organized by {formatUsername(creator)}
+                                </Typography>
+                            </div>
                         </div>
 
-                        <Typography gutterBottom variant='h6' component='div'>
-                            Eric {props.number}
+                        <div>
+                            <Button className="black mb-5 w-52 bg-primary-100 text-background-100">
+                                Request ride
+                            </Button>
+                        </div>
+
+                        <div className="flex items-center justify-center">
+                            <Box className="m-2 flex aspect-square h-16 w-16 items-center justify-center rounded-lg bg-primary-100 p-3 text-background-100">
+                                <p className="text-xl font-bold">
+                                    {formatDateMonthDay(startDate)}
+                                </p>
+                            </Box>
+                        </div>
+                    </div>
+                    <div className="mt-6 flex flex-col items-center justify-center">
+                        <Typography className="flex items-center">
+                            <CalendarMonthIcon className="m-2" />
+                            {formatFullDate(startDate)} until{' '}
+                            {formatFullDate(endDate)}
+                        </Typography>
+                        <Typography className="flex items-center">
+                            <LocationOnIcon className="m-2" />
+                            {formatLocation(location)}
                         </Typography>
                     </div>
 
-                    <div className='flex ml-4'>
-                        <IconButton aria-label='location' size='small'>
-                            <LocationOnIcon fontSize='small' />
-                            <p>Location</p>
-                        </IconButton>
+                    <div className="my-3 flex flex-row justify-around bg-gray-300 py-3">
+                        <div>Description</div>
+                        <div>Carpooling</div>
+                        <div>Events</div>
                     </div>
-
-                    <div className='justify-start flex ml-4 '>
-                        <AvatarGroup max={4}>
-                            <Avatar alt='Erik' img src='Logotype.png' />
-                            <Avatar alt='Erik' img src='Logotype.png' />
-                            <Avatar alt='Erik' img src='Logotype.png' />
-                            <Avatar alt='Erik' img src='Logotype.png' />
-                        </AvatarGroup>
-
-                        <div className='flex ml-20'>
-                            <Button
-                                variant='contained'
-                                className='
-                                hover: rounded
-                                border
-                                transition duration-500
-                                bg-primary
-                                border-primary
-                                '
-                            >
-                                JOIN
-                            </Button>
+                    <div className="my-3 flex flex-row justify-around overflow-scroll py-3">
+                        <div>
+                            <Box sx={{ mt: 1 }}>
+                                <List>
+                                    <TransitionGroup></TransitionGroup>
+                                </List>
+                            </Box>
                         </div>
                     </div>
-                </Card>
-            </div>
-        );
-    }
+                    <Divider variant="middle" />
 
-    const FRUITS = [
-        <CarPooler number={3} key={3}></CarPooler>,
-        <CarPooler number={2} key={2}></CarPooler>,
-        <CarPooler number={1} key={1}></CarPooler>,
-        <CarPooler number={4} key={4}></CarPooler>,
-    ];
-
-    function renderItem ({ item, handleRemoveFruit }) {
-        return (
-            <ListItem
-                secondaryAction={
-                    <IconButton
-                        edge='end'
-                        aria-label='delete'
-                        title='Delete'
-                        onClick={() => handleRemoveFruit()}
-                    ></IconButton>
-                }
-            >
-                <ListItemText primary={item} />
-            </ListItem>
-        );
-    }
-
-    const [fruitsInBasket, setFruitsInBasket] = React.useState(
-        FRUITS.slice(0, 2)
-    );
-
-    const handleAddFruit = () => {
-        setFruitsInBasket(FRUITS);
-    };
-
-    const handleRemoveFruit = () => {
-        setFruitsInBasket(FRUITS.slice(0, 2));
-        // setFruitsInBasket(prev => [...prev.filter(i => i !== item)]);
-    };
-
-    const addFruitButton = (
-        <Button
-            variant='contained'
-            // disabled={fruitsInBasket.length >= FRUITS.length}
-            onClick={() => {
-                if (currentButtonText === 'Show more') {
-                    handleAddFruit();
-                } else {
-                    handleRemoveFruit();
-                }
-
-                handleButtonTextChange();
-            }}
-        >
-            {currentButtonText}
-        </Button>
-    );
-
-    const handleButtonTextChange = () => {
-        if (currentButtonText === 'Show more') {
-            setCurrentButtonText('Show less');
-        } else {
-            setCurrentButtonText('Show more');
-        }
-    };
-
-    return (
-        <div>
-            {FRUITS.map(item => item)}
-            <Button
-                onClick={() => {
-                    setScroll('paper');
-                    setOpen(true);
-                }}
-            >
-                scroll
-            </Button>
-
-            <Dialog
-                disablePortal
-                open={open}
-                onClose={handleClose}
-                scroll={scroll}
-                aria-labelledby='scroll-dialog-title'
-                aria-describedby='scroll-dialog-description'
-            >
-                <DialogContent>
-                    <div className='flex flex-col justify-around bg-gray-100'>
-                        <div className='flex flex-row justify-evenly'>
-                            <div className='flex flex-col justify-start my-3 mx-10'>
-                                <div className='text-2xl'>Cool match</div>
-                                <div className='text-xs'>
-                                    Organized by Eric Erricson
-                                </div>
-                            </div>
-                            <div className='flex flex-col justify-start my-3 mx-10'>
-                                <Button
-                                    className='mb-5 w-52 bg-gray-300'
-                                    sx={{ color: 'black' }}
-                                >
-                                    Request ride
-                                </Button>
-                                <div className='my-1 w-fit h-fit text-xs text-gray-400'>
-                                    Thur, April 26, 2066 at 22:30 - Thur, April
-                                    26, 2066 at 23:30
-                                </div>
-                                <div className='my-1 w-fit h-fit text-xs text-gray-400'>
-                                    kungsträdgården
-                                </div>
-                            </div>
-                            <div className='my-5 mx-10 w-14 h-14 bg-primary-100'>
-                                <div className=' text-xl'>APR 23</div>
-                            </div>
-                        </div>
-
-                        <div className='flex flex-row justify-around py-3 my-3 bg-gray-300'>
-                            <div>Description</div>
-                            <div>Carpooling</div>
-                            <div>Events</div>
-                        </div>
-                        <div className='flex overflow-scroll flex-row justify-around py-3 my-3'>
-                            <div>
-                                {addFruitButton}
-                                <Box sx={{ mt: 1 }}>
-                                    <List>
-                                        <TransitionGroup>
-                                            {FRUITS.map(item => (
-                                                <Collapse key={item}>
-                                                    {renderItem({
-                                                        item,
-                                                        handleRemoveFruit,
-                                                    })}
-                                                </Collapse>
-                                            ))}
-                                        </TransitionGroup>
-                                    </List>
-                                </Box>
-                            </div>
-                        </div>
-                        <Divider variant='middle' />
-                        <div className='my-1 w-fit h-fit text-xs text-gray-700'>
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry. Lorem Ipsum has been the
-                            industries standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and
-                            scrambled it to make a type specimen book. It has
-                            survived not only five centuries, but also the leap
-                            into electronic typesetting, remaining essentially
-                            unchanged. It was popularised in the 1960s with the
-                            release of Letraset sheets containing Lorem Ipsum
-                            passages, and more recently with desktop publishing
-                            software like Aldus PageMaker including versions of
-                            Lorem Ipsum.
-                        </div>
-                        <Divider variant='middle' />
-
-                        <div> MAP </div>
+                    <div className="my-2 h-fit w-full text-center text-sm">
+                        <h3 className="m-2">Description</h3>
+                        {description}
                     </div>
-                </DialogContent>
+                    <Divider variant="middle" />
 
-                <DialogActions>
-                    <Button onClick={handleClose}>Save and exit</Button>
-                </DialogActions>
-            </Dialog>
-        </div>
+                    <div> Map goes here </div>
+                </div>
+            </DialogContent>
+
+            <DialogActions>
+                <Button onClick={handleClose}>Save and exit</Button>
+            </DialogActions>
+        </Dialog>
     );
 }
