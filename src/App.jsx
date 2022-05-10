@@ -12,7 +12,7 @@ import { LightTheme, DarkTheme } from './Themes';
 import './App.css';
 import React from 'react';
 import { Box } from '@mui/material';
-import { subscribeToLogin } from './helpers/Firebase';
+import { subscribeToLogin, userApi } from './helpers/Firebase';
 import { useEffect } from 'react';
 import { auth } from './helpers/Firebase';
 
@@ -21,7 +21,14 @@ function App() {
     const [user, setUser] = React.useState(null);
 
     useEffect(() => {
-        return auth.onAuthStateChanged((e) => setUser(e));
+        return auth.onAuthStateChanged((e) => {
+            userApi
+                .userIdGet(e.uid, {
+                    headers: { authorization: `Bearer ${e.accessToken}` },
+                })
+                .then((u) => setUser({ ...u, accessToken: e.accessToken }))
+                .catch((err) => console.error(err));
+        });
     }, []);
 
     useEffect(() => {
@@ -33,7 +40,7 @@ function App() {
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
                 <div className="App absolute flex h-full w-full flex-col justify-start bg-background-200 ">
                     <NavbarPresenter />
-                    <div className="mt-20 w-full content-center justify-center flex flex-row">
+                    <div className="mt-20 flex w-full flex-row content-center justify-center">
                         <SidebarPresenter user={user} />
                         <MainContentPresenter user={user} />
                     </div>
