@@ -1,5 +1,7 @@
 {
     "presets": [
-        "@babel/typescript", "@babel/env", "react-app"
+        "react-app",
+        ["@babel/env", { "loose": true }],
+        "@babel/typescript"
     ]
 }
