@@ -1,7 +1,7 @@
 {
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:tailwindcss/recommended",
         "plugin:react/recommended"
     ],
@@ -15,6 +15,7 @@
         "tailwindcss/enforces-shorthand": "off",
         "tailwindcss/classnames-order": "off",
         // ^^^^^^^^^^ Should change these to warn at some pint ^^^^^^^^^^^^
+        "@typescript-eslint/no-unused-vars": "warn", // temp fix to "node.params is not iterable" error
         "no-tabs": "warn"
     },
     "overrides": [
@@ -25,7 +26,7 @@
             }
         }
     ],
-    "plugins": ["react", "tailwindcss"],
+    "plugins": ["react", "tailwindcss", "@typescript-eslint"],
     "parserOptions": {
         "babelOptions": {
             "presets": [
@@ -54,5 +55,5 @@
         "build/**/*",
         "src/api-client/**/*",
         "server/**/*"
-    ],
+    ]
 }
