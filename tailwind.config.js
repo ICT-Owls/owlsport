@@ -18,6 +18,10 @@ module.exports = {
                     200: '#e8eaec',
                     100: '#ffffff',
                 },
+                backgroundDark: {
+                    200: '#303030',
+                    100: '#424242',
+                },
             },
         },
     },
