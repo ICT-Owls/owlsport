@@ -89,6 +89,7 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
                 multiple={props.multiple}
                 openOnFocus={true}
                 clearOnBlur={false}
+                autoSelect
                 open={open}
                 onOpen={() => {
                     setOpen(true);

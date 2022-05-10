@@ -30,6 +30,7 @@ export default function ParticipantSelectorPresenter(
 
     const loading = (!loaded || options.length <= 1) && inputValue !== '';
 
+    // Handle user typing
     React.useEffect(() => {
         let active = true;
 
@@ -65,8 +66,15 @@ export default function ParticipantSelectorPresenter(
     }, [inputValue]);
 
     const handleSelect = () => {
-        props.onSubmit?.(selection);
-        setSelection([]);
+        if (emailRegEx.test(inputValue)) {
+            setSelection([
+                ...selection,
+                { label: inputValue, email: inputValue },
+            ]);
+        }
+
+        props.onSubmit?.(selection); // Call callback
+        setSelection([]); // Clear input
     };
 
     return (
