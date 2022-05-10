@@ -1,40 +1,34 @@
-import React, { SetStateAction, Dispatch } from 'react';
-
-import ParticipantSelectorPresenter, {
-    UserOption,
-} from '../presenters/ParticipantSelectorPresenter';
-import Show from '../helpers/Show';
+import React from 'react';
 
 import {
-    Dialog,
-    DialogTitle,
+    UserOption,
+} from '../presenters/ParticipantSelectorPresenter';
+
+import {
     Button,
     Box,
     Autocomplete,
-    Divider,
     TextField,
-    Container,
-    ListItem,
     CircularProgress,
 } from '@mui/material';
 
 import { AutocompleteRenderInputParams } from '@mui/material';
-import { handleBreakpoints } from '@mui/system';
 
 export type ParticipantSelectorProps = {
-    valid: boolean;
-    options: UserOption[];
-    placeholderText?: string;
-    buttonText?: string;
-    loading: boolean;
+    valid: boolean;  // Is the current text input a valid user?
+    options: UserOption[]; // Available options in drop-down menu
+    placeholderText?: string; // Text to display when textfield is empty
+    buttonText?: string; // Text to display on the button
+    loading: boolean; // Are the options currently being loaded in?
+    inputValue?: string; // Text in textfield
     setInputValue?: (textInput: string) => void;
-    setValue?: (selection: UserOption[]) => void;
-    onSubmit?: () => void;
-    inputValue?: string;
-    value?: UserOption[];
-    multiple?: boolean;
+    value?: UserOption[]; // Selected options
+    setValue?: (selection: UserOption[]) => void; 
+    onSubmit?: () => void; // Will be called when the button is pressed
+    multiple?: boolean; // Allow multiple options to be selected?
 };
 
+// Renderer for the text field
 const UserTextField = (props: {
     params: AutocompleteRenderInputParams;
     placeholderText?: string;
