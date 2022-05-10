@@ -25,7 +25,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function EventListView(props) {
+export default function EventListView({ events, user }) {
     const [createOpen, setCreateOpen] = React.useState(false);
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
@@ -33,7 +33,6 @@ export default function EventListView(props) {
             <Dialog
                 // for keeping CSS style in EventCreating.jsx
                 disablePortal={true}
-
                 open={createOpen}
                 onClose={() => {
                     setCreateOpen(false);
@@ -43,8 +42,8 @@ export default function EventListView(props) {
             >
                 <Container padding="1rem">
                     <EventCreatingPresenter
-                        user={props.user}
-                        callback= {() => {
+                        user={user}
+                        callback={() => {
                             setCreateOpen(false);
                         }}
                     />
@@ -63,65 +62,84 @@ export default function EventListView(props) {
                 </Button>
             </Box>
             <List className={'overflow-hidden'}>
-                {props.events.map((e) => {
-                    return (
-                        <ListItem key={e.id} sx={{ p: 0, mx: 0, my: '1rem' }}>
-                            <Link
-                                href={'/events/' + e.id}
-                                underline="none"
-                                className={'grow'}
-                            >
-                                <Card
-                                    className={
-                                        'max-h-32 bg-background-100 p-0 last:pb-0 hover:bg-background-200'
-                                    }
-                                    elevation={2}
+                {events.map(
+                    ({
+                        id,
+                        title,
+                        description,
+                        members,
+                        location,
+                        startDateTime,
+                        endDateTime,
+                    }) => {
+                        return (
+                            <ListItem key={id} sx={{ p: 0, mx: 0, my: '1rem' }}>
+                                <Link
+                                    href={'/events/' + id}
+                                    underline="none"
+                                    className={'grow'}
                                 >
-                                    <div className={'flex grow flex-row p-0'}>
+                                    <Card
+                                        className={
+                                            'max-h-32 bg-background-100 p-0 last:pb-0 hover:bg-background-200'
+                                        }
+                                        elevation={2}
+                                    >
                                         <div
-                                            className={
-                                                'flex aspect-square h-32 flex-col items-center justify-center'
-                                            }
-                                        >
-                                            <DateBox
-                                                dateTime={e.startDateTime}
-                                            />
-                                            <hr className={'m-0 w-1/3'} />
-                                            <DateBox dateTime={e.endDateTime} />
-                                        </div>
-                                        <Divider
-                                            orientation="vertical"
-                                            flexItem
-                                        />
-                                        <div
-                                            className={
-                                                'flex grow flex-col md:flex-row lg:flex-row'
-                                            }
+                                            className={'flex grow flex-row p-0'}
                                         >
                                             <div
                                                 className={
-                                                    'mr-auto ml-4 border-r-4'
+                                                    'flex aspect-square h-32 flex-col items-center justify-center'
                                                 }
                                             >
-                                                <Typography variant="h5" mt={1}>
-                                                    {e.title}
-                                                </Typography>
-                                                <Typography variant="body1">
-                                                    Location Here
-                                                </Typography>
+                                                <DateBox
+                                                    dateTime={startDateTime}
+                                                />
+                                                <hr className={'m-0 w-1/3'} />
+                                                <DateBox
+                                                    dateTime={endDateTime}
+                                                />
                                             </div>
-                                            <MemberBox
-                                                members={e.members}
-                                                user={props.user}
-                                                className={'lg:min-w-full'}
+                                            <Divider
+                                                orientation="vertical"
+                                                flexItem
                                             />
+                                            <div
+                                                className={
+                                                    'flex grow flex-col md:flex-row lg:flex-row'
+                                                }
+                                            >
+                                                <div
+                                                    className={
+                                                        'mr-auto ml-4 border-r-4'
+                                                    }
+                                                >
+                                                    <Typography
+                                                        variant="h5"
+                                                        mt={1}
+                                                    >
+                                                        {title}
+                                                    </Typography>
+                                                    <Typography variant="body1">
+                                                        {location.address
+                                                            ? location.address
+                                                            : `${location.longtitude}x${location.latitude}`}
+                                                    </Typography>
+                                                </div>
+                                                <MemberBox
+                                                    members={members}
+                                                    user={user}
+                                                    className="lg:min-w-full"
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
-                                </Card>
-                            </Link>
-                        </ListItem>
-                    );
-                })}
+                                    </Card>
+                                </Link>
+                            </ListItem>
+                        );
+                    }
+                )}
             </List>
         </Container>
     );
@@ -146,8 +164,8 @@ const months = [
     'Dec',
 ];
 
-function DateBox(props) {
-    const date = new Date(props.dateTime);
+function DateBox({ dateTime }) {
+    const date = new Date(dateTime);
     const dateText = date.getDate() + ' ' + months[date.getMonth()];
     const timeText =
         (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) +
@@ -155,9 +173,9 @@ function DateBox(props) {
         (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
 
     return (
-        <Box className={'child:text-center'}>
+        <Box className="child:text-center">
             <Typography variant="h6">{timeText}</Typography>
-            <Typography variant="body2" className={'text-secondary-100'}>
+            <Typography variant="body2" className="text-secondary-100">
                 {dateText}
             </Typography>
         </Box>
@@ -168,8 +186,7 @@ DateBox.propTypes = {
     dateTime: PropTypes.number,
 };
 
-function MemberBox(props) {
-    const members = props.members;
+function MemberBox({ members, user }) {
     return (
         <List
             className={
@@ -177,7 +194,7 @@ function MemberBox(props) {
             }
         >
             {members.map((m) => (
-                <AvatarPresenter key={m} user={props.user} userId={m} />
+                <AvatarPresenter key={m} user={user} userId={m} />
             ))}
         </List>
     );
