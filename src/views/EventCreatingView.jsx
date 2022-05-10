@@ -94,7 +94,6 @@ const EventCreatingView = ({
                 <div className="flex flex-row justify-center">
                     {user ? (
                         <Box alignContent={'center'} maxHeight="56px">
-                            {console.log(user)}
                             <AvatarView maxHeight="100%" user={user} />
                         </Box>
                     ) : (
