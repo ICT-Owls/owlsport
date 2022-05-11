@@ -1,14 +1,5 @@
 {
     "presets": [
-        "@babel/typescript",
-        [
-            "@babel/env",
-            {
-                "modules": "cjs",
-                "targets": { "node": 17 }
-            }
-        ]
-    ],
-    "plugins": ["@babel/transform-runtime"],
-    "sourceType": "module"
+        "@babel/typescript", "@babel/env"
+    ]
 }

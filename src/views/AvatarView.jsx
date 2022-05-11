@@ -3,7 +3,10 @@ import { generateAvatar } from '../helpers/Generators';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export default function AvatarView({ user }) {
+
+
+export default function AvatarView(props) {
+    const user = props.user;
     const name = user.firstName + ' ' + user.lastName;
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (

@@ -18,12 +18,4 @@ const authorize = async function (req, res, next) {
     else next();
 };
 
-const validateLocation = function (loc) {
-    return (
-        parseFloat(loc.longitude) !== NaN &&
-        parseFloat(loc.latitude) !== NaN &&
-        (loc.address == undefined || typeof loc.address == 'string')
-    );
-};
-
-module.exports = { validate, authorize, validateLocation };
+module.exports = { validate, authorize };

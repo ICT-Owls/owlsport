@@ -1,26 +1,27 @@
-import DeleteIcon from '@mui/icons-material/Delete';
-import {
-    Box,
-    Button,
-    Collapse,
-    DialogContent,
-    IconButton,
-    List,
-    ListItem,
-    ListItemText,
-    TextareaAutosize,
-} from '@mui/material';
+import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import * as React from 'react';
-import { TransitionGroup } from 'react-transition-group';
-import ParticipantSelectorPresenter from '../presenters/ParticipantSelectorPresenter';
-import AvatarView from './AvatarView';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+//import { FormControlUnstyled } from '@mui/base';
+import {
+    Button,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextareaAutosize,
+} from '@mui/material';
+//import { Grid } from '@material-ui/core';
+//import SearchIcon from '@mui/icons-material/Search';
+import { Wrapper } from '@googlemaps/react-wrapper';
+import { useEffect, useRef } from 'react';
 
-/*function MyMapComponent({ center, zoom }) {
+// function UserInfoView() {
+//     return (null);
+// }
+function MyMapComponent({ center, zoom }) {
     console.log('MyMapComponent', center, zoom);
     if (center === undefined) center = { lat: -25.344, lng: 131.031 };
     if (zoom === undefined) zoom = 6;
@@ -34,76 +35,69 @@ import AvatarView from './AvatarView';
     });
 
     return <div ref={ref} id="map" />;
-}*/
-
-function renderItem({ item, handleRemoveUser }) {
-    return (
-        <ListItem
-            secondaryAction={
-                <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    title="Delete"
-                    onClick={() => handleRemoveUser(item)}
-                >
-                    <DeleteIcon />
-                </IconButton>
-            }
-        >
-            <ListItemText primary={item.label} />
-        </ListItem>
-    );
 }
-// Props:
-//    user
-//export default function EventCreatingView2 = props => {
-const EventCreatingView = ({
-    title,
-    setTitle,
-    description,
-    setDescription,
-    startDateTime,
-    setStartDateTime,
-    endDateTime,
-    setEndDateTime,
-    members,
-    setMembers,
-    location,
-    setLocation,
-    submit,
-    user,
-}) => {
-    const [usersForEvent, setUsersForEvent] = React.useState([]);
 
-    const handleAddUser = (options) => {
-        setUsersForEvent((prev) => [...options, ...prev]);
-    };
+// const InputBox = params => {
+//     const {placeholder, name, id} = params;
+//     return (
+//         <input
+//             type="text"
+//             placeholder={placeholder}
+//             className="
+//                 w-full
+//                 rounded
+//                 p-3
+//                 text-gray-800
+//                 dark:text-gray-50
+//                 dark:bg-slate-700
+//                 border-gray-500
+//                 dark:border-slate-600
+//                 outline-none
+//                 focus-visible:shadow-none
+//                 focus:border-primary
+//                 "
+//             name="event"
+//             id="event"
+//         />
+//     );
+// };
 
-    const handleRemoveUser = (item) => {
-        setUsersForEvent((prev) => [...prev.filter((i) => i !== item)]);
-    };
+export default function EventCreatingView2(props) {
+    const [value, setValue] = React.useState(new Date());
+    const [title, setTitle] = React.useState('');
+    const [description, setDescription] = React.useState('');
+    const [startDateTime, setStartDateTime] = React.useState(0);
+    const [endDateTime, setEndDateTime] = React.useState(0);
+    const [members, setMembers] = React.useState([]);
+
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
-        <>
-            <DialogContent>
-                <div className="flex flex-row justify-center">
-                    {user ? (
-                        <Box alignContent={'center'} maxHeight="56px">
-                            <AvatarView maxHeight="100%" user={user} />
-                        </Box>
-                    ) : (
-                        <>ERROR!</>
-                    )}
+        // <div className='container absolut w-screen h-screen bg-black bg-opacity-10 flex justify-center'>
+        <div>
+            <div className="mt-24 flex w-full justify-center bg-white">
+                <div className="m-8">
+                    <div className="relative ml-14 flex justify-start">
+                        {/*Avatar/UserID*/}
+                        <div className="">
+                            <img
+                                src="avatar.png"
+                                className="h-12"
+                                alt="avatar"
+                            />
+                        </div>
 
-                    <div className="flex w-full px-12">
-                        <div className="rounded-lg bg-gray-100 p-8 sm:p-12">
+                        <div className="ml-8">
+                            <h5 className="">James Bond</h5>
+                        </div>
+                    </div>
+                    <div className='data-aos-duration="2000 flex w-full px-12'>
+                        <div className="relative rounded-lg bg-gray-100 p-8 sm:p-12">
                             <div className="mb-6">
                                 <TextField
                                     fullWidth
                                     id="outlined-basic"
                                     label="Event"
                                     variant="outlined"
-                                    value={title}
                                     onChange={(e) => {
                                         setTitle(e.target.value);
                                     }}
@@ -114,14 +108,11 @@ const EventCreatingView = ({
                                 <LocalizationProvider
                                     dateAdapter={AdapterDateFns}
                                 >
-                                    <DatePicker
+                                    <DateTimePicker
                                         renderInput={(props) => (
-                                            <TextField
-                                                {...props}
-                                                className="w-full"
-                                            />
+                                            <TextField {...props} />
                                         )}
-                                        label="Select Date"
+                                        label="Select Date and Time"
                                         className="
                                     focus:border-primary
                                     w-full
@@ -135,98 +126,53 @@ const EventCreatingView = ({
                                     dark:bg-slate-700
                                     dark:text-gray-50
                                     "
-                                        value={startDateTime}
-                                        onChange={(newValue) => {
-                                            setStartDateTime(
-                                                Date.parse(newValue)
+                                        value={value}
+                                        onChange={(date) => {
+                                            setValue(date);
+                                            setEndDateTime(
+                                                endDateTime +
+                                                    date.valueOf() -
+                                                    startDateTime
                                             );
+                                            setStartDateTime(date.valueOf());
                                         }}
                                     />
                                 </LocalizationProvider>
                             </div>
 
                             <div className="mb-6">
-                                <LocalizationProvider
-                                    dateAdapter={AdapterDateFns}
-                                >
-                                    <TimePicker
-                                        label="Start time"
-                                        className="
-                                    focus:border-primary
-                                    w-full
-                                    rounded
-                                    border-gray-500
-                                    p-3
-                                    text-gray-800
-                                    outline-none
-                                    focus-visible:shadow-none
-                                    dark:border-slate-600
-                                    dark:bg-slate-700
-                                    dark:text-gray-50
-                                    "
-                                        value={startDateTime}
-                                        onChange={(newDate) => {
-                                            setStartDateTime(
-                                                Date.parse(newDate)
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">
+                                        Hours
+                                    </InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value="1"
+                                        label="Duration"
+                                        onChange={(event) => {
+                                            setEndDateTime(
+                                                startDateTime +
+                                                    (isNaN(event.target.value)
+                                                        ? 1
+                                                        : event.target.value) *
+                                                        3600000
                                             );
                                         }}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                className="w-full"
-                                            />
-                                        )}
-                                    />
-                                </LocalizationProvider>
-                            </div>
-
-                            <div className="mb-6">
-                                <LocalizationProvider
-                                    dateAdapter={AdapterDateFns}
-                                >
-                                    <TimePicker
-                                        label="End time"
-                                        className="
-                                    focus:border-primary
-                                    w-full
-                                    rounded
-                                    border-gray-500
-                                    p-3
-                                    text-gray-800
-                                    outline-none
-                                    focus-visible:shadow-none
-                                    dark:border-slate-600
-                                    dark:bg-slate-700
-                                    dark:text-gray-50
-                                    "
-                                        value={endDateTime}
-                                        onChange={(newDate) => {
-                                            setEndDateTime(Date.parse(newDate));
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                className="w-full"
-                                            />
-                                        )}
-                                    />
-                                </LocalizationProvider>
+                                    >
+                                        <MenuItem value={1}>One</MenuItem>
+                                        <MenuItem value={2}>Two</MenuItem>
+                                        <MenuItem value={3}>Three</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </div>
 
                             <div className="mb-6">
                                 <TextField
                                     fullWidth
                                     id="outlined-basic"
-                                    label="Address"
+                                    label="Location"
                                     variant="outlined"
-                                    value={location.address || ''}
-                                    onChange={(e) =>
-                                        setLocation({
-                                            longitude: 0,
-                                            latitude: 0,
-                                            address: e.target.value,
-                                        })
-                                    }
                                 />
                                 {/*<input*/}
                                 {/*    type="text"*/}
@@ -242,25 +188,30 @@ const EventCreatingView = ({
                                 {/*/>*/}
                             </div>
 
-                            <div className="mb-6">
-                                <ParticipantSelectorPresenter
-                                    onSubmit={handleAddUser}
-                                    placeholderText="Invite user"
-                                    buttonText="Invite"
-                                    multiple
-                                />
-                                <List className="m-2 h-32 overflow-y-auto">
-                                    <TransitionGroup>
-                                        {usersForEvent.map((item) => (
-                                            <Collapse key={item.email}>
-                                                {renderItem({
-                                                    item,
-                                                    handleRemoveUser,
-                                                })}
-                                            </Collapse>
-                                        ))}
-                                    </TransitionGroup>
-                                </List>
+                            <div className="m-6">
+                                <div className="flex justify-center space-x-2">
+                                    <div>
+                                        <img
+                                            src="avatar.png"
+                                            className="h-12"
+                                            alt="avatar"
+                                        />
+                                    </div>
+                                    <div>
+                                        <img
+                                            src="avatar.png"
+                                            className="h-12"
+                                            alt="avatar"
+                                        />
+                                    </div>
+                                    <div>
+                                        <img
+                                            src="avatar.png"
+                                            className="h-12"
+                                            alt="avatar"
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
                             <form className="">
@@ -277,7 +228,16 @@ const EventCreatingView = ({
                                     transition
                                     duration-500
                                     "
-                                            onClick={submit}
+                                            onClick={() => {
+                                                props.callback({
+                                                    members: members,
+                                                    startDateTime:
+                                                        startDateTime,
+                                                    endDateTime: endDateTime,
+                                                    description: description,
+                                                    title: title,
+                                                });
+                                            }}
                                         >
                                             Create
                                         </Button>
@@ -290,21 +250,23 @@ const EventCreatingView = ({
                             <div className="relative rounded-lg bg-gray-100 p-8 sm:p-12">
                                 <TextareaAutosize
                                     aria-label="minimum height"
-                                    minRows={20}
-                                    maxRows={25}
+                                    minRows={15}
+                                    maxRows={20}
                                     placeholder="About"
-                                    style={{ width: 400 }}
-                                    value={description}
-                                    onChange={(e) =>
-                                        setDescription(e.target.value)
-                                    }
+                                    style={{ width: 600 }}
+                                    onChange={(e) => {
+                                        setDescription(e.target.value);
+                                    }}
                                 />
 
-                                <div className="mt-8">
+                                <div className="m-6">
                                     <iframe
-                                        className="b-0 h-full w-full"
-                                        width="400"
-                                        height="300"
+                                        sx={{ border: '0' }}
+                                        w-full
+                                        h-full
+                                        //width="400"
+                                        //height="400"
+                                        // style="border:0"
                                         loading="lazy"
                                         frameBorder="0"
                                         allowFullScreen
@@ -316,9 +278,7 @@ const EventCreatingView = ({
                         </div>
                     </div>
                 </div>
-            </DialogContent>
-        </>
+            </div>
+        </div>
     );
-};
-
-export default EventCreatingView;
+}

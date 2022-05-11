@@ -19,10 +19,6 @@ module.exports = {
                     100: '#ffffff',
                 },
             },
-            backgroundImage: theme => ({
-                'background': "url('../background.png')",
-            }),
-
         },
     },
     plugins: [

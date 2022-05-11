@@ -1,13 +1,20 @@
 import { initializeApp } from 'firebase/app';
-import { EmailAuthProvider, getAuth, GoogleAuthProvider } from 'firebase/auth';
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    EmailAuthProvider,
+    GoogleAuthProvider,
+} from 'firebase/auth';
 import { auth as firebaseuiAuth } from 'firebaseui';
-import 'firebaseui/dist/firebaseui.css';
-import { v4 as uuidv4 } from 'uuid';
 import {
     Configuration as CarpoolingApiConfig,
-    EventApi,
     UserApi,
+    EventApi,
 } from '../api-client/index.ts';
+import { v4 as uuidv4 } from 'uuid';
+
+import 'firebaseui/dist/firebaseui.css';
 
 const backendApiConfig = new CarpoolingApiConfig({
     // Send request to same origin as the web page
@@ -95,6 +102,51 @@ const uiConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
+const registerUser = async function (
+    firstName,
+    lastName,
+    dateOfBirth,
+    email,
+    password
+) {
+    // Validate or whatever first
+
+    const credentials = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+    );
+
+    const user = await fetch('http://localhost:3001/user/create', {
+        method: 'POST',
+        headers: {
+            authorization: `Bearer ${credentials.user.accessToken}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+        },
+        body: JSON.stringify({
+            firstName: firstName,
+            lastName: lastName,
+            dateOfBirth: dateOfBirth,
+        }),
+    }).then((r) => r.json());
+
+    return user;
+};
+
+const loginUser = async function (email, password) {
+    const credentials = await signInWithEmailAndPassword(auth, email, password);
+    const user = await fetch(
+        `http://localhost:3001/user/${credentials.user.uid}`,
+        {
+            headers: {
+                authorization: `Bearer ${credentials.user.accessToken}`,
+            },
+        }
+    ).then((r) => r.json());
+    return user;
+};
+
 //Add new callbackStructs here for each "thing" you want to listen to
 let callbackOnLogin = {};
 function subscribeTo(callbackStruct, callback) {
@@ -162,6 +214,19 @@ export async function getUser() {
     return user;
 }
 
+export async function createEvent(eventInfo) {
+    const token = localStorage.getItem('auth');
+    const uid = localStorage.getItem('uid');
+    if (!token || !uid) return;
+
+    eventInfo.members = [uid]; // temp
+    
+    await eventApi.eventsPost(eventInfo, {
+        headers: { authorization: `Bearer ${token}` },
+    });
+
+}
+
 /* *** */
 
 // Implementation stuff
@@ -172,4 +237,4 @@ function callOnEventChange(eventId, change) {
     }
 }
 
-export { app, userApi, eventApi };
+export { app, userApi, eventApi, registerUser, loginUser };
