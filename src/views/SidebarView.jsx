@@ -1,28 +1,27 @@
-import React from 'react';
-import { IconButton, Divider, Button, Stack, Box, Tab } from '@mui/material';
+import { Box, Button, Divider, IconButton, Stack } from '@mui/material';
 import PropTypes from 'prop-types';
-import SignInView from './SignInView';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import CreateAccountPresenter from '../presenters/CreateAccountPresenter';
 import AvatarView from './AvatarView';
+import SignInView from './SignInView';
 
 export default function SidebarView({
-    isLoggedIn,
-    openLogin,
-    openCreate,
-    setIsLoggedIn,
-    handleLoginVisibility,
-    handleCreateVisibility,
-    user,
-    signOut,
-}) {
+                                        isLoggedIn,
+                                        openLogin,
+                                        openCreate,
+                                        setIsLoggedIn,
+                                        handleLoginVisibility,
+                                        handleCreateVisibility,
+                                        user,
+                                        signOut,
+                                    }) {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
         <>
-            <div className='pt-10 h-auto w-60 justify-start bg-background-100 bg-opacity-80 text-left relative'>
-                <div
-                    className={'fixed'}
-                >
+            <div className='pt-10 h-auto w-60 justify-start bg-background-100 bg-opacity-80 text-left relative' >
+                <div className={'fixed'} >
+
                     <IconButton
                         href="/test"
                         color="secondary"
@@ -32,7 +31,7 @@ export default function SidebarView({
                         <Link to="/">
                             <img
                                 src="Solid_Logotype.png"
-                                className="h-6 w-auto "
+                                className="h-6 w-auto"
                                 alt=""
                             />
                         </Link>
@@ -122,16 +121,15 @@ export default function SidebarView({
                         </Stack>
                     </div>
                 </div>
-                <SignInView
-                    handleVisibility={handleLoginVisibility}
-                    showMe={openLogin}
-                />
-                <CreateAccountPresenter
-                    handleVisibility={handleCreateVisibility}
-                    showMe={openCreate}
-                />
-
             </div>
+            <SignInView
+                handleVisibility={handleLoginVisibility}
+                showMe={openLogin}
+            />
+            <CreateAccountPresenter
+                handleVisibility={handleCreateVisibility}
+                showMe={openCreate}
+            />
         </>
     );
 }
