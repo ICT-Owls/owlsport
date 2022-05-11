@@ -34,18 +34,13 @@ app.use(async (req, _res, next) => {
     next();
 });
 
-app.use(express.static('build'));
+app.use(express.static(path.resolve('..', 'build')));
 
 const userRoute = require('./routes/userRoute.js');
 app.use('/user', userRoute);
 
 const eventRoute = require('./routes/eventRoute.js');
 app.use('/events', eventRoute);
-
-app.get('/', (_req, res) => {
-    res.sendFile(path.resolve('build', 'index.html'));
-});
-
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');

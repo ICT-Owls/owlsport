@@ -1,8 +1,2 @@
-export type EventCreateData = {
-    title: string;
-    description: string;
-    startDateTime: number;
-    endDateTime: number;
-    members: string[];
-    location: string;
-};
+export * from '../api-client/api';
+import * as GeneratedClient from '../api-client/api';

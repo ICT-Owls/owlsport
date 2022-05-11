@@ -3,5 +3,8 @@
         "react-app",
         ["@babel/env", { "loose": true }],
         "@babel/typescript"
+    ],
+    "plugins": [
+        "babel-plugin-transform-node-env-inline"
     ]
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import EventCreatingView from '../views/EventCreatingView';
-import { createEvent } from '../helpers/Firebase';
+import { createEvent } from '../api';
 
 export const EventCreatingPresenter = ({ user }) => {
     const [title, setTitle] = React.useState('');
@@ -10,7 +10,7 @@ export const EventCreatingPresenter = ({ user }) => {
         Date.now() + 1000 * 3600
     );
     const [members, setMembers] = React.useState([]);
-    const [location, setLocation] = React.useState(undefined);
+    const [location, setLocation] = React.useState({address: '', longitude: 0, latitude: 0});
 
     const submit = () => {
         createEvent({

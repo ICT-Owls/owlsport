@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import React, { FC, SyntheticEvent } from 'react';
 
 import { UserOption } from '../presenters/ParticipantSelectorPresenter';
 
@@ -15,7 +15,7 @@ import { AutocompleteRenderInputParams } from '@mui/material';
 
 const filter = createFilterOptions<UserOption>();
 
-export type ParticipantSelectorProps = {
+export type ParticipantSelectorViewProps = {
     valid: boolean; // Is the current text input a valid user?
     options: UserOption[]; // Available options in drop-down menu
     placeholderText?: string; // Text to display when textfield is empty
@@ -58,7 +58,9 @@ const UserTextField = (props: {
     );
 };
 
-const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
+const ParticipantSelectorView: FC<ParticipantSelectorViewProps> = (
+    props: ParticipantSelectorViewProps
+) => {
     const [open, setOpen] = React.useState(false);
 
     const handleChange = (
@@ -112,22 +114,9 @@ const ParticipantSelectorView = (props: ParticipantSelectorProps) => {
                         valid={props.valid}
                     />
                 )}
-                filterOptions={(options, params) => {
-                    const filtered = filter(options, params);
-
-                    const { inputValue } = params;
-                    // Suggest the creation of a new value
-                    const isExisting = options.some(
-                        (option) => inputValue === option.label
-                    );
-                    if (inputValue !== '' && !isExisting && props.valid) {
-                        filtered.push({
-                            label: inputValue,
-                            email: inputValue,
-                        });
-                    }
-                    return filtered;
-                }}
+                isOptionEqualToValue={(option: UserOption, value: UserOption) =>
+                    option.email === value.email
+                }
             />
 
             <Button
