@@ -1,3 +1,5 @@
+info: 
+    version: '0.2.0'
 components:
     schemas:
         # Information about the authentication status of the current user
@@ -55,12 +57,12 @@ components:
         Location:
             type: object
             required:
-                - longtitude
+                - longitude
                 - latitude
             properties:
-                longtitude:
+                longitude:
                     type: float
-                    description: 'Longtitude of the location'
+                    description: 'Longitude of the location'
                 latitude:
                     type: float
                     description: 'Latitude of the location'
