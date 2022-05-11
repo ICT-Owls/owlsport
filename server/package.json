@@ -6,8 +6,8 @@
     "type": "module",
     "scripts": {
         "build": "tsc",
-        "start-prod": "npm run build && cross-env NODE_ENV=production PORT=80 node build/server.js",
-        "start-dev": "npm run build && cross-env NODE_ENV=development PORT=32203 node build/server.js",
+        "start-prod": "npm run build && cross-env NODE_ENV=production PORT=80 node build/src/server.js",
+        "start-dev": "npm run build && cross-env NODE_ENV=development PORT=32203 node build/src/server.js",
         "mocha-test": "mocha --recursive --exit",
         "clean": "rimraf node_modules build/*"
     },
