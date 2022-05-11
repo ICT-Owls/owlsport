@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from 'react';
-
-import { Button, TextField, ListSubheader, Divider } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import { palette } from '@mui/system';
+import { Divider, TextField } from '@mui/material';
+import React from 'react';
+import { generateAvatar } from '../helpers/Generators';
 
 function Item({ sender, content }) {
     return (
