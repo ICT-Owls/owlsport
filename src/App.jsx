@@ -5,14 +5,18 @@ import ChatsPresenter from './presenters/ChatsPresenter';
 import MainContentPresenter from './presenters/MainContentPresenter';
 import EventDetailsPresenter from './presenters/EventDetailsPresenter';
 import { EventCreatingPresenter } from './presenters/EventCreatingPresenter';
+import ParticipantSelectorPresenter from './presenters/ParticipantSelectorPresenter';
 
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
+
 import { StyledEngineProvider } from '@mui/material/styles';
+import { Box, Dialog } from '@mui/material';
+
 import { LightTheme, DarkTheme } from './Themes';
 import './App.css';
-import React from 'react';
-import { Box } from '@mui/material';
+import React, { useEffect } from 'react';
 import { subscribeToLogin } from './helpers/Firebase';
+
 import { useEffect, useState, useLayoutEffect } from 'react';
 import { auth } from './helpers/Firebase';
 import { initModel, useUser } from './models/Model';
