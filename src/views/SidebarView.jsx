@@ -1,61 +1,137 @@
-import React from 'react';
-import {
-    IconButton,
-    ListItemText,
-    MenuItem,
-    MenuList,
-    Divider,
-} from '@mui/material';
+import { Box, Button, Divider, IconButton, Stack } from '@mui/material';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import CreateAccountPresenter from '../presenters/CreateAccountPresenter';
+import AvatarView from './AvatarView';
+import SignInView from './SignInView';
 
-export default function SidebarView() {
-    //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
+export default function SidebarView({
+    isLoggedIn,
+    openLogin,
+    openCreate,
+    setIsLoggedIn,
+    handleLoginVisibility,
+    handleCreateVisibility,
+    user,
+    signOut,
+}) {
+    //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
-        <div className="sidebar">
-            <div className="logo">
-                <img src="Solid_Logotype.png" alt="logo" />
-            </div>
+        <>
+            <div
+                className={
+                    'h-auto w-60 justify-start bg-background-200 text-left'
+                }
+            >
+                <IconButton
+                    href="/test"
+                    color="secondary"
+                    aria-label="Search"
+                    component="span"
+                >
+                    <Link to="/">
+                        <img
+                            src="Solid_Logotype.png"
+                            className="h-6 w-auto"
+                            alt=""
+                        />
+                    </Link>
+                </IconButton>
 
-            <div className="sidebar_first">
-                <ul className="sidebar_ul">
-                    <li
-                        key="0"
-                        onClick={() => (window.location.pathname = '/events')}
+                <div className="sidebar_first">
+                    <Stack
+                        direction="column"
+                        alignItems="flex-start"
+                        justifyContent="flex-start"
+                        className="child:w-full child:p-4 child:text-base"
                     >
-                        <div>Events</div>
-                    </li>
-                    <li
-                        key="1"
-                        onClick={() => (window.location.pathname = '/about')}
-                    >
-                        <div>About Us</div>
-                    </li>
-                    <li
-                        key="2"
-                        onClick={() => (window.location.pathname = '/whatever')}
-                    >
-                        <div>Whatever Else</div>
-                    </li>
-                </ul>
-            </div>
+                        <Button
+                            sx={{ justifyContent: 'left' }}
+                            color={'secondary'}
+                            href="/events"
+                        >
+                            Events
+                        </Button>
+                        <Button
+                            sx={{ justifyContent: 'left' }}
+                            color="secondary"
+                            href="/about"
+                        >
+                            About
+                        </Button>
+                        <Button
+                            sx={{ justifyContent: 'left' }}
+                            color="secondary"
+                            href="/whatever"
+                            className="mb-0"
+                        >
+                            Whatever
+                        </Button>
+                        <Divider style={{ padding: '0px' }} />
 
-            <div className="sidebar_second">
-                <ul className="sidebar_ul">
-                    <li
-                        key="3"
-                        onClick={() => (window.location.pathname = '/login')}
-                    >
-                        <div>Login</div>
-                    </li>
-                    <li
-                        key="4"
-                        onClick={() => (window.location.pathname = '/signup')}
-                    >
-                        <div>Sign Up</div>
-                    </li>
-                </ul>
+                        {user ? (
+                            <>
+                                <Box
+                                    alignContent={'center'}
+                                    width="100%"
+                                    maxHeight="56px"
+                                >
+                                    <AvatarView
+                                        maxHeight="100%"
+                                        user={{
+                                            firstName: 'Test',
+                                            lastName: 'Testson',
+                                        }}
+                                    />
+                                    Signed in
+                                </Box>
+                                <Button
+                                    sx={{ justifyContent: 'left' }}
+                                    color="secondary"
+                                    href="/account"
+                                >
+                                    Account
+                                </Button>
+                                <Button
+                                    sx={{ justifyContent: 'left' }}
+                                    color="secondary"
+                                    href="/whatever"
+                                    onClick={() => signOut()}
+                                >
+                                    Sign Out
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button
+                                    sx={{ justifyContent: 'left' }}
+                                    color="secondary"
+                                    onClick={() => handleLoginVisibility(true)}
+                                >
+                                    Sign In
+                                </Button>
+                                <Button
+                                    sx={{ justifyContent: 'left' }}
+                                    color="secondary"
+                                    onClick={() => handleCreateVisibility(true)}
+                                >
+                                    Create Account
+                                </Button>
+                            </>
+                        )}
+                    </Stack>
+                </div>
             </div>
-        </div>
+            <SignInView
+                handleVisibility={handleLoginVisibility}
+                showMe={openLogin}
+            />
+            <CreateAccountPresenter
+                handleVisibility={handleCreateVisibility}
+                showMe={openCreate}
+            />
+        </>
     );
 }
 

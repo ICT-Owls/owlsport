@@ -1,31 +1,41 @@
+import { Divider, TextField } from '@mui/material';
 import React from 'react';
+import { generateAvatar } from '../helpers/Generators';
 
+function Item({ sender, content }) {
+    return (
+        <div
+            className={
+                'flex' +
+                (sender == 'other'
+                    ? ' justify-start child:bg-secondary-100'
+                    : ' justify-end child:bg-primary-100')
+            }
+        >
+            <span className="m-4 w-auto max-w-full break-words rounded-2xl p-2 pb-3 text-xl">
+                {content}
+            </span>
+        </div>
+    );
+}
+
+function ChatSelection() {
+    return <img src={generateAvatar()} alt="" />;
+}
 export default function ChatsView() {
-    var test;
-    function test2(e) {
-        return null;
-    }
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
-        <div className="bottom-0 right-0 flex justify-start fixed">
-            <div className="m-3 flex justify-end flex-col w-fit">
-                <div className="bg-primary-200 rounded-xl border-secondary-100 border-2 mb-2 w-96">
-                    <div className="child:w-14 child:h-14 flex justify-center flex-row w-auto h-auto">
-                        <img src="Logotype.png" alt="" />
-                        <h5>Eric</h5>
+        <div className="fixed bottom-5 right-5 flex justify-start">
+            <div className="m-3 flex w-fit flex-col justify-end">
+                <div className="w-96 rounded-xl border-2 border-secondary-100 bg-background-100 shadow-md outline-double outline-1 outline-background-200">
+                    <div className="flex h-auto w-auto flex-row items-center justify-start px-10 pt-3 child:w-14">
+                        <img src={generateAvatar()} alt="" />
+                        <h2 className="h-fit">Eric</h2>
                     </div>
-                    <Divider variant="middle" className="bg-secondary-200" />
-                    <div className="h-auto overflow-y-auto max-h-[50vh]">
+                    <Divider variant="middle" className="bg-secondary-100" />
+                    <div className="h-auto max-h-[50vh] overflow-y-auto scrollbar-thin">
                         <Item content="test"></Item>
                         <Item content="test" sender="other"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
-                        <Item content="test"></Item>
                         <Item content="test"></Item>
                         <Item content="test"></Item>
                         <Item content="test"></Item>
@@ -51,7 +61,7 @@ export default function ChatsView() {
                     </div>
                 </div>
                 <TextField
-                    className="w-full max-h-72"
+                    className="max-h-72 w-full"
                     id="outlined-textarea"
                     label="Multiline Placeholder"
                     placeholder="Placeholder"
@@ -59,15 +69,7 @@ export default function ChatsView() {
                 />
             </div>
 
-            <div className="child:w-14 child:h-14 flex justify-start flex-col-reverse w-auto h-auto max-h-[80vh] overflow-scroll">
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
-                <ChatSelection />
+            <div className="flex h-auto max-h-[65vh] w-auto flex-col justify-start self-end overflow-scroll scrollbar overflow-x-hidden scrollbar-track-primary-100 child:h-14 child:w-14">
                 <ChatSelection />
                 <ChatSelection />
                 <ChatSelection />

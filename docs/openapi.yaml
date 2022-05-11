@@ -1,19 +1,19 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.0.1'
+    version: '0.2.0'
 paths:
-    /user/auth:
+    /user/authe:
         get:
-            description: Returns information about authentication status
+            summary: 'Get auth status'
+            description: 'Returns information about authentication status'
             responses:
                 '200':
-                    description: Information about authentication status
+                    description: 'Information about authentication status'
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/AuthInfo'
-
+                                $ref: 'definitions.yaml#/components/schemas/AuthInfo'
     /user/{id}:
         get:
             summary: 'Get a user'
@@ -25,7 +25,7 @@ paths:
                   name: id
                   required: true
                   schema:
-                      $ref: 'definitions.yaml#/schemas/Id'
+                      $ref: 'definitions.yaml#/components/schemas/Id'
                   description: 'The user ID'
             responses:
                 '200':
@@ -33,7 +33,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/User'
+                                $ref: 'definitions.yaml#/components/schemas/User'
                 '400':
                     description: 'No id provided'
                 '401':
@@ -47,6 +47,13 @@ paths:
             description: 'Update a user with new data, omitted fields are unchanged.'
             tags:
                 - user
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: 'definitions.yaml#/components/schemas/Id'
+                  description: 'The user ID'
             requestBody:
                 description: 'The updated user object'
                 required: true
@@ -62,16 +69,14 @@ paths:
                                     type: array
                                     description: 'New friend list of user'
                                     items:
-                                        $ref: 'definitions.yaml#/schemas/Id'
+                                        $ref: 'definitions.yaml#/components/schemas/Id'
             responses:
                 '200':
                     description: 'Returns the updated user'
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/User'
-                '400':
-                    description: 'Invalid body format'
+                                $ref: 'definitions.yaml#/components/schemas/User'
                 '401':
                     description: 'Unauthenticated'
                 '404':
@@ -109,9 +114,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/User'
-                '400':
-                    description: 'Invalid body format'
+                                $ref: 'definitions.yaml#/components/schemas/User'
                 '401':
                     description: 'Unauthenticated'
                 '409':
@@ -123,58 +126,24 @@ paths:
             description: 'Get a specific event by its id'
             tags:
                 - event
+            parameters:
+                - in: path
+                  name: id
+                  schema:
+                      $ref: 'definitions.yaml#/components/schemas/Id'
+                  required: true
+                  description: 'Id of the event to get'
             responses:
                 '200':
                     description: 'Returns the event'
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/Event'
+                                $ref: 'definitions.yaml#/components/schemas/Event'
                 '401':
                     description: 'Unauthenticated'
                 '404':
                     description: 'Event not found'
-
-    /events:
-        post:
-            summary: 'Create an event'
-            description: 'Create a new event by a signed in user.'
-            tags:
-                - event
-            requestBody:
-                description: 'The event object'
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                title:
-                                    type: string
-                                    description: 'Title of the event'
-                                description:
-                                    type: string
-                                    description: 'Description of the event'
-                                startDateTime:
-                                    type: integer
-                                    format: int32
-                                    description: 'Unix timestamp when the event starts'
-                                endDateTime:
-                                    type: integer
-                                    format: int32
-                                    description: 'Unix timestamp when the event ends'
-            responses:
-                '200':
-                    description: 'Returns the event id'
-                    content:
-                        application/json:
-                            schema:
-                                $ref: 'definitions.yaml#/schemas/Event'
-                                description: 'The newly created event'
-                '400':
-                    description: 'Invalid body'
-                '401':
-                    description: 'Unauthenticated'
 
         patch:
             summary: 'Update an event'
@@ -208,7 +177,7 @@ paths:
                                 members:
                                     type: string
                                     items:
-                                        $ref: 'definitions.yaml#/schemas/Id'
+                                        $ref: 'definitions.yaml#/components/schemas/Id'
                                     description: 'List of event members'
             responses:
                 '200':
@@ -216,8 +185,96 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/schemas/Event'
+                                $ref: 'definitions.yaml#/components/schemas/Event'
                 '400':
                     description: 'Invalid body'
                 '401':
-                    description: 'Unauthenticated or Unauthorized'
+                    description: 'Body is empty'
+
+    /events/{id}/self:
+        patch:
+            summary: 'Update own member'
+            description: 'Update your own member object in an event.'
+            tags:
+                - event
+            requestBody:
+                description: |
+                    Fields to modify, non-existant fields lead to no change.
+                    At least one field has to be provided.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                location:
+                                    $ref: 'definitions.yaml#/components/schemas/Location'
+                                    description: 'Your location from where you want to be picked up for this event.'
+                                requiresCarpooling:
+                                    type: boolean
+                                    description: 'If you require carpooling.'
+            responses:
+                '200':
+                    description: 'Returns the updated event member user'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/components/schemas/EventMember'
+                '400':
+                    description: 'Invalid body'
+                '401':
+                    description: 'Body is empty'
+                '404':
+                    description: 'Event not found, or not part of this event'
+
+    /events:
+        get:
+            summary: 'List own events'
+            description: 'List all events the current user is a owner or member of.'
+            tags:
+                - event
+            responses:
+                '200':
+                    description: 'List of events'
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: 'definitions.yaml#/components/schemas/Event'
+        post:
+            summary: 'Create an event'
+            description: 'Create a new event by a signed in user.'
+            tags:
+                - event
+            requestBody:
+                description: 'The event object'
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: 'definitions.yaml#/components/schemas/EventCreationParameters'
+            responses:
+                '200':
+                    description: 'Returns the event id'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/components/schemas/Event'
+                                description: 'The newly created event'
+                '400':
+                    description: 'Invalid body'
+                '401':
+                    description: 'Unauthenticated'
+                '404':
+                    description: 'Event not found'
+
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: FBAuth
+
+security:
+    - bearerAuth: []

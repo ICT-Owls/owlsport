@@ -49,7 +49,6 @@ import userRoute from './routes/userRoute.cjs';
 app.use('/user', userRoute);
 
 import eventRoute from './routes/eventRoute.cjs';
-import { exit } from 'process';
 app.use('/events', eventRoute);
 
 import discordWebHookRoute from './routes/discordWebHookRoute.js';
@@ -59,7 +58,7 @@ app.get('/', (_req, res) => {
     res.sendFile(resolve('build', 'index.html'));
 });
 
-app.use((err, _req, res, mext) => {
+app.use((err, _req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });

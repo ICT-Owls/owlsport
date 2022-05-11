@@ -1,176 +1,36 @@
-import SidebarPresenter from './presenters/SidebarPresenter';
-import NavbarPresenter from './presenters/NavbarPresenter';
-import ChatsPresenter from './presenters/ChatsPresenter';
-import MainContentPresenter from './presenters/MainContentPresenter';
+/*  Presenters  */
+import { StyledEngineProvider } from '@mui/material/styles';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
-import { LightTheme, DarkTheme } from './Themes';
+import React, { useEffect, useLayoutEffect } from 'react';
 import './App.css';
-import React from 'react';
-import { Box } from '@mui/material';
+import { initModel, useUser } from './models/Model';
+import MainContentPresenter from './presenters/MainContentPresenter';
+import NavbarPresenter from './presenters/NavbarPresenter';
+import SidebarPresenter from './presenters/SidebarPresenter';
+import { DarkTheme, LightTheme } from './Themes';
 
-const userObject = {};
-//export userObject
-import { Configuration, UserApi } from './api-client/index.ts';
- 
-const configuration = new Configuration({
-    // Send request to same origin as the web page
-    basePath: "https://carpooling-backend-sy465fjv3q-lz.a.run.app/",
-});
-const userApi = new UserApi(configuration);
-const user = userApi.userPost({
-    firstname: 'Apple',
-    lastName: 'Pearson',
-    dateOfBirth: 123,
-});
+export default function App() {
+    //Initalize model
+    useLayoutEffect(() => initModel(), []);
+    const [lightmode] = React.useState(true);
+    const [user] = useUser();
 
-function App() {
+    //logs if current user changes
+    useEffect(() => {
+        console.log('Current User Object: ', user);
+    }, [user]);
 
-
-    
-    const [lightmode, ] = React.useState(true);
     return (
-        <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-            <div className="flex absolute justify-start w-screen h-screen App">
-                <Box
-                    className="bg-background"
-                    sx={{
-                        width: '100%',
-                        height: '100%',
-                    }}
-                >
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
+                <div className="App absolute flex h-full w-full flex-col justify-start bg-background-200 ">
                     <NavbarPresenter />
-                    <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-                    <ChatsPresenter />
-                    <MainContentPresenter />
-                </Box>
-            </div>
-        </ThemeProvider>
+                    <div className="mt-20 flex w-full flex-row content-center justify-center">
+                        <SidebarPresenter user={user} />
+                        <MainContentPresenter user={user} />
+                    </div>
+                </div>
+            </ThemeProvider>
+        </StyledEngineProvider>
     );
 }
-
-// function Events() {
-//     return (
-//         <>
-//             <h1>EVENTS PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function About() {
-//     return (
-//         <>
-//             <h1>ABOUT PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function Whatever() {
-//     return (
-//         <>
-//             <h1>WHATEVER PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function Login() {
-//     userObject.isLoggedIn = true;
-//     return (
-//         <>
-//             <h1>LOGIN PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function Signup() {
-//     return (
-//         <>
-//             <h1>SIGNUP PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function Logout() {
-//     userObject.isLoggedIn = false;
-//     return (
-//         <>
-//             <h1>LOGOUT PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function Account() {
-//     return (
-//         <>
-//             <h1>ACCOUNT PAGE</h1>
-//             <SidebarPresenter isLoggedIn={userObject.isLoggedIn} />
-//             <NavbarPresenter />
-//             <ChatsPresenter />
-//             <MainContentPresenter />
-//         </>
-//     );
-// }
-
-// function App() {
-//     userObject.isLoggedIn = false;
-
-//     return (
-//         <BrowserRouter>
-//             <div className="App">
-//                 {/* A <Switch> looks through its children <Route>s and
-//             renders the first one that matches the current URL.*/}
-//                 <Routes>
-//                     <Route exact path="/" element={<Home />}>
-//                         <Route exact path="/" element={<Home />} />
-//                     </Route>
-//                     <Route path="/events" element={<Events />}>
-//                         <Route path="/events" element={<Events />} />
-//                     </Route>
-//                     <Route path="/about" element={<About />}>
-//                         <Route path="/about" element={<About />} />
-//                     </Route>
-//                     <Route path="/whatever" element={<Whatever />}>
-//                         <Route path="/whatever" element={<Whatever />} />
-//                     </Route>
-//                     <Route path="/login" element={<Login />}>
-//                         <Route path="/login" element={<Login />} />
-//                     </Route>
-//                     <Route path="/signup" element={<Signup />}>
-//                         <Route path="/signup" element={<Signup />} />
-//                     </Route>
-//                     <Route path="/logout" element={<Logout />}>
-//                         <Route path="/logout" element={<Logout />} />
-//                     </Route>
-//                     <Route path="/account" element={<Account />}>
-//                         <Route path="/account" element={<Account />} />
-//                     </Route>
-//                 </Routes>
-//             </div>
-//         </BrowserRouter>
-//     );
-// }
-
-export default App;

@@ -5,7 +5,9 @@
 /.pnp
 .pnp.js
 .vscode/*
+.idea/*
 !.vscode/settings.json
+.idea
 
 # testing
 /coverage
@@ -16,7 +18,7 @@
 # generated files
 /package-lock.json
 /generated-sources
-/api-client
+/src/api-client
 
 # misc
 .DS_Store
