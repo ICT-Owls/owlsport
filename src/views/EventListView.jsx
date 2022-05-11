@@ -39,7 +39,7 @@ export default function EventListView({ events, user }) {
                 <Container padding="1rem">
                     <EventCreatingPresenter
                         user={user}
-                        callback={() => {
+                        onSubmit={() => {
                             setCreateOpen(false);
                         }}
                     />

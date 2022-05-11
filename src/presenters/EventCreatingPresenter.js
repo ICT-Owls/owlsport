@@ -2,7 +2,7 @@ import * as React from 'react';
 import EventCreatingView from '../views/EventCreatingView';
 import { createEvent } from '../api';
 
-export const EventCreatingPresenter = ({ user }) => {
+export const EventCreatingPresenter = ({ user, onSubmit}) => {
     const [title, setTitle] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [startDateTime, setStartDateTime] = React.useState(Date.now());
@@ -21,6 +21,7 @@ export const EventCreatingPresenter = ({ user }) => {
             members,
             location,
         });
+        onSubmit();
     };
 
     return EventCreatingView({

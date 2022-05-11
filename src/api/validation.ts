@@ -26,14 +26,10 @@ function validateType(
     property: string,
     expected: string
 ): ValidationResult | null {
-    if (property in object || !(typeof object[property] === 'string'))
+    if (property in object && !(typeof object[property] === expected))
         return {
             success: false,
-            message: msgType(
-                property,
-                typeof object[property],
-                msgType(property, typeof object[property], expected)
-            ),
+            message: msgType(property, typeof object[property], expected),
         };
     return null;
 }
