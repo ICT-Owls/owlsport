@@ -1,20 +1,13 @@
 import { initializeApp } from 'firebase/app';
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    EmailAuthProvider,
-    GoogleAuthProvider,
-} from 'firebase/auth';
+import { EmailAuthProvider, getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { auth as firebaseuiAuth } from 'firebaseui';
+import 'firebaseui/dist/firebaseui.css';
+import { v4 as uuidv4 } from 'uuid';
 import {
     Configuration as CarpoolingApiConfig,
-    UserApi,
     EventApi,
+    UserApi,
 } from '../api-client/index.ts';
-import { v4 as uuidv4 } from 'uuid';
-
-import 'firebaseui/dist/firebaseui.css';
 
 const backendApiConfig = new CarpoolingApiConfig({
     // Send request to same origin as the web page

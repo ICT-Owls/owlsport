@@ -363,7 +363,7 @@ describe('Users', function () {
         });
     });
 
-    describe('/GET /events/:id', function () {
+    describe('/GET /events', function () {
         it('return 401 without authentication', async function () {
             var res = await chai.request(app).get('/events');
             assert.equal(res.status, 401);

@@ -82,7 +82,6 @@ const ParticipantSelectorView: FC<ParticipantSelectorViewProps> = (
         <Box
             maxWidth="100%"
             sx={{
-                p: '2em',
                 flexDirection: 'row',
                 display: 'flex',
             }}

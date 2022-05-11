@@ -1,23 +1,14 @@
 /*  Presenters  */
-import SidebarPresenter from './presenters/SidebarPresenter';
-import NavbarPresenter from './presenters/NavbarPresenter';
-import ChatsPresenter from './presenters/ChatsPresenter';
-import MainContentPresenter from './presenters/MainContentPresenter';
-import EventDetailsPresenter from './presenters/EventDetailsPresenter';
-import { EventCreatingPresenter } from './presenters/EventCreatingPresenter';
-import ParticipantSelectorPresenter from './presenters/ParticipantSelectorPresenter';
-
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
-
 import { StyledEngineProvider } from '@mui/material/styles';
-import { Box, Dialog } from '@mui/material';
-
-import { LightTheme, DarkTheme } from './Themes';
+import Box from '@mui/material/Box';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import './App.css';
-import { subscribeToLogin } from './helpers/Firebase';
-import React, { useEffect, useState, useLayoutEffect } from 'react';
-import { auth } from './helpers/Firebase';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { initModel, useUser } from './models/Model';
+import MainContentPresenter from './presenters/MainContentPresenter';
+import NavbarPresenter from './presenters/NavbarPresenter';
+import SidebarPresenter from './presenters/SidebarPresenter';
+import { DarkTheme, LightTheme } from './Themes';
 
 export default function App() {
     //Initalize model
@@ -33,12 +24,31 @@ export default function App() {
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-                <div className="App absolute flex h-full w-full flex-col justify-start bg-background-200 ">
+                <div className="App absolute flex h-full w-full flex-col justify-start"
+                     style={{backgroundImage: `url('../background.png')`, backgroundRepeat: 'no-repeat',
+                         width:'100hv', height: 'auto',
+                         backgroundPosition: 'left', backgroundSize: 'cover', backgroundAttachment: "fixed"}}>
+
                     <NavbarPresenter />
-                    <div className="mt-20 flex w-full flex-row content-center justify-center">
-                        <SidebarPresenter user={user} />
-                        <MainContentPresenter user={user} />
-                    </div>
+
+                    <Box sx={{ marginX: 'auto', minHeight: '1200px', height: '100%', maxWidth: '1200px', width:'100%',
+                        }}>
+                        <div className="pt-10 h-screen w-full content-center justify-center flex flex-row space-x-0">
+                            <SidebarPresenter className=' ' user={user} />
+                            <MainContentPresenter className=' ' user={user} />
+                        </div>
+                    </Box>
+
+                    {/*<Box sx={{ marginX: 'auto', minHeight: '1200px', height: '100%', maxWidth: '1200px', width:'100%',*/}
+                    {/*    alignItem: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)'}}>*/}
+                    {/*    <div className="pt-10 h-screen w-full content-center justify-center flex flex-row">*/}
+                    {/*        <SidebarPresenter className=' ' user={user} />*/}
+                    {/*        <MainContentPresenter className='' user={user} />*/}
+                    {/*    </div>*/}
+                    {/*</Box>*/}
+
+
+
                 </div>
             </ThemeProvider>
         </StyledEngineProvider>

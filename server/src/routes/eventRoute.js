@@ -71,7 +71,7 @@ router.get('/', authorize, async (req, res) => {
 
     const eventsRef = await events.get();
     const userEvents = Object.values(eventsRef.val()).filter(
-        (e) => e.creatorId == userId || e.members?.includes()
+        (e) => e.creatorId == userId || e.members?.hasOwnProperty(userId)
     );
 
     res.send(userEvents || []);

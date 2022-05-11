@@ -16,12 +16,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import * as React from 'react';
-import { useEffect, useRef } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import ParticipantSelectorPresenter from '../presenters/ParticipantSelectorPresenter';
 import AvatarView from './AvatarView';
 
-function MyMapComponent({ center, zoom }) {
+/*function MyMapComponent({ center, zoom }) {
     console.log('MyMapComponent', center, zoom);
     if (center === undefined) center = { lat: -25.344, lng: 131.031 };
     if (zoom === undefined) zoom = 6;
@@ -35,7 +34,7 @@ function MyMapComponent({ center, zoom }) {
     });
 
     return <div ref={ref} id="map" />;
-}
+}*/
 
 function renderItem({ item, handleRemoveUser }) {
     return (
@@ -75,7 +74,7 @@ const EventCreatingView = ({
     user,
 }) => {
     const [usersForEvent, setUsersForEvent] = React.useState([]);
-   
+
     const handleAddUser = (options) => {
         setUsersForEvent((prev) => [...options, ...prev]);
     };
@@ -117,7 +116,10 @@ const EventCreatingView = ({
                                 >
                                     <DatePicker
                                         renderInput={(props) => (
-                                            <TextField {...props} />
+                                            <TextField
+                                                {...props}
+                                                className="w-full"
+                                            />
                                         )}
                                         label="Select Date"
                                         className="
@@ -135,7 +137,9 @@ const EventCreatingView = ({
                                     "
                                         value={startDateTime}
                                         onChange={(newValue) => {
-                                            setStartDateTime(newValue);
+                                            setStartDateTime(
+                                                Date.parse(newValue)
+                                            );
                                         }}
                                     />
                                 </LocalizationProvider>
@@ -162,10 +166,15 @@ const EventCreatingView = ({
                                     "
                                         value={startDateTime}
                                         onChange={(newDate) => {
-                                            setStartDateTime(newDate);
+                                            setStartDateTime(
+                                                Date.parse(newDate)
+                                            );
                                         }}
                                         renderInput={(params) => (
-                                            <TextField {...params} />
+                                            <TextField
+                                                {...params}
+                                                className="w-full"
+                                            />
                                         )}
                                     />
                                 </LocalizationProvider>
@@ -192,10 +201,13 @@ const EventCreatingView = ({
                                     "
                                         value={endDateTime}
                                         onChange={(newDate) => {
-                                            setEndDateTime(newDate);
+                                            setEndDateTime(Date.parse(newDate));
                                         }}
                                         renderInput={(params) => (
-                                            <TextField {...params} />
+                                            <TextField
+                                                {...params}
+                                                className="w-full"
+                                            />
                                         )}
                                     />
                                 </LocalizationProvider>
@@ -207,6 +219,14 @@ const EventCreatingView = ({
                                     id="outlined-basic"
                                     label="Address"
                                     variant="outlined"
+                                    value={location.address || ''}
+                                    onChange={(e) =>
+                                        setLocation({
+                                            longtitude: 0,
+                                            latitude: 0,
+                                            address: e.target.value,
+                                        })
+                                    }
                                 />
                                 {/*<input*/}
                                 {/*    type="text"*/}
@@ -222,7 +242,7 @@ const EventCreatingView = ({
                                 {/*/>*/}
                             </div>
 
-                            <div className="m-6">
+                            <div className="mb-6">
                                 <ParticipantSelectorPresenter
                                     onSubmit={handleAddUser}
                                     placeholderText="Invite user"

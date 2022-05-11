@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { auth } from '../helpers/Firebase';
-import { useState, useEffect, useDebugValue } from 'react';
 
 //-------- ReadMe --------
 //To use a existing state, import the wrapper function for that state and use it like you would
