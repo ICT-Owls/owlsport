@@ -19,8 +19,6 @@ function Item({ sender, content }) {
     );
 }
 
-import { generateAvatar } from '../helpers/Generators';
-
 function ChatSelection() {
     return <img src={generateAvatar()} alt="" />;
 }
