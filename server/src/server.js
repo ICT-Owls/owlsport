@@ -46,7 +46,7 @@ app.get('/', (_req, res) => {
     res.sendFile(path.resolve('build', 'index.html'));
 });
 
-app.use((err, _req, res) => {
+app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });
