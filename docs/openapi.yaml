@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.1.1'
+    version: '0.2.0'
 paths:
     /user/authe:
         get:
@@ -239,7 +239,9 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/components/schemas/Event'
+                                type: array
+                                items:
+                                    $ref: 'definitions.yaml#/components/schemas/Event'
         post:
             summary: 'Create an event'
             description: 'Create a new event by a signed in user.'
@@ -251,7 +253,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: 'definitions.yaml#/components/schemas/Event'
+                            $ref: 'definitions.yaml#/components/schemas/EventCreationParameters'
             responses:
                 '200':
                     description: 'Returns the event id'
