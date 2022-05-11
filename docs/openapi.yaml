@@ -239,7 +239,9 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: 'definitions.yaml#/components/schemas/Event'
+                                type: array
+                                items:
+                                    $ref: 'definitions.yaml#/components/schemas/Event'
         post:
             summary: 'Create an event'
             description: 'Create a new event by a signed in user.'
