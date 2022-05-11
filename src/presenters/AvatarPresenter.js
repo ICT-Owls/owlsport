@@ -18,5 +18,6 @@ export default function AvatarPresenter(props) {
 
     // Hooks, logic, etc goes here. These presenters manipulate data, transform it into usable functions and values, then passes those to a view.
     // No visual code here.
+    //erhie
     return member ? AvatarView({ user: member }) : '';
 }

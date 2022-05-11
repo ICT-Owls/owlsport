@@ -26,7 +26,14 @@ function App() {
     const [user, setUser] = React.useState(null);
 
     useEffect(() => {
-        return auth.onAuthStateChanged((e) => setUser(e));
+        return auth.onAuthStateChanged((e) => {
+            userApi
+                .userIdGet(e.uid, {
+                    headers: { authorization: `Bearer ${e.accessToken}` },
+                })
+                .then((u) => setUser({ ...u, accessToken: e.accessToken }))
+                .catch((err) => console.error(err));
+        });
     }, []);
 
     useEffect(() => {
