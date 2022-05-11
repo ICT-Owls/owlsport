@@ -70,7 +70,7 @@ export default function EventListView({ events, user }) {
                         return (
                             <ListItem key={id} sx={{ p: 0, mx: 0, my: '1rem' }}>
                                 <Link
-                                    href={'/events/' + id}
+                                    href={'/event/' + id}
                                     underline="none"
                                     className={'grow'}
                                 >
