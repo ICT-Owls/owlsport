@@ -105,8 +105,8 @@ components:
                     $ref: '#/components/schemas/Id'
                     description: 'Id of the event'
                 members:
-                    type: array
-                    items:
+                    type: object
+                    additionalProperties:
                         $ref: '#/components/schemas/EventMember'
                     description: 'Id of the users participating in this event'
                 location:
@@ -124,4 +124,45 @@ components:
                     format: int32
                 creationDate:
                     type: number
-                    description: 'UNIX timestamp of when the event was created, in milliseconds.'
+                    description: 'UNIX timestamp of when the event was created'
+        EventCreationParameters:
+            type: object
+            required:
+                - members
+                - title
+                - description
+                - startDateTime
+                - endDateTime
+                - location
+            properties:
+                creatorId:
+                    deprecated: true
+                    $ref: '#/components/schemas/Id'
+                    description: 'Id of the user who created this event'
+                id:
+                    deprecated: true
+                    $ref: '#/components/schemas/Id'
+                    description: 'Id of the event'
+                members:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/EventMember'
+                    description: 'Id of the users participating in this event'
+                location:
+                    $ref: '#/components/schemas/Location'
+                    description: 'Location of the event'
+                title:
+                    type: string
+                description:
+                    type: string
+                startDateTime:
+                    type: integer
+                    format: int32
+                endDateTime:
+                    type: integer
+                    format: int32
+                creationDate:
+                    deprecated: true
+                    type: number
+                    description: 'UNIX timestamp of when the event was created'
+

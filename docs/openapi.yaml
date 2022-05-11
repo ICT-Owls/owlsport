@@ -251,7 +251,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: 'definitions.yaml#/components/schemas/Event'
+                            $ref: 'definitions.yaml#/components/schemas/EventCreationParameters'
             responses:
                 '200':
                     description: 'Returns the event id'

@@ -14,21 +14,18 @@ import { Box, Dialog } from '@mui/material';
 
 import { LightTheme, DarkTheme } from './Themes';
 import './App.css';
-import React, { useEffect } from 'react';
 import { subscribeToLogin } from './helpers/Firebase';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { auth } from './helpers/Firebase';
+import { initModel, useUser } from './models/Model';
 
-const userObject = {};
-//export userObject
-
-function App() {
+export default function App() {
+    //Initalize model
+    useLayoutEffect(() => initModel(), []);
     const [lightmode] = React.useState(true);
-    const [user, setUser] = React.useState(null);
+    const [user] = useUser();
 
-    useEffect(() => {
-        return auth.onAuthStateChanged((e) => setUser(e));
-    }, []);
-
+    //logs if current user changes
     useEffect(() => {
         console.log('Current User Object: ', user);
     }, [user]);
@@ -47,5 +44,3 @@ function App() {
         </StyledEngineProvider>
     );
 }
-
-export default App;
