@@ -1,9 +1,11 @@
-import { database, admin } from './database.cjs';
+import { admin } from './database.js';
 
 import cors from 'cors';
 
 import express, { json } from 'express';
-import { resolve } from 'path';
+
+import path from 'path';
+
 const app = express();
 
 const port = parseInt(process.env.PORT);
@@ -43,22 +45,16 @@ app.use(async (req, _res, next) => {
     next();
 });
 
-app.use(express.static('build'));
+app.use(express.static(path.resolve('..', 'build')));
 
-import userRoute from './routes/userRoute.cjs';
+import userRoute from './routes/userRoute.js';
 app.use('/user', userRoute);
 
-import eventRoute from './routes/eventRoute.cjs';
+import eventRoute from './routes/eventRoute.js';
+
 app.use('/events', eventRoute);
 
-import discordWebHookRoute from './routes/discordWebHookRoute.js';
-app.use('/discordwebhook', discordWebHookRoute);
-
-app.get('/', (_req, res) => {
-    res.sendFile(resolve('build', 'index.html'));
-});
-
-app.use((err, _req, res, next) => {
+app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });
@@ -67,4 +63,4 @@ app.listen(port, () => {
     console.log(`Web server listening on port ${port}`);
 });
 
-export default { app, database };
+module.exports = { app };

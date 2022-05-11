@@ -1,25 +1,22 @@
 import React, { useEffect } from 'react';
-import { eventApi } from '../helpers/Firebase';
+import { getEvents } from 'api';
 import EventListView from '../views/EventListView';
+
 export default function EventListPresenter({ user }) {
     const [events, setEvents] = React.useState([]);
 
     useEffect(() => {
         if (user) {
-            eventApi
-                .eventsGet({
-                    headers: {
-                        authorization: `Bearer ${user.accessToken}`,
-                    },
-                })
-                .then((data) =>
+            getEvents()
+                .then((data) => {
+                    if (data === null) return;
                     setEvents(
                         data.map((e) => {
                             if (!e.members) e.members = [];
                             return e;
                         })
-                    )
-                )
+                    );
+                })
                 .catch((err) => console.error(err));
         }
     }, [user]);
