@@ -1,4 +1,5 @@
-const { app, database } = require('../src/server.js');
+const { app } = require('../server.js');
+const { database } = require('../database.js');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const { assert } = require('chai');
@@ -7,6 +8,7 @@ chai.use(chaiHttp);
 
 const { initializeApp } = require('firebase/app');
 const { getAuth, signInWithEmailAndPassword } = require('firebase/auth');
+const { doesNotMatch } = require('assert');
 
 const generateTestCredentials = async function () {
     const firebaseConfig = {
@@ -257,6 +259,22 @@ describe('Users', function () {
                 description: 'description',
                 startDateTime: 0,
                 endDateTime: 1000,
+                members: {
+                    testuserid: {
+                        id: 'testuserid',
+                        requiresCarpooling: false,
+                        location: {
+                            latitude: 0,
+                            longitude: 0,
+                            address: 'address',
+                        },
+                    },
+                },
+                location: {
+                    latitude: 0,
+                    longitude: 0,
+                    address: 'address',
+                },
             };
             var res = await post('/events').send(event);
             assert.equal(res.status, 200);
@@ -284,8 +302,8 @@ describe('Users', function () {
         });
 
         it('return 200 when authenticated', async function () {
-            var res = await get('/events/');
-            assert.equal(res.body.length, 1);
+            var res = await get('/events');
+            assert.equal(res.status, 200);
         });
     });
 });

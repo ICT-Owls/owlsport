@@ -1,6 +1,5 @@
+import { useEffect, useState } from 'react';
 import CreateAccountView from '../views/CreateAccountView';
-import { useState, useEffect } from 'react';
-import { use } from 'chai';
 
 export default function CreateAccountPresenter({ showMe, handleVisibility }) {
     const [displayName, setDisplayName] = useState('');
