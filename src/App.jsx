@@ -1,25 +1,13 @@
 /*  Presenters  */
-import SidebarPresenter from './presenters/SidebarPresenter';
-import NavbarPresenter from './presenters/NavbarPresenter';
-import ChatsPresenter from './presenters/ChatsPresenter';
-import MainContentPresenter from './presenters/MainContentPresenter';
-import EventDetailsPresenter from './presenters/EventDetailsPresenter';
-import { EventCreatingPresenter } from './presenters/EventCreatingPresenter';
-import ParticipantSelectorPresenter from './presenters/ParticipantSelectorPresenter';
-
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
-
 import { StyledEngineProvider } from '@mui/material/styles';
-import { Box, Dialog } from '@mui/material';
-
-import { LightTheme, DarkTheme } from './Themes';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import React, { useEffect, useLayoutEffect } from 'react';
 import './App.css';
-import React, { useEffect } from 'react';
-import { subscribeToLogin } from './helpers/Firebase';
-
-import { useEffect, useState, useLayoutEffect } from 'react';
-import { auth } from './helpers/Firebase';
 import { initModel, useUser } from './models/Model';
+import MainContentPresenter from './presenters/MainContentPresenter';
+import NavbarPresenter from './presenters/NavbarPresenter';
+import SidebarPresenter from './presenters/SidebarPresenter';
+import { DarkTheme, LightTheme } from './Themes';
 
 export default function App() {
     //Initalize model
