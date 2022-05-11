@@ -1,12 +1,7 @@
 # Dockerignore
 .github
 .vscode
-.build
-.docs
-.node_modules
-.scripts
-.public
-.src
-.test
+build
+node_modules
 package-lock.json
 .gitignore
