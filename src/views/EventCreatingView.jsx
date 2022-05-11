@@ -75,7 +75,7 @@ const EventCreatingView = ({
     user,
 }) => {
     const [usersForEvent, setUsersForEvent] = React.useState([]);
-   
+
     const handleAddUser = (options) => {
         setUsersForEvent((prev) => [...options, ...prev]);
     };
@@ -211,6 +211,14 @@ const EventCreatingView = ({
                                     id="outlined-basic"
                                     label="Address"
                                     variant="outlined"
+                                    value={location.address || ''}
+                                    onChange={(e) =>
+                                        setLocation({
+                                            longtitude: 0,
+                                            latitude: 0,
+                                            address: e.target.value,
+                                        })
+                                    }
                                 />
                                 {/*<input*/}
                                 {/*    type="text"*/}
