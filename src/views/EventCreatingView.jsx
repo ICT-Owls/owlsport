@@ -242,7 +242,7 @@ const EventCreatingView = ({
                                 {/*/>*/}
                             </div>
 
-                            <div className="m-6">
+                            <div className="mb-6">
                                 <ParticipantSelectorPresenter
                                     onSubmit={handleAddUser}
                                     placeholderText="Invite user"
