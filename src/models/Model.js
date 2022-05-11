@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { auth } from '../helpers/Firebase';
-import { useState, useEffect, useDebugValue } from 'react';
 
 //-------- ReadMe --------
 //To use a existing state, import the wrapper function for that state and use it like you would
@@ -40,7 +40,7 @@ export function useUser() {
 export function initModel() {
     //If value does not exist in local storage, then load default value
     Object.keys(dataStruct).map((e) => {
-        !localStorage.getItem(e) &&
+        localStorage.getItem(e) === undefined &&
             localStorage.setItem(e, JSON.stringify(dataStruct[e].defaultValue));
     });
     //Put subsciption logic here with our own Database
@@ -96,7 +96,10 @@ function callStruct(target) {
 
 //Creates a useState hook that subscribes to model 'target' and updates model & any other states on the same target if changed
 function useCustomHook(target) {
-    if (fromLocalStorage(target) === null || dataStruct[target] === undefined) {
+    if (
+        fromLocalStorage(target) === undefined ||
+        dataStruct[target] === undefined
+    ) {
         console.error(
             'useCustomHook: Cannot find target: ',
             target,

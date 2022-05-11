@@ -1,9 +1,9 @@
-import React from 'react';
-import { Box, IconButton, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { IconButton, TextField } from '@mui/material';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function NavbarView () {
+export default function NavbarView() {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     /*
     return (
@@ -40,13 +40,12 @@ export default function NavbarView () {
     return (
         <div
             className={
-                'bg-primary fixed flex h-fit w-full justify-around bg-background-100 z-50 shadow-sm'
+                'bg-primary fixed z-50 flex h-fit w-full justify-around bg-background-100 shadow-sm'
             }
         >
             <Link
                 to="/"
                 className={'ml-8 mr-8 flex items-center justify-center'}
-
             >
                 <img src="Logotype.png" className={'h-10'} alt="" />
             </Link>
@@ -59,9 +58,9 @@ export default function NavbarView () {
                     size="small"
                 />
                 <IconButton
-                    color='secondary'
-                    aria-label='Search'
-                    component='span'
+                    color="secondary"
+                    aria-label="Search"
+                    component="span"
                 >
                     <SearchIcon color="secondary" />
                 </IconButton>
