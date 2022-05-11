@@ -1,9 +1,9 @@
-import React from 'react';
-import { Box, IconButton, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { IconButton, TextField } from '@mui/material';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function NavbarView () {
+export default function NavbarView() {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     /*
     return (
