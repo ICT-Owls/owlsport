@@ -116,7 +116,10 @@ const EventCreatingView = ({
                                 >
                                     <DatePicker
                                         renderInput={(props) => (
-                                            <TextField {...props} />
+                                            <TextField
+                                                {...props}
+                                                className="w-full"
+                                            />
                                         )}
                                         label="Select Date"
                                         className="
@@ -168,7 +171,10 @@ const EventCreatingView = ({
                                             );
                                         }}
                                         renderInput={(params) => (
-                                            <TextField {...params} />
+                                            <TextField
+                                                {...params}
+                                                className="w-full"
+                                            />
                                         )}
                                     />
                                 </LocalizationProvider>
@@ -198,7 +204,10 @@ const EventCreatingView = ({
                                             setEndDateTime(Date.parse(newDate));
                                         }}
                                         renderInput={(params) => (
-                                            <TextField {...params} />
+                                            <TextField
+                                                {...params}
+                                                className="w-full"
+                                            />
                                         )}
                                     />
                                 </LocalizationProvider>
