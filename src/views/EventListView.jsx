@@ -188,13 +188,13 @@ function MemberBox({ members, user }) {
                 'flex flex-row flex-wrap items-center justify-center last:mr-2 child:m-1'
             }
         >
-            {members.map((m) => (
-                <AvatarPresenter key={m} user={user} userId={m} />
+            {Object.values(members).map((m) => (
+                <AvatarPresenter key={m} user={user} userId={m.id} />
             ))}
         </List>
     );
 }
 
 MemberBox.propTypes = {
-    members: PropTypes.array,
+    members: PropTypes.object,
 };
