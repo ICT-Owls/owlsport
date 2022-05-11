@@ -17,7 +17,7 @@ export type ValidationResult = {
 
 // Returns a message describing a type error
 function msgType(property: string, got: string, expected: string): string {
-    return `property "${property}" is of typ "${got}", expected "${expected}"`;
+    return `property "${property}" is of type "${got}", expected "${expected}"`;
 }
 
 // Test if property of object is expected type. Returns null on success
@@ -65,12 +65,36 @@ export function validate(data: object, type: ApiType): ValidationResult {
                         success: false,
                         message: 'property "id" too long',
                     };
-                if (!(typeof dataCast.location.address === 'string'))
-                    return { success: false, message: '' };
+                if (
+                    dataCast.location.address !== undefined &&
+                    typeof dataCast.location.address !== 'string'
+                )
+                    return {
+                        success: false,
+                        message: msgType(
+                            'location.address',
+                            typeof dataCast.location.address,
+                            'string | undefined'
+                        ),
+                    };
                 if (!(typeof dataCast.location.latitude === 'number'))
-                    return { success: false, message: '' };
+                    return {
+                        success: false,
+                        message: msgType(
+                            'location.latitude',
+                            typeof dataCast.location.address,
+                            'number'
+                        ),
+                    };
                 if (!(typeof dataCast.location.longitude === 'number'))
-                    return { success: false, message: '' };
+                    return {
+                        success: false,
+                        message: msgType(
+                            'location.longitude',
+                            typeof dataCast.location.address,
+                            'number'
+                        ),
+                    };
                 for (const p in eventProperties) {
                     const validation = validateType(
                         data,
