@@ -164,7 +164,9 @@ const EventCreatingView = ({
                                     "
                                         value={startDateTime}
                                         onChange={(newDate) => {
-                                            setStartDateTime(newDate);
+                                            setStartDateTime(
+                                                Date.parse(newDate)
+                                            );
                                         }}
                                         renderInput={(params) => (
                                             <TextField {...params} />
