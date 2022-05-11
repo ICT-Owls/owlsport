@@ -16,12 +16,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import * as React from 'react';
-import { useEffect, useRef } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import ParticipantSelectorPresenter from '../presenters/ParticipantSelectorPresenter';
 import AvatarView from './AvatarView';
 
-function MyMapComponent({ center, zoom }) {
+/*function MyMapComponent({ center, zoom }) {
     console.log('MyMapComponent', center, zoom);
     if (center === undefined) center = { lat: -25.344, lng: 131.031 };
     if (zoom === undefined) zoom = 6;
@@ -35,7 +34,7 @@ function MyMapComponent({ center, zoom }) {
     });
 
     return <div ref={ref} id="map" />;
-}
+}*/
 
 function renderItem({ item, handleRemoveUser }) {
     return (
