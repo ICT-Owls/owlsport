@@ -135,7 +135,9 @@ const EventCreatingView = ({
                                     "
                                         value={startDateTime}
                                         onChange={(newValue) => {
-                                            setStartDateTime(newValue);
+                                            setStartDateTime(
+                                                Date.parse(newValue)
+                                            );
                                         }}
                                     />
                                 </LocalizationProvider>
@@ -192,7 +194,7 @@ const EventCreatingView = ({
                                     "
                                         value={endDateTime}
                                         onChange={(newDate) => {
-                                            setEndDateTime(newDate);
+                                            setEndDateTime(Date.parse(newDate));
                                         }}
                                         renderInput={(params) => (
                                             <TextField {...params} />
