@@ -288,7 +288,7 @@ describe('Users', function () {
                 endDateTime: 1000,
                 members: {},
                 location: {
-                    longtitude: 0,
+                    longitude: 0,
                     latitude: 0,
                     address: 'stockholm',
                 },

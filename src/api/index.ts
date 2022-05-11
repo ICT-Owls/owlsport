@@ -1,3 +1,4 @@
+// API spec compatibility: V0.2.0
 import { generateString } from '../helpers/Generators';
 import {
     Configuration as CarpoolingApiConfig,

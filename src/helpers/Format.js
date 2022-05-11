@@ -14,7 +14,7 @@ const months = [
 ];
 
 const formatLocation = (loc) => {
-    return loc.address ? loc.address : `${loc.longtitude}x${loc.latitude}`;
+    return loc.address ? loc.address : `${loc.longitude}x${loc.latitude}`;
 };
 
 const formatUsername = (user) => {

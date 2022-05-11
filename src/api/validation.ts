@@ -1,5 +1,5 @@
-import { types } from '@babel/core';
-import { TypeScript } from '@babel/types';
+// API spec compatibility: V0.2.0
+
 import type { Event } from './types';
 
 type ApiType = 'Event' | 'User' | 'EventCreateData';
