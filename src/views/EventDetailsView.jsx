@@ -176,14 +176,7 @@ function CarpoolerView({ driver, seats, passengers }) {
                         <div className="ml-20 flex">
                             <Button
                                 variant="contained"
-                                className="
-							hover:
-							border-primary
-							rounded
-							border bg-primary-100
-							transition
-							duration-500
-							"
+                                className="border-primary rounded border bg-primary-100 transition duration-500"
                             >
                                 JOIN
                             </Button>
