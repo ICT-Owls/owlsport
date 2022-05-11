@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { eventApi } from '../helpers/Firebase';
 import EventListView from '../views/EventListView';
-export default function EventListPresenter(props) {
+export default function EventListPresenter({ user }) {
     const [events, setEvents] = React.useState([]);
 
     useEffect(() => {
-        if (props.user) {
+        if (user) {
             eventApi
                 .eventsGet({
                     headers: {
-                        authorization: `Bearer ${props.user.accessToken}`,
+                        authorization: `Bearer ${user.accessToken}`,
                     },
                 })
                 .then((data) =>
@@ -22,9 +22,9 @@ export default function EventListPresenter(props) {
                 )
                 .catch((err) => console.error(err));
         }
-    }, [props.user]);
+    }, [user]);
 
     // Hooks, logic, etc goes here. These presenters manipulate data, transform it into usable functions and values, then passes those to a view.
     // No visual code here.
-    return EventListView({ events: events, user: props.user });
+    return EventListView({ events, user });
 }

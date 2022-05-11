@@ -67,17 +67,19 @@ router.get(
 router.get(
     '/email/:email',
     authorize,
-    param('email').isString(),
+    param('email').isEmail(),
     validate,
     async (req, res) => {
         const email = req.params.email;
 
         const usersRef = await users.get();
-        const users = Object.values(usersRef.val()).filter(
+        const matchedUsers = Object.values(usersRef.val()).filter(
             (u) => u.email == email
         );
-        if (users.length == 0) return res.status(404).send('User not found');
-        else return res.send(users[0]);
+
+        if (matchedUsers.length == 0)
+            return res.status(404).send('User not found');
+        else return res.send(matchedUsers[0]);
     }
 );
 
