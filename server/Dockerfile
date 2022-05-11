@@ -8,12 +8,13 @@ EXPOSE 80/udp
 
 RUN echo 'Adding files...'
 COPY src ./src
-COPY test ./test
 COPY package.json ./
 COPY .babelrc ./
 COPY tsconfig.json ./
 
 RUN echo 'Installing node packages...'
 RUN ["npm", "i"]
+
+RUN ["npm", "run" "test"]
 
 ENTRYPOINT ["npm", "run", "start-prod"]

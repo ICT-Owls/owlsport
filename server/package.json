@@ -8,7 +8,7 @@
         "build": "babel src --out-dir build --copy-files --source-maps",
         "start-prod": "npm run build && cross-env NODE_ENV=production PORT=80 node build/server.js",
         "start-dev": "npm run build && cross-env NODE_ENV=development PORT=32203 node build/server.js",
-        "mocha-test": "npm run build && cross-env NODE_ENV=development PORT=32203 mocha ./build/test --require @babel/register --require mocha-suppress-logs --recursive --exit",
+        "test": "npm run build && cross-env NODE_ENV=development PORT=32203 mocha ./build/test --require @babel/register --require mocha-suppress-logs --recursive --exit",
         "clean": "rimraf node_modules build/*"
     },
     "devDependencies": {
