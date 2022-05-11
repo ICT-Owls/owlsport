@@ -1,8 +1,10 @@
-import { database, admin } from './database.cjs';
+import { admin } from './database.js';
 
 import cors from 'cors';
 
 import express, { json } from 'express';
+
+import path from 'path';
 
 const app = express();
 
@@ -45,10 +47,10 @@ app.use(async (req, _res, next) => {
 
 app.use(express.static(path.resolve('..', 'build')));
 
-import userRoute from './routes/userRoute.cjs';
+import userRoute from './routes/userRoute.js';
 app.use('/user', userRoute);
 
-import eventRoute from './routes/eventRoute.cjs';
+import eventRoute from './routes/eventRoute.js';
 
 app.use('/events', eventRoute);
 
@@ -61,4 +63,4 @@ app.listen(port, () => {
     console.log(`Web server listening on port ${port}`);
 });
 
-export default { app, database };
+module.exports = { app };

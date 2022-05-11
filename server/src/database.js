@@ -6,6 +6,7 @@ admin.initializeApp({
     databaseURL:
         '***REMOVED***',
 });
+
 const database = admin.database();
 const users = database.ref('/users');
 const events = database.ref('/events');
