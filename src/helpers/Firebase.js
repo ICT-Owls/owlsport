@@ -162,15 +162,6 @@ export async function getUser() {
     return user;
 }
 
-export async function createEvent(eventInfo) {
-    const token = localStorage.getItem('auth');
-    if (!token) return;
-
-    await eventApi.eventsPost(eventInfo, {
-        headers: { authorization: `Bearer ${token}` },
-    });
-}
-
 /* *** */
 
 // Implementation stuff
