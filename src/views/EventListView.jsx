@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { formatLocation } from '../helpers/Format';
 import AvatarPresenter from '../presenters/AvatarPresenter';
 import { EventCreatingPresenter } from '../presenters/EventCreatingPresenter';
 
@@ -117,9 +118,9 @@ export default function EventListView({ events, user }) {
                                                         {title}
                                                     </Typography>
                                                     <Typography variant="body1">
-                                                        {location.address
-                                                            ? location.address
-                                                            : `${location.longtitude}x${location.latitude}`}
+                                                        {formatLocation(
+                                                            location
+                                                        )}
                                                     </Typography>
                                                 </div>
                                                 <MemberBox
