@@ -10,7 +10,11 @@ export const EventCreatingPresenter = ({ user }) => {
         Date.now() + 1000 * 3600
     );
     const [members, setMembers] = React.useState([]);
-    const [location, setLocation] = React.useState(undefined);
+    const [location, setLocation] = React.useState({
+        longtitude: 0,
+        latitude: 0,
+        address: undefined,
+    });
 
     const submit = () => {
         createEvent({

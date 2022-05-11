@@ -1,10 +1,10 @@
-import React from 'react';
-import { IconButton, Divider, Button, Stack, Box, Tab } from '@mui/material';
+import { Box, Button, Divider, IconButton, Stack } from '@mui/material';
 import PropTypes from 'prop-types';
-import SignInView from './SignInView';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import CreateAccountPresenter from '../presenters/CreateAccountPresenter';
 import AvatarView from './AvatarView';
+import SignInView from './SignInView';
 
 export default function SidebarView({
     isLoggedIn,

@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { formatLocation } from '../helpers/Format';
 import AvatarPresenter from '../presenters/AvatarPresenter';
 import { EventCreatingPresenter } from '../presenters/EventCreatingPresenter';
 
@@ -70,7 +71,7 @@ export default function EventListView({ events, user }) {
                         return (
                             <ListItem key={id} sx={{ p: 0, mx: 0, my: '1rem' }}>
                                 <Link
-                                    href={'/events/' + id}
+                                    href={'/event/' + id}
                                     underline="none"
                                     className={'grow'}
                                 >
@@ -117,9 +118,9 @@ export default function EventListView({ events, user }) {
                                                         {title}
                                                     </Typography>
                                                     <Typography variant="body1">
-                                                        {location.address
-                                                            ? location.address
-                                                            : `${location.longtitude}x${location.latitude}`}
+                                                        {formatLocation(
+                                                            location
+                                                        )}
                                                     </Typography>
                                                 </div>
                                                 <MemberBox
@@ -188,13 +189,13 @@ function MemberBox({ members, user }) {
                 'flex flex-row flex-wrap items-center justify-center last:mr-2 child:m-1'
             }
         >
-            {members.map((m) => (
-                <AvatarPresenter key={m} user={user} userId={m} />
+            {Object.values(members).map((m) => (
+                <AvatarPresenter key={m} user={user} userId={m.id} />
             ))}
         </List>
     );
 }
 
 MemberBox.propTypes = {
-    members: PropTypes.array,
+    members: PropTypes.object,
 };
