@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.0.1'
+    version: '0.1.1'
 paths:
     /user/authe:
         get:
@@ -145,44 +145,6 @@ paths:
                 '404':
                     description: 'Event not found'
 
-    /events:
-        get:
-            summary: 'List own events'
-            description: 'List all events the current user is a owner or member of.'
-            tags:
-                - event
-            responses:
-                '200':
-                    description: 'List of events'
-                    content:
-                        application/json:
-                            schema:
-                                $ref: 'definitions.yaml#/components/schemas/Event'
-        post:
-            summary: 'Create an event'
-            description: 'Create a new event by a signed in user.'
-            tags:
-                - event
-            requestBody:
-                description: 'The event object'
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: 'definitions.yaml#/components/schemas/Event'
-            responses:
-                '200':
-                    description: 'Returns the event id'
-                    content:
-                        application/json:
-                            schema:
-                                $ref: 'definitions.yaml#/components/schemas/Event'
-                                description: 'The newly created event'
-                '400':
-                    description: 'Invalid body'
-                '401':
-                    description: 'Unauthenticated'
-
         patch:
             summary: 'Update an event'
             description: 'Update an existing event.'
@@ -228,6 +190,83 @@ paths:
                     description: 'Invalid body'
                 '401':
                     description: 'Body is empty'
+
+    /events/{id}/self:
+        patch:
+            summary: 'Update own member'
+            description: 'Update your own member object in an event.'
+            tags:
+                - event
+            requestBody:
+                description: |
+                    Fields to modify, non-existant fields lead to no change.
+                    At least one field has to be provided.
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                location:
+                                    $ref: 'definitions.yaml#/components/schemas/Location'
+                                    description: 'Your location from where you want to be picked up for this event.'
+                                requiresCarpooling:
+                                    type: boolean
+                                    description: 'If you require carpooling.'
+            responses:
+                '200':
+                    description: 'Returns the updated event member user'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/components/schemas/EventMember'
+                '400':
+                    description: 'Invalid body'
+                '401':
+                    description: 'Body is empty'
+                '404':
+                    description: 'Event not found, or not part of this event'
+
+    /events:
+        get:
+            summary: 'List own events'
+            description: 'List all events the current user is a owner or member of.'
+            tags:
+                - event
+            responses:
+                '200':
+                    description: 'List of events'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/components/schemas/Event'
+        post:
+            summary: 'Create an event'
+            description: 'Create a new event by a signed in user.'
+            tags:
+                - event
+            requestBody:
+                description: 'The event object'
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: 'definitions.yaml#/components/schemas/Event'
+            responses:
+                '200':
+                    description: 'Returns the event id'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/components/schemas/Event'
+                                description: 'The newly created event'
+                '400':
+                    description: 'Invalid body'
+                '401':
+                    description: 'Unauthenticated'
+                '404':
+                    description: 'Event not found'
+
 components:
     securitySchemes:
         bearerAuth:

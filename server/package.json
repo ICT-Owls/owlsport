@@ -5,7 +5,7 @@
     "scripts": {
         "start-prod": "cross-env NODE_ENV=production PORT=80 node src/server.js",
         "start-dev": "cross-env NODE_ENV=development PORT=3003 node src/server.js",
-        "mocha-test": "mocha --require mocha-suppress-logs --recursive --exit",
+        "mocha-test": "mocha --recursive --exit",
         "clean-node_modules": "rimraf node_modules"
     },
     "devDependencies": {

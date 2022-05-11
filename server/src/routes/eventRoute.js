@@ -16,8 +16,15 @@ router.post(
     body('description').isString(),
     body('startDateTime').isInt(),
     body('endDateTime').isInt(),
-    body('members').isArray(),
-	body('members.*').isString(),
+    body('members').custom((members) => {
+        return Object.entries(members).every(([id, member]) => {
+            return (
+                id == member.id &&
+                validateLocation(member.location) &&
+                member.hasOwnProperty('requiresCarpooling')
+            );
+        });
+    }),
     body('location').custom(validateLocation),
     validate,
     async (req, res) => {
@@ -40,7 +47,13 @@ router.post(
             startDateTime: startDateTime,
             endDateTime: endDateTime,
             creationDate: Date.now(),
-            members: members,
+            members: {
+                [authUser.uid]: {
+                    id: authUser.uid,
+                    requiresCarpooling: false,
+                },
+                ...members,
+            },
             location: location,
         });
 
@@ -93,10 +106,17 @@ router.patch(
     param('id').isString(),
     body('title').optional().isString(),
     body('description').optional().isString(),
-    body('members').optional().isArray(),
-    body('members.*.id').isString(),
-    body('members.*.location').optional().custom(validateLocation),
-    body('members.*.requiresCarpooling').isBoolean(),
+    body('members')
+        .optional()
+        .custom((members) => {
+            return Object.entries(members).every(([id, member]) => {
+                return (
+                    id == member.id &&
+                    validateLocation(member.location) &&
+                    member.hasOwnProperty('requiresCarpooling')
+                );
+            });
+        }),
     body('location').optional().custom(validateLocation),
     body('startDateTime').optional().isInt({ min: 0 }),
     body('endDateTime').optional().isInt({ min: 0 }),
@@ -144,6 +164,36 @@ router.patch(
 
         const updatedEvent = await eventRef.get();
         res.send(updatedEvent.val());
+    }
+);
+
+router.patch(
+    '/:id/self',
+    authorize,
+    param('id').isString(),
+    body('location').optional().custom(validateLocation),
+    body('requiresCarpooling').optional().isBoolean(),
+    oneOf([body('location').exists(), body('requiresCarpooling').exists()]),
+    validate,
+    async (req, res) => {
+        const id = req.params.id;
+        const { location, requiresCarpooling } = req.body;
+
+        const memberRef = events.child(`${id}/members/${req.user.uid}`);
+        const memberSnapshot = await memberRef.get();
+
+        // Check if the event exists
+        if (!memberSnapshot.exists())
+            return res.status(404).send('Event not found');
+
+        var update = {};
+        if (location) update.location = location;
+        if (requiresCarpooling) update.requiresCarpooling = requiresCarpooling;
+
+        await memberRef.update(update);
+
+        const updatedMember = await memberRef.get();
+        res.send(updatedMember.val());
     }
 );
 
