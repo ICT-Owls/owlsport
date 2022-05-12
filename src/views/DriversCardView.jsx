@@ -1,28 +1,25 @@
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { Card, IconButton } from '@mui/material';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import * as React from 'react';
-import {Avatar, AvatarGroup, Card, IconButton} from "@mui/material";
-import AvatarView from "./AvatarView";
-import Typography from "@mui/material/Typography";
-import {formatUsername} from "../helpers/Format";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import Button from "@mui/material/Button";
+import { formatUsername } from '../helpers/Format';
+import AvatarView from './AvatarView';
 
-export const DriversCardView = (props) => {
-    //console.log(props);
-    const {driver}=props;
-
+export default function DriversCardView({ member, address }) {
     return (
-        <div className=''>
+        <div>
             <Card>
                 <div className="m-2 ml-4 flex flex-col">
                     <div className="mr-2 flex flex-row items-center">
-                        <AvatarView user={driver} />
+                        <AvatarView user={member} />
 
                         <Typography
                             className="ml-2"
                             variant="h6"
                             component="div"
                         >
-                            {formatUsername(driver)}
+                            {formatUsername(member)}
                         </Typography>
                     </div>
 
@@ -33,17 +30,17 @@ export const DriversCardView = (props) => {
                             size="small"
                         >
                             <LocationOnIcon fontSize="small" />
-                            <p>Somewhere close to you</p>
+                            <p>address</p>
                         </IconButton>
                     </div>
 
                     <div className=" flex justify-start ">
-
                         <div className="ml-20 flex">
                             <Button
                                 variant="contained"
-                                className="border-primary rounded border bg-primary-100 transition duration-500">
-                                PICK UP
+                                className="border-primary rounded border bg-primary-100 transition duration-500"
+                            >
+                                Pick Up
                             </Button>
                         </div>
                     </div>
@@ -51,4 +48,4 @@ export const DriversCardView = (props) => {
             </Card>
         </div>
     );
-};
+}
