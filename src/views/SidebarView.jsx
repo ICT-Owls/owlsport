@@ -53,9 +53,9 @@ export default function SidebarView({
                             <Button
                                 sx={{ justifyContent: 'left' }}
                                 color="secondary"
-                                href="/about"
+                                href="/carregistration"
                             >
-                                About
+                                Car Registration
                             </Button>
                             <Button
                                 sx={{ justifyContent: 'left' }}
