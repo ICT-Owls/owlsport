@@ -60,25 +60,25 @@ const UserTextField = (props: {
     );
 };
 
-type ButtonProps={
+type ButtonProps = {
     onSubmit?: () => void;
     buttonText?: string;
     showButton?: boolean;
     valid: boolean;
     value?: UserOption[];
-}
+};
 
 const SubmitButton: FC<ButtonProps> = (props: ButtonProps) => {
-        return (
-            <Button
-                disabled={props.value?.length === 0 && !props.valid}
-                onClick={() => {
-                    props?.onSubmit?.();
-                }}
-            >
-                {props.buttonText ? props.buttonText : 'Select'}
-            </Button>
-        );
+    return (
+        <Button
+            disabled={props.value?.length === 0 && !props.valid}
+            onClick={() => {
+                props?.onSubmit?.();
+            }}
+        >
+            {props.buttonText ? props.buttonText : 'Select'}
+        </Button>
+    );
 };
 
 const ParticipantSelectorView: FC<ParticipantSelectorViewProps> = (
