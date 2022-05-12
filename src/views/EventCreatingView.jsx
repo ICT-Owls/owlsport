@@ -17,6 +17,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import * as React from 'react';
 import { TransitionGroup } from 'react-transition-group';
+import { userApi } from '../helpers/Firebase';
 import ParticipantSelectorPresenter from '../presenters/ParticipantSelectorPresenter';
 import AvatarView from './AvatarView';
 
@@ -50,7 +51,7 @@ function renderItem({ item, handleRemoveUser }) {
                 </IconButton>
             }
         >
-            <ListItemText primary={item.label} />
+            <ListItemText primary={item.email} />
         </ListItem>
     );
 }
@@ -73,14 +74,33 @@ const EventCreatingView = ({
     submit,
     user,
 }) => {
-    const [usersForEvent, setUsersForEvent] = React.useState([]);
+    const handleAddUser = async (options) => {
+        const results = await Promise.allSettled(
+            options.map((o) =>
+                userApi.userEmailEmailGet(o.email, {
+                    headers: { authorization: `Bearer ${user.accessToken}` },
+                })
+            )
+        );
 
-    const handleAddUser = (options) => {
-        setUsersForEvent((prev) => [...options, ...prev]);
+        const validUsers = results
+            .map((r) => r.value)
+            .filter((r) => r != undefined);
+
+        const mapped = {};
+        validUsers.forEach((u) => {
+            mapped[u.id] = {
+                id: u.id,
+                email: u.email,
+                requiresCarpooling: false,
+            };
+        });
+
+        setMembers({ ...members, ...mapped });
     };
 
     const handleRemoveUser = (item) => {
-        setUsersForEvent((prev) => [...prev.filter((i) => i !== item)]);
+        setMembers((prev) => [...prev.filter((m) => m.email !== item.email)]);
     };
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
@@ -248,10 +268,11 @@ const EventCreatingView = ({
                                     placeholderText="Invite user"
                                     buttonText="Invite"
                                     multiple
+                                    showButton={true}
                                 />
                                 <List className="m-2 h-32 overflow-y-auto">
                                     <TransitionGroup>
-                                        {usersForEvent.map((item) => (
+                                        {Object.values(members).map((item) => (
                                             <Collapse key={item.email}>
                                                 {renderItem({
                                                     item,
