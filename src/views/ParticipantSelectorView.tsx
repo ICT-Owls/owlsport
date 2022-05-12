@@ -9,6 +9,7 @@ import {
     TextField,
     CircularProgress,
     createFilterOptions,
+    buttonBaseClasses,
 } from '@mui/material';
 
 import { AutocompleteRenderInputParams } from '@mui/material';
@@ -20,6 +21,7 @@ export type ParticipantSelectorViewProps = {
     options: UserOption[]; // Available options in drop-down menu
     placeholderText?: string; // Text to display when textfield is empty
     buttonText?: string; // Text to display on the button
+    showButton?: boolean; // Should display the submit button?
     loading: boolean; // Are the options currently being loaded in?
     inputValue?: string; // Text in textfield
     setInputValue?: (textInput: string) => void;
@@ -58,10 +60,33 @@ const UserTextField = (props: {
     );
 };
 
+type ButtonProps = {
+    onSubmit?: () => void;
+    buttonText?: string;
+    showButton?: boolean;
+    valid: boolean;
+    value?: UserOption[];
+};
+
+const SubmitButton: FC<ButtonProps> = (props: ButtonProps) => {
+    return (
+        <Button
+            disabled={props.value?.length === 0 && !props.valid}
+            onClick={() => {
+                props?.onSubmit?.();
+            }}
+        >
+            {props.buttonText ? props.buttonText : 'Select'}
+        </Button>
+    );
+};
+
 const ParticipantSelectorView: FC<ParticipantSelectorViewProps> = (
     props: ParticipantSelectorViewProps
 ) => {
     const [open, setOpen] = React.useState(false);
+
+    const button = SubmitButton(props);
 
     const handleChange = (
         _event: SyntheticEvent,
@@ -118,13 +143,7 @@ const ParticipantSelectorView: FC<ParticipantSelectorViewProps> = (
                 }
             />
 
-            <Button
-                onClick={() => {
-                    props?.onSubmit?.();
-                }}
-            >
-                {props.buttonText ? props.buttonText : 'Select'}
-            </Button>
+            {props.showButton ? button : null}
         </Box>
     );
 };

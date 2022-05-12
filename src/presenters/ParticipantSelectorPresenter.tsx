@@ -3,14 +3,15 @@
  */
 
 import React, { FC } from 'react';
-import ParticipantSelectorView, {
-} from '../views/ParticipantSelectorView';
+import ParticipantSelectorView from '../views/ParticipantSelectorView';
 import { emailRegEx } from '../constants';
 
 export type ParticipantSelectorPresenterProps = {
     placeholderText?: string; // Show this when the textfield is empty
     buttonText?: string; // Show this text on the button
+    showButton?: boolean; // Should display the submit button?
     multiple?: boolean; // Can select multiple values?
+    onChange?: (newValue: UserOption[]) => void; // Called when options are selected or deselected
     onSubmit?: (selectedOptions: UserOption[]) => void; // Called with a list of all selected options when the button is pressed
 };
 
@@ -44,6 +45,7 @@ const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
     React.useEffect(() => {
         let active = true;
 
+        // Check if manual input is valid email address
         setIsInputValid(emailRegEx.test(inputValue));
 
         // Check if entered email already exists in options to not add it twice
@@ -80,7 +82,16 @@ const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
         };
     }, [inputValue]);
 
-    const handleSelect = () => {
+    React.useEffect(() => {
+        // Trigger onChange if chaged
+        props.onChange?.(
+            isInputValid
+                ? [{ email: inputValue, label: inputValue }, ...selection]
+                : selection
+        );
+    }, [isInputValid, selection]);
+
+    const handleSubmit = () => {
         props.onSubmit?.(
             isInputValid
                 ? [{ email: inputValue, label: inputValue }, ...selection]
@@ -96,6 +107,7 @@ const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
             valid={isInputValid}
             placeholderText={props.placeholderText}
             buttonText={props.buttonText}
+            showButton={props.showButton}
             options={options}
             loading={loading}
             setInputValue={setInputValue}
@@ -103,9 +115,13 @@ const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
             inputValue={inputValue}
             value={selection}
             multiple={props.multiple}
-            onSubmit={handleSelect}
+            onSubmit={handleSubmit}
         />
     );
+};
+
+ParticipantSelectorPresenter.defaultProps = {
+    showButton: true,
 };
 
 export default ParticipantSelectorPresenter;

@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.2.0'
+    version: '0.2.1'
 paths:
     /user/authe:
         get:
@@ -41,6 +41,33 @@ paths:
                 '404':
                     description: 'User not found'
 
+    /user/email/{email}:
+        get:
+            summary: 'Get a user by email'
+            description: 'Get a user by their email'
+            tags:
+                - user
+            parameters:
+                - in: path
+                  name: email
+                  required: true
+                  schema:
+                      type: string
+                  description: 'The user email'
+            responses:
+                '200':
+                    description: 'Returns the user'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/components/schemas/User'
+                '400':
+                    description: 'No email provided'
+                '401':
+                    description: 'Unauthenticated'
+                '404':
+                    description: 'User not found'
+
     /user:
         patch:
             summary: 'Update a user'
@@ -70,6 +97,9 @@ paths:
                                     description: 'New friend list of user'
                                     items:
                                         $ref: 'definitions.yaml#/components/schemas/Id'
+                                avatar:
+                                    type: string
+                                    description: 'New avatar image of user'
             responses:
                 '200':
                     description: 'Returns the updated user'
@@ -104,6 +134,9 @@ paths:
                                 dateOfBirth:
                                     type: number
                                     description: 'Date of birth of the user'
+                                avatar:
+                                    type: string
+                                    description: 'User avatar image'
                             required:
                                 - firstName
                                 - lastName
@@ -150,6 +183,13 @@ paths:
             description: 'Update an existing event.'
             tags:
                 - event
+            parameters:
+                - in: path
+                  name: id
+                  schema:
+                      $ref: 'definitions.yaml#/components/schemas/Id'
+                  required: true
+                  description: 'Id of the event to get'
             requestBody:
                 description: |
                     Fields to modify, non-existant fields lead to no change.
@@ -197,6 +237,13 @@ paths:
             description: 'Update your own member object in an event.'
             tags:
                 - event
+            parameters:
+                - in: path
+                  name: id
+                  schema:
+                      $ref: 'definitions.yaml#/components/schemas/Id'
+                  required: true
+                  description: 'Id of the event to get'
             requestBody:
                 description: |
                     Fields to modify, non-existant fields lead to no change.
