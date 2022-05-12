@@ -1,6 +1,6 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { Avatar, AvatarGroup, Card, IconButton } from '@mui/material';
+import {Avatar, AvatarGroup, Card, IconButton, Popover} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -17,9 +17,12 @@ import {
     formatUsername,
 } from '../helpers/Format';
 import AvatarView from './AvatarView';
+import {DriversCardView} from "./DriversCardView";
 
 export default function EventDetailsView({ event, creator, user }) {
     const [open, setOpen] = React.useState(true);
+    //const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
     if (!event || !creator) return null;
 
@@ -34,6 +37,17 @@ export default function EventDetailsView({ event, creator, user }) {
 
     const startDate = new Date(startDateTime);
     const endDate = new Date(endDateTime);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClosePopover = () => {
+        setAnchorEl(null);
+    };
+
+    const openPopover = Boolean(anchorEl);
+    const id = openPopover ? 'simple-popover' : undefined;
 
     const handleClose = () => {
         setOpen(false);
@@ -68,10 +82,33 @@ export default function EventDetailsView({ event, creator, user }) {
                             <Button
                                 variant="contained"
                                 className="black mb-5 w-52 bg-primary-100 text-background-100"
+                                onClick={handleClick}
                             >
                                 Request ride
                             </Button>
+                            <Popover
+                                id={id}
+                                open={openPopover}
+                                anchorEl={anchorEl}
+                                onClose={handleClosePopover}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                            >
+                                <DriversCardView sx={{ p: 2 }} driver={user}></DriversCardView>
+
+                            </Popover>
                         </div>
+
+                        {/*<div>*/}
+                        {/*    <Button*/}
+                        {/*        variant="contained"*/}
+                        {/*        className="black mb-5 w-52 bg-primary-100 text-background-100"*/}
+                        {/*    >*/}
+                        {/*        Request ride*/}
+                        {/*    </Button>*/}
+                        {/*</div>*/}
 
                         <div className="flex items-center justify-center">
                             <Box className="m-2 flex aspect-square h-16 w-16 items-center justify-center rounded-lg bg-primary-100 p-3 text-background-100">
