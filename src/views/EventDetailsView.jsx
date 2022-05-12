@@ -16,9 +16,14 @@ import {
     formatLocation,
     formatUsername,
 } from '../helpers/Format';
+import RequiresCarpoolingPresenter from '../presenters/RequiresCarpoolingPresenter';
 import AvatarView from './AvatarView';
-
-export default function EventDetailsView({ event, creator, user }) {
+export default function EventDetailsView({
+    event,
+    creator,
+    user,
+    setCarpooling,
+}) {
     const [open, setOpen] = React.useState(true);
 
     if (!event || !creator) return null;
@@ -34,6 +39,10 @@ export default function EventDetailsView({ event, creator, user }) {
 
     const startDate = new Date(startDateTime);
     const endDate = new Date(endDateTime);
+
+    const memberObj = members?.[user.id];
+
+    const requiresCarpooling = memberObj?.requiresCarpooling | false;
 
     const handleClose = () => {
         setOpen(false);
@@ -65,12 +74,10 @@ export default function EventDetailsView({ event, creator, user }) {
                         </div>
 
                         <div>
-                            <Button
-                                variant="contained"
-                                className="black mb-5 w-52 bg-primary-100 text-background-100"
-                            >
-                                Request ride
-                            </Button>
+                            <RequiresCarpoolingPresenter
+                                requiresCarpooling={requiresCarpooling}
+                                setCarpooling={setCarpooling}
+                            />
                         </div>
 
                         <div className="flex items-center justify-center">

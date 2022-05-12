@@ -1,4 +1,5 @@
 /*  Presenters  */
+import { Box } from '@mui/material';
 import { StyledEngineProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';

@@ -150,6 +150,13 @@ paths:
             description: 'Update an existing event.'
             tags:
                 - event
+            parameters:
+                - in: path
+                  name: id
+                  schema:
+                      $ref: 'definitions.yaml#/components/schemas/Id'
+                  required: true
+                  description: 'Id of the event to get'
             requestBody:
                 description: |
                     Fields to modify, non-existant fields lead to no change.
@@ -197,6 +204,13 @@ paths:
             description: 'Update your own member object in an event.'
             tags:
                 - event
+            parameters:
+                - in: path
+                  name: id
+                  schema:
+                      $ref: 'definitions.yaml#/components/schemas/Id'
+                  required: true
+                  description: 'Id of the event to get'
             requestBody:
                 description: |
                     Fields to modify, non-existant fields lead to no change.
