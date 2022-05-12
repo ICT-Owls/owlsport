@@ -13,6 +13,6 @@ COPY tsconfig.json ./
 
 RUN ["npm", "i"]
 
-RUN ["npm", "test"]
+#RUN ["npm", "test"]
 
 ENTRYPOINT ["npm", "run", "start-prod"]
