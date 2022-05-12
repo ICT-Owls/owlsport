@@ -45,11 +45,20 @@ const uiConfig = {
                     })
                     .catch((e) => {
                         if (e.status == 404) {
+                            const displayName =
+                                authResult?.user?.displayName?.trim();
+                            const s = displayName.indexOf(' ');
+                            const firstName =
+                                s !== -1
+                                    ? displayName.slice(0, s)
+                                    : displayName;
+                            const lastName =
+                                s !== -1 ? displayName.slice(s).trim() : '';
                             userApi
                                 .userPost(
                                     {
-                                        firstName: 'Kevin',
-                                        lastName: 'Kelvin',
+                                        firstName,
+                                        lastName,
                                         dateOfBirth: 0,
                                     },
                                     {
