@@ -27,12 +27,13 @@ export default function EventDetailsPresenter({ user }) {
             .catch((err) => console.error(err));
     }, [eventId]);
 
-    const updateRequiresCarpooling = (requiresCarpooling) => {
+    const setCarpooling = (requiresCarpooling, location) => {
         if (eventData.event.id)
             eventApi
                 .eventsIdSelfPatch(
                     {
                         requiresCarpooling,
+                        location,
                     },
                     eventData.event.id,
                     opts
@@ -54,5 +55,5 @@ export default function EventDetailsPresenter({ user }) {
 
     const { event, creator } = eventData;
 
-    return EventDetailsView({ event, creator, user, updateRequiresCarpooling });
+    return EventDetailsView({ event, creator, user, setCarpooling });
 }
