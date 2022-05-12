@@ -53,6 +53,7 @@ export function useUser() {
                     })
                 )
                 .catch((err) => console.error(err));
+        else setUser(undefined);
     }, [authUser]);
     return [user];
 }
