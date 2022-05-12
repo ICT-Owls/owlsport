@@ -19,8 +19,8 @@ export default function SidebarView({
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
         <>
-            <div className="relative h-auto w-60 justify-start bg-background-100 bg-opacity-80 pt-10 text-left">
-                <div className={'fixed'}>
+            <div className="relative h-auto w-60 justify-start  rounded-tl-md rounded-bl-md bg-background-100 bg-opacity-80 text-left">
+                <div className="p-8">
                     <IconButton
                         href="/test"
                         color="secondary"
@@ -65,7 +65,8 @@ export default function SidebarView({
                             >
                                 Whatever
                             </Button>
-                            <Divider style={{ padding: '0px' }} />
+
+                            <Divider style={{ padding: '4px' }} />
 
                             {user ? (
                                 <>
