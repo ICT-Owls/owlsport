@@ -2,7 +2,7 @@ import * as React from 'react';
 import EventCreatingView from '../views/EventCreatingView';
 import { createEvent } from '../api';
 
-export const EventCreatingPresenter = ({ user, onSubmit}) => {
+export const EventCreatingPresenter = ({ user, onSubmit }) => {
     const [title, setTitle] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [startDateTime, setStartDateTime] = React.useState(Date.now());
@@ -10,7 +10,12 @@ export const EventCreatingPresenter = ({ user, onSubmit}) => {
         Date.now() + 1000 * 3600
     );
     const [members, setMembers] = React.useState([]);
-    const [location, setLocation] = React.useState({address: undefined, longitude: 0, latitude: 0});
+    const [location, setLocation] = React.useState({
+        address: undefined,
+        longitude: 0,
+        latitude: 0,
+    });
+    const [emails, setEmails] = React.useState([]);
 
     const submit = () => {
         createEvent({
