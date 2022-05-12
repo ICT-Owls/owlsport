@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { auth } from '../helpers/Firebase';
+import { auth, userApi } from '../helpers/Firebase';
 
 //-------- ReadMe --------
 //To use a existing state, import the wrapper function for that state and use it like you would
@@ -29,11 +29,34 @@ export function useExample() {
 //persists it does not make sense to store in local storage. Also, the user object provided
 //by auth() cannot be stringified easily. It would make sense to store both this and our own
 //user object in the future.
+export function useAuthUser() {
+    const [authUser, setAuthUser] = useState(auth.currentUser);
+    useEffect(() => auth.onAuthStateChanged((e) => setAuthUser(e)));
+    return [authUser];
+}
+
 export function useUser() {
-    const [user, setUser] = useState(auth.currentUser);
-    useEffect(() => auth.onAuthStateChanged((e) => setUser(e)));
+    const [authUser] = useAuthUser();
+    const [user, setUser] = useState(undefined);
+    useEffect(() => {
+        if (authUser?.uid)
+            userApi
+                .userIdGet(authUser.uid, {
+                    headers: {
+                        authorization: `Bearer ${authUser.accessToken}`,
+                    },
+                })
+                .then((userData) =>
+                    setUser({
+                        ...userData,
+                        accessToken: authUser.accessToken,
+                    })
+                )
+                .catch((err) => console.error(err));
+    }, [authUser]);
     return [user];
 }
+
 //-------- Public Functions --------
 
 //This function is run by App.jsx when mounted. Initialized the model
