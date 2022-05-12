@@ -6,6 +6,8 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -65,12 +67,19 @@ export default function EventDetailsView({
             fullWidth={true}
         >
             <DialogContent>
-                <Switch
-                    value={isDriver}
-                    onChange={(e) => setIsDriver(e.target.checked)}
-                >
-                    Is Driver
-                </Switch>
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                value={isDriver}
+                                onChange={(e) => setIsDriver(e.target.checked)}
+                            >
+                                Is Driver
+                            </Switch>
+                        }
+                        label={isDriver ? 'Driver sees: ' : 'Non-driver sees: '}
+                    />
+                </FormGroup>
                 <div className="flex flex-col justify-around">
                     <div className="flex flex-row items-center justify-between">
                         {/*TOP BAR*/}
