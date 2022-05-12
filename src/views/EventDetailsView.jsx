@@ -10,6 +10,7 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     formatDateMonthDay,
     formatFullDate,
@@ -24,6 +25,7 @@ export default function EventDetailsView({
     user,
     setCarpooling,
 }) {
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(true);
 
     if (!event || !creator) return null;
@@ -45,6 +47,7 @@ export default function EventDetailsView({
     const requiresCarpooling = memberObj?.requiresCarpooling | false;
 
     const handleClose = () => {
+        navigate('/events', { replace: true });
         setOpen(false);
     };
 
