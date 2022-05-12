@@ -24,18 +24,32 @@ export default function App() {
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-                <div className="App absolute flex h-full w-full flex-col justify-start"
-                     style={{backgroundImage: `url('../background.png')`, backgroundRepeat: 'no-repeat',
-                         width:'100hv', height: 'auto',
-                         backgroundPosition: 'left', backgroundSize: 'cover', backgroundAttachment: "fixed"}}>
-
+                <div
+                    className="App absolute flex h-full w-full flex-col justify-start"
+                    style={{
+                        backgroundImage: `url('../background.png')`,
+                        backgroundRepeat: 'no-repeat',
+                        width: '100hv',
+                        height: 'auto',
+                        backgroundPosition: 'left',
+                        backgroundSize: 'cover',
+                        backgroundAttachment: 'fixed',
+                    }}
+                >
                     <NavbarPresenter />
 
-                    <Box sx={{ marginX: 'auto', minHeight: '1200px', height: '100%', maxWidth: '1200px', width:'100%',
-                        }}>
-                        <div className="pt-10 h-screen w-full content-center justify-center flex flex-row space-x-0">
-                            <SidebarPresenter className=' ' user={user} />
-                            <MainContentPresenter className=' ' user={user} />
+                    <Box
+                        sx={{
+                            marginX: 'auto',
+                            minHeight: '1200px',
+                            height: '100%',
+                            maxWidth: '1200px',
+                            width: '100%',
+                        }}
+                    >
+                        <div className="flex h-screen w-full flex-row content-center justify-center space-x-0 pt-10">
+                            <SidebarPresenter className=" " user={user} />
+                            <MainContentPresenter className=" " user={user} />
                         </div>
                     </Box>
 
@@ -46,9 +60,6 @@ export default function App() {
                     {/*        <MainContentPresenter className='' user={user} />*/}
                     {/*    </div>*/}
                     {/*</Box>*/}
-
-
-
                 </div>
             </ThemeProvider>
         </StyledEngineProvider>
