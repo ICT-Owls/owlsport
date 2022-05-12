@@ -41,6 +41,33 @@ paths:
                 '404':
                     description: 'User not found'
 
+    /user/email/{email}:
+        get:
+            summary: 'Get a user by email'
+            description: 'Get a user by their email'
+            tags:
+                - user
+            parameters:
+                - in: path
+                  name: email
+                  required: true
+                  schema:
+                      type: string
+                  description: 'The user email'
+            responses:
+                '200':
+                    description: 'Returns the user'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/components/schemas/User'
+                '400':
+                    description: 'No email provided'
+                '401':
+                    description: 'Unauthenticated'
+                '404':
+                    description: 'User not found'
+
     /user:
         patch:
             summary: 'Update a user'
