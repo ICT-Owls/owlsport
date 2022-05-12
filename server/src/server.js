@@ -1,11 +1,19 @@
-const { database, admin } = require('./database.js');
+import { admin } from './database.js';
 
-const cors = require('cors');
+import cors from 'cors';
 
-const express = require('express');
-const path = require('path');
+import express, { json } from 'express';
+
+import path from 'path';
+
 const app = express();
-const port = 30649;
+
+const port = parseInt(process.env.PORT);
+
+if (isNaN(port)) {
+    console.error('Environment variable PORT must be set!');
+    process.exit(1);
+}
 
 // TODO: Bad bad, fix later
 app.use(
@@ -14,7 +22,10 @@ app.use(
     })
 );
 
-app.use(express.json());
+// Enable pre-flight for all requests
+app.options('*', cors());
+
+app.use(json());
 
 app.use(async (req, _res, next) => {
     if (req.headers?.authorization?.startsWith('Bearer ')) {
@@ -34,17 +45,14 @@ app.use(async (req, _res, next) => {
     next();
 });
 
-app.use(express.static('build'));
+app.use(express.static(path.resolve('..', 'build')));
 
-const userRoute = require('./routes/userRoute.js');
+import userRoute from './routes/userRoute.js';
 app.use('/user', userRoute);
 
-const eventRoute = require('./routes/eventRoute.js');
-app.use('/events', eventRoute);
+import eventRoute from './routes/eventRoute.js';
 
-app.get('/', (_req, res) => {
-    res.sendFile(path.resolve('build', 'index.html'));
-});
+app.use('/events', eventRoute);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
@@ -55,4 +63,4 @@ app.listen(port, () => {
     console.log(`Web server listening on port ${port}`);
 });
 
-module.exports = { app, database };
+module.exports = { app };

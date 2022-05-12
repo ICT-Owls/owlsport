@@ -21,7 +21,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function EventListView({ events, user }) {
+export default function EventListView({ events, user, loadEvents }) {
     const [createOpen, setCreateOpen] = React.useState(false);
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
@@ -39,8 +39,9 @@ export default function EventListView({ events, user }) {
                 <Container padding="1rem">
                     <EventCreatingPresenter
                         user={user}
-                        callback={() => {
+                        onSubmit={() => {
                             setCreateOpen(false);
+                            loadEvents();
                         }}
                     />
                 </Container>

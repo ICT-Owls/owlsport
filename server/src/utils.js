@@ -20,7 +20,7 @@ const authorize = async function (req, res, next) {
 
 const validateLocation = function (loc) {
     return (
-        parseFloat(loc.longtitude) !== NaN &&
+        parseFloat(loc.longitude) !== NaN &&
         parseFloat(loc.latitude) !== NaN &&
         (loc.address == undefined || typeof loc.address == 'string')
     );

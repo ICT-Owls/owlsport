@@ -2,23 +2,45 @@
     "name": "carpooling-server",
     "version": "0.1.0",
     "private": true,
+    "main": "build/server.js",
+    "type": "commonjs",
     "scripts": {
-        "start-prod": "cross-env NODE_ENV=production PORT=80 node src/server.js",
-        "start-dev": "cross-env NODE_ENV=development PORT=3003 node src/server.js",
-        "mocha-test": "mocha --recursive --exit",
-        "clean-node_modules": "rimraf node_modules"
+        "build": "babel src --out-dir build --copy-files --source-maps",
+        "start-prod": "npm run build && cross-env NODE_ENV=production PORT=80 node build/server.js",
+        "start-dev": "npm run build && cross-env NODE_ENV=development PORT=32203 node build/server.js",
+        "test": "npm run build && cross-env NODE_ENV=development PORT=32203 mocha ./build/test --require @babel/register --require mocha-suppress-logs --recursive --exit",
+        "clean": "rimraf node_modules build/* package-lock.json"
     },
     "devDependencies": {
+        "@babel/cli": "^7.17.10",
+        "@babel/core": "^7.17.10",
         "@babel/eslint-parser": "^7.17.0",
+        "@babel/plugin-transform-runtime": "^7.17.10",
+        "@babel/preset-env": "^7.17.10",
+        "@babel/preset-typescript": "^7.16.7",
+        "@babel/register": "^7.17.7",
+        "@tsconfig/node16": "^1.0.2",
+        "@tsconfig/node17": "^1.0.0",
+        "@types/express": "^4.17.13",
+        "chai": "^4.3.6",
+        "chai-http": "^4.3.0",
         "cross-env": "^7.0.3",
         "eslint": "^8.14.0",
         "mocha": "^10.0.0",
-        "rimraf": "^3.0.2"
+        "mocha-suppress-logs": "^0.3.1",
+        "rimraf": "^3.0.2",
+        "typescript": "^4.6.4"
     },
     "dependencies": {
+        "@babel/node": "^7.17.10",
+        "@babel/runtime": "^7.17.9",
+        "@discordjs/rest": "^0.4.1",
         "cors": "^2.8.5",
+        "discord-api-types": "^0.32.1",
+        "discord.js": "^13.6.0",
         "express": "^4.18.1",
         "express-validator": "^6.14.0",
+        "firebase": "^9.8.1",
         "firebase-admin": "^10.1.0",
         "path": "^0.12.7"
     }

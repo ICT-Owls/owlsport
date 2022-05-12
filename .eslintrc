@@ -26,7 +26,10 @@
         },
         {
             "files": ["src/**/*.ts", "src/**/*.tsx"],
-            "parser": "@typescript-eslint/parser"
+            "parser": "@typescript-eslint/parser",
+            "env": {
+                "browser": true
+            }
         }
     ],
     "plugins": ["react", "tailwindcss", "@typescript-eslint"],

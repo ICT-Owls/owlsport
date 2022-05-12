@@ -188,7 +188,8 @@ router.patch(
 
         var update = {};
         if (location) update.location = location;
-        if (requiresCarpooling) update.requiresCarpooling = requiresCarpooling;
+        if (requiresCarpooling != undefined)
+            update.requiresCarpooling = requiresCarpooling;
 
         await memberRef.update(update);
 

@@ -1,13 +1,6 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import {
-    Avatar,
-    AvatarGroup,
-    Card,
-    IconButton,
-    Popover,
-    Switch,
-} from '@mui/material';
+import { Avatar, AvatarGroup, Card, IconButton, Switch } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -17,6 +10,7 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     formatDateMonthDay,
     formatFullDate,
@@ -24,12 +18,17 @@ import {
     formatUsername,
 } from '../helpers/Format';
 import DriversCardPresenter from '../presenters/DriversCardPresenter';
+import RequiresCarpoolingPresenter from '../presenters/RequiresCarpoolingPresenter';
 import AvatarView from './AvatarView';
-import DriversCardView from './DriversCardView';
-
-export default function EventDetailsView({ event, creator, user }) {
+export default function EventDetailsView({
+    event,
+    creator,
+    user,
+    setCarpooling,
+}) {
     const [open, setOpen] = React.useState(true);
     const [isDriver, setIsDriver] = React.useState(false);
+    const navigate = useNavigate();
 
     if (!event || !creator) return null;
 
@@ -45,8 +44,13 @@ export default function EventDetailsView({ event, creator, user }) {
     const startDate = new Date(startDateTime);
     const endDate = new Date(endDateTime);
 
+    const memberObj = members?.[user.id];
+
+    const requiresCarpooling = memberObj?.requiresCarpooling | false;
+
     const handleClose = () => {
         setOpen(false);
+        navigate('/events', { replace: true });
     };
 
     return (
@@ -63,7 +67,7 @@ export default function EventDetailsView({ event, creator, user }) {
             <DialogContent>
                 <Switch
                     value={isDriver}
-                    onChange={(e) => setIsDriver(e.target.value)}
+                    onChange={(e) => setIsDriver(e.target.checked)}
                 >
                     Is Driver
                 </Switch>
@@ -81,12 +85,10 @@ export default function EventDetailsView({ event, creator, user }) {
                         </div>
 
                         <div>
-                            <Button
-                                variant="contained"
-                                className="black mb-5 w-52 bg-primary-100 text-background-100"
-                            >
-                                Request ride
-                            </Button>
+                            <RequiresCarpoolingPresenter
+                                requiresCarpooling={requiresCarpooling}
+                                setCarpooling={setCarpooling}
+                            />
                         </div>
 
                         {/*<div>*/}

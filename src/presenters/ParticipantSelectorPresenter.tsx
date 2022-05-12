@@ -2,14 +2,17 @@
  * Component for selecting a user. Either by entering an email address, or by selecting the name of one of your contacts
  */
 
-import React from 'react';
-import ParticipantSelectorView from '../views/ParticipantSelectorView';
+import React, { FC } from 'react';
+import ParticipantSelectorView, {
+} from '../views/ParticipantSelectorView';
 import { emailRegEx } from '../constants';
 
 export type ParticipantSelectorPresenterProps = {
     placeholderText?: string; // Show this when the textfield is empty
     buttonText?: string; // Show this text on the button
+    showButton?: boolean; // Should display the submit button?
     multiple?: boolean; // Can select multiple values?
+    onChange?: (newValue: UserOption[]) => void; // Called when options are selected or deselected
     onSubmit?: (selectedOptions: UserOption[]) => void; // Called with a list of all selected options when the button is pressed
 };
 
@@ -19,11 +22,20 @@ export type UserOption = {
     email: string;
 };
 
-export default function ParticipantSelectorPresenter(
+const newOptions = [
+    { label: 'Erik Eriksson', email: 'erik@erik.erik' },
+    { label: 'Test Test', email: 'test@test.com' },
+    { label: 'James Bond', email: 'the007@mi6.firebaseapp.io' },
+    { label: 'Best Friend', email: 'niceperson@smilemail.gov.uk' },
+]; // TODO: Load from user's friends (and other known users?)
+
+const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
     props: ParticipantSelectorPresenterProps
-) {
-    const [options, setOptions] = React.useState<UserOption[]>([]); // List of options to suggest to the user
-    const [isValid, setValid] = React.useState(false);
+) => {
+    const [options, setOptions] = React.useState<UserOption[]>(newOptions); // List of options to suggest to the user, including what the user is typing
+    const [fixedOptions, setFixedOptions] =
+        React.useState<UserOption[]>(newOptions); // List of loaded options, excluding what the user is typing
+    const [isInputValid, setIsInputValid] = React.useState(false);
     const [inputValue, setInputValue] = React.useState(''); // The current text in the textfield
     const [selection, setSelection] = React.useState<UserOption[]>([]); // The selected options
     const [loaded, setLoaded] = React.useState(false); // Is the previous loading operation complete?
@@ -34,16 +46,23 @@ export default function ParticipantSelectorPresenter(
     React.useEffect(() => {
         let active = true;
 
-        setValid(emailRegEx.test(inputValue));
+        // Check if manual input is valid email address
+        setIsInputValid(emailRegEx.test(inputValue));
 
-        const newOptions = [
-            { label: 'Erik Eriksson', email: 'erik@erik.erik' },
-            { label: 'Test Test', email: 'test@test.com' },
-            { label: 'James Bond', email: 'the007@mi6.firebaseapp.io' },
-            { label: 'Best Friend', email: 'niceperson@smilemail.gov.uk' },
-        ]; // TODO: Load from user's friends (and other known users?)
+        // Check if entered email already exists in options to not add it twice
+        const isExisting = fixedOptions.some(
+            (option) => inputValue === option.label
+        );
 
-        setOptions(newOptions);
+        // Is entered email valid and unique?
+        const shouldSuggestInputValue: boolean = !isExisting && isInputValid;
+
+        // Set options presented to user
+        setOptions(
+            shouldSuggestInputValue
+                ? [{ email: inputValue, label: inputValue }, ...fixedOptions]
+                : fixedOptions
+        );
 
         if (!loading) {
             return undefined;
@@ -64,21 +83,30 @@ export default function ParticipantSelectorPresenter(
         };
     }, [inputValue]);
 
-    const handleSelect = () => {
-        const fullSelection = emailRegEx.test(inputValue)
-            ? [...selection, { label: inputValue, email: inputValue }]
-            : selection;
+    React.useEffect(()=>{
+        // Trigger onChange if chaged
+        props.onChange?.(isInputValid
+        ? [{ email: inputValue, label: inputValue }, ...selection]
+        : selection);
+    }, [isInputValid, selection]);
 
-        props.onSubmit?.(fullSelection); // Call callback
+    const handleSubmit = () => {
+        props.onSubmit?.(
+            isInputValid
+                ? [{ email: inputValue, label: inputValue }, ...selection]
+                : selection
+        );
+
         setSelection([]); // Clear input
         setInputValue('');
     };
 
     return (
         <ParticipantSelectorView
-            valid={isValid}
+            valid={isInputValid}
             placeholderText={props.placeholderText}
             buttonText={props.buttonText}
+            showButton={props.showButton}
             options={options}
             loading={loading}
             setInputValue={setInputValue}
@@ -86,7 +114,9 @@ export default function ParticipantSelectorPresenter(
             inputValue={inputValue}
             value={selection}
             multiple={props.multiple}
-            onSubmit={handleSelect}
+            onSubmit={handleSubmit}
         />
     );
-}
+};
+
+export default ParticipantSelectorPresenter;
