@@ -100,7 +100,13 @@ const EventCreatingView = ({
     };
 
     const handleRemoveUser = (item) => {
-        setMembers((prev) => [...prev.filter((m) => m.email !== item.email)]);
+        const newMembers = {};
+        Object.values(members).filter((m) => {
+            if (m.email !== item.email) {
+                newMembers[m.id] = m;
+            }
+        });
+        setMembers(newMembers);
     };
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
