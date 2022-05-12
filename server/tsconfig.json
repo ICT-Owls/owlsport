@@ -1,0 +1,27 @@
+{
+    "extends": "@tsconfig/node17/tsconfig.json",
+
+    "compilerOptions": {
+        "target": "es5",
+        "lib": ["esnext"],
+        "removeComments": true,
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "sourceMap": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "declaration": true,
+        "declarationMap": true,
+        "declarationDir": "build/d",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "outDir": "build"
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "build"]
+}
