@@ -4,7 +4,7 @@ import { useAuthUser } from '../models/Model';
 import DriversCardView from '../views/DriversCardView';
 export default function DriversCardPresenter({ id, address }) {
     const [member, setMember] = React.useState(undefined);
-    const authUser = useAuthUser();
+    const [authUser] = useAuthUser();
 
     useEffect(() => {
         userApi
