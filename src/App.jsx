@@ -9,7 +9,6 @@ import MainContentPresenter from './presenters/MainContentPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
 import SidebarPresenter from './presenters/SidebarPresenter';
 import { DarkTheme, LightTheme } from './Themes';
-import {Box} from "@mui/material";
 
 export default function App() {
     //Initalize model
