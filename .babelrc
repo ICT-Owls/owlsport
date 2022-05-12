@@ -1,10 +1,8 @@
 {
     "presets": [
         "react-app",
-        ["@babel/env", { "loose": true }],
+        ["@babel/env", { "loose": true, "targets": { "browsers": ["> 0.2%, not dead, not op_mini all, last 4 Edge versions"] } }],
         "@babel/typescript"
     ],
-    "plugins": [
-        "babel-plugin-transform-node-env-inline"
-    ]
+    "plugins": ["babel-plugin-transform-node-env-inline"]
 }

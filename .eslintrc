@@ -15,7 +15,8 @@
         "tailwindcss/enforces-shorthand": "off",
         "tailwindcss/classnames-order": "off",
         // ^^^^^^^^^^ Should change these to warn at some pint ^^^^^^^^^^^^
-        "no-tabs": "warn"
+        "no-tabs": "warn",
+        "@typescript-eslint/no-var-requires": "off"
     },
     "overrides": [
         {
