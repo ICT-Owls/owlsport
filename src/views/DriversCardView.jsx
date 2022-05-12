@@ -30,7 +30,7 @@ export default function DriversCardView({ member, address }) {
                             size="small"
                         >
                             <LocationOnIcon fontSize="small" />
-                            <p>address</p>
+                            <p>{address}</p>
                         </IconButton>
                     </div>
 
