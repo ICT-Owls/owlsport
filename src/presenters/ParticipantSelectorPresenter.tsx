@@ -3,8 +3,7 @@
  */
 
 import React, { FC } from 'react';
-import ParticipantSelectorView, {
-} from '../views/ParticipantSelectorView';
+import ParticipantSelectorView from '../views/ParticipantSelectorView';
 import { emailRegEx } from '../constants';
 
 export type ParticipantSelectorPresenterProps = {
@@ -83,11 +82,13 @@ const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
         };
     }, [inputValue]);
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         // Trigger onChange if chaged
-        props.onChange?.(isInputValid
-        ? [{ email: inputValue, label: inputValue }, ...selection]
-        : selection);
+        props.onChange?.(
+            isInputValid
+                ? [{ email: inputValue, label: inputValue }, ...selection]
+                : selection
+        );
     }, [isInputValid, selection]);
 
     const handleSubmit = () => {
@@ -117,6 +118,10 @@ const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
             onSubmit={handleSubmit}
         />
     );
+};
+
+ParticipantSelectorPresenter.defaultProps = {
+    showButton: true,
 };
 
 export default ParticipantSelectorPresenter;
