@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 
 const { initializeApp } = require('firebase/app');
 const { getAuth, signInWithEmailAndPassword } = require('firebase/auth');
-const { doesNotMatch } = require('assert');
+const { events } = require('../database.js');
 
 const generateTestCredentials = async function () {
     const firebaseConfig = {
@@ -36,6 +36,7 @@ const generateTestCredentials = async function () {
 
 var testToken = undefined;
 var testUser = undefined;
+var testEvent = undefined;
 
 const get = function (path) {
     return chai
@@ -71,16 +72,7 @@ describe('Events', function () {
         testToken = credentials.user.accessToken;
 
         const userRef = database.ref(`/users/${credentials.user.uid}`);
-        await userRef.set({
-            firstName: 'firstname',
-            lastName: 'lastName',
-            dateOfBirth: Date.now().valueOf(),
-            email: 'testitest@testest.com',
-            id: credentials.user.uid,
-            creationDate: Date.now().valueOf(),
-        });
-
-        testUser = (await userRef.get()).val();
+        testUser = await (await userRef.get()).val();
 
         const eventsRef = await database.ref('/events').get();
         if (!eventsRef.val()) return;
@@ -163,39 +155,80 @@ describe('Events', function () {
                 description: 'description',
                 startDateTime: 0,
                 endDateTime: 1000,
-                members: {
-                    testuserid: {
-                        id: 'testuserid',
-                        requiresCarpooling: false,
-                        location: {
-                            latitude: 0,
-                            longitude: 0,
-                            address: 'address',
-                        },
-                    },
-                },
+                members: {},
                 location: {
+                    longtitude: 0,
                     latitude: 0,
-                    longitude: 0,
-                    address: 'address',
+                    address: 'stockholm',
                 },
             };
             var res = await post('/events').send(event);
+
             assert.equal(res.status, 200);
             assert.equal(res.body.title, event.title);
             assert.equal(res.body.description, event.description);
             assert.equal(res.body.startDateTime, event.startDateTime);
             assert.equal(res.body.endDateTime, event.endDateTime);
+            assert.deepEqual(res.body.location, event.location);
             assert.equal(res.body.creatorId, testUser.id);
             assert.exists(res.body.id);
             assert.exists(res.body.creationDate);
+
+            testEvent = res.body;
         });
     });
 
-    describe('/PATCH /events', function () {
+    describe('/PATCH /events/:id', function () {
         it('return 401 without authentication', async function () {
             var res = await chai.request(app).patch('/events/sslokgdonhgos');
             assert.equal(res.status, 401);
+        });
+
+        it('return 400 with empty body', async function () {
+            var res = await patch(`/events/${testEvent.id}`).send({});
+            assert.equal(res.status, 400);
+        });
+
+        it('return 200 with valid body', async function () {
+            const event = {
+                title: 'newtitle',
+            };
+            var res = await patch(`/events/${testEvent.id}`).send(event);
+            assert.equal(res.status, 200);
+            assert.deepEqual(res.body, { ...testEvent, ...event });
+        });
+    });
+
+    describe('/PATCH /events/:id/self', function () {
+        it('return 401 without authentication', async function () {
+            var res = await chai
+                .request(app)
+                .patch('/events/sslokgdonhgos/self');
+            assert.equal(res.status, 401);
+        });
+
+        it('return 400 with empty body', async function () {
+            // Setup
+            const setupRes = await patch(`/events/${testEvent.id}`).send({
+                members: {
+                    [testUser.id]: {
+                        id: testUser.id,
+                        location: undefined,
+                        requriesCarpooling: false,
+                    },
+                },
+            });
+
+            var res = await patch(`/events/${testEvent.id}/self`).send({});
+            assert.equal(res.status, 400);
+        });
+
+        it('return 200 with valid body', async function () {
+            var res = await patch(`/events/${testEvent.id}/self`).send({
+                requiresCarpooling: true,
+            });
+            assert.equal(res.status, 200);
+            assert.equal(res.body.requiresCarpooling, true);
         });
     });
 
@@ -206,8 +239,8 @@ describe('Events', function () {
         });
 
         it('return 200 when authenticated', async function () {
-            var res = await get('/events');
-            assert.equal(res.status, 200);
+            var res = await get('/events/');
+            assert.equal(res.body.length, 1);
         });
     });
 });
