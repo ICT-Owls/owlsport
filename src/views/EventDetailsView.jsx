@@ -25,8 +25,8 @@ export default function EventDetailsView({
     user,
     setCarpooling,
 }) {
-    const navigate = useNavigate();
     const [open, setOpen] = React.useState(true);
+    const navigate = useNavigate();
 
     if (!event || !creator) return null;
 
@@ -47,8 +47,8 @@ export default function EventDetailsView({
     const requiresCarpooling = memberObj?.requiresCarpooling | false;
 
     const handleClose = () => {
-        navigate('/events', { replace: true });
         setOpen(false);
+        navigate('/events', { replace: true });
     };
 
     return (
