@@ -120,4 +120,8 @@ const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
     );
 };
 
+ParticipantSelectorPresenter.defaultProps = {
+    showButton: true,
+};
+
 export default ParticipantSelectorPresenter;

@@ -5,6 +5,14 @@ const { users } = require('../database.js');
 const express = require('express');
 const router = express.Router();
 
+const avatarURLRequirements = {
+    require_tld: false,
+    require_host: false,
+    require_valid_protocol: false,
+    allow_underscores: true,
+    allow_protocol_relative_urls: true,
+};
+
 /**
  * Create a user from both the user object we receive from firebase authentication, but also additional info in the request body.
  */
@@ -14,9 +22,11 @@ router.post(
     body('firstName').isString().withMessage('Invalid first name'),
     body('lastName').isString().withMessage('Invalid last name'),
     body('dateOfBirth').isNumeric().withMessage('Invalid date of birth'),
+    body('avatar').optional().isURL(avatarURLRequirements).withMessage('Invalid avatar url'),
     validate,
     async (req, res) => {
-        const { firstName, lastName, dateOfBirth } = req.body;
+        const { firstName, lastName, dateOfBirth, avatar } = req.body;
+
         const authUser = req.user;
 
         const userRef = users.child(authUser.uid);
@@ -33,6 +43,7 @@ router.post(
             email: authUser.email,
             dateOfBirth: dateOfBirth,
             friends: [],
+            avatar: avatar ? avatar : '/img/avatar.png',
             creationDate: Date.now(),
         });
 
@@ -85,7 +96,7 @@ router.get(
 
 /**
  * Update a user.
- * Only fields that can be updated are the email, and friends.
+ * Only fields that can be updated are the email, avatar, and friends.
  */
 router.patch(
     '/',
@@ -93,11 +104,19 @@ router.patch(
     body('email').optional().isEmail().withMessage('Invalid email'),
     body('friends').optional().isArray().withMessage('Friends is not an array'),
     body('friends.*').isString().withMessage('Friend id is not a string'),
-    oneOf([body('friends').exists(), body('email').exists()]),
+    body('avatar')
+        .optional()
+        .isURL(avatarURLRequirements)
+        .withMessage('Avatar is not a path'),
+    oneOf([
+        body('friends').exists(),
+        body('email').exists(),
+        body('avatar').exists(),
+    ]),
     validate,
     async (req, res) => {
         const authUser = req.user;
-        const { email, friends } = req.body;
+        const { email, friends, avatar } = req.body;
 
         const userRef = users.child(authUser.uid);
         const userSnapshot = await userRef.get();
@@ -108,6 +127,7 @@ router.patch(
         var update = {};
         if (email) update.email = email;
         if (friends) update.friends = friends;
+        if (avatar) update.avatar = avatar;
 
         await userRef.update(update);
 
