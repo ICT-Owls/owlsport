@@ -73,6 +73,8 @@ const EventCreatingView = ({
     setLocation,
     submit,
     user,
+    date,
+    setDate,
 }) => {
     const handleAddUser = async (options) => {
         const results = await Promise.allSettled(
@@ -161,11 +163,9 @@ const EventCreatingView = ({
                                     dark:bg-slate-700
                                     dark:text-gray-50
                                     "
-                                        value={startDateTime}
+                                        value={date}
                                         onChange={(newValue) => {
-                                            setStartDateTime(
-                                                Date.parse(newValue)
-                                            );
+                                            setDate(Date.parse(newValue));
                                         }}
                                     />
                                 </LocalizationProvider>
