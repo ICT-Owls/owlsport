@@ -1,6 +1,13 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import {Avatar, AvatarGroup, Card, IconButton, Popover} from '@mui/material';
+import {
+    Avatar,
+    AvatarGroup,
+    Card,
+    IconButton,
+    Popover,
+    Switch,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -16,13 +23,13 @@ import {
     formatLocation,
     formatUsername,
 } from '../helpers/Format';
+import DriversCardPresenter from '../presenters/DriversCardPresenter';
 import AvatarView from './AvatarView';
-import {DriversCardView} from "./DriversCardView";
+import DriversCardView from './DriversCardView';
 
 export default function EventDetailsView({ event, creator, user }) {
     const [open, setOpen] = React.useState(true);
-    //const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [isDriver, setIsDriver] = React.useState(false);
 
     if (!event || !creator) return null;
 
@@ -37,17 +44,6 @@ export default function EventDetailsView({ event, creator, user }) {
 
     const startDate = new Date(startDateTime);
     const endDate = new Date(endDateTime);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClosePopover = () => {
-        setAnchorEl(null);
-    };
-
-    const openPopover = Boolean(anchorEl);
-    const id = openPopover ? 'simple-popover' : undefined;
 
     const handleClose = () => {
         setOpen(false);
@@ -65,6 +61,12 @@ export default function EventDetailsView({ event, creator, user }) {
             fullWidth={true}
         >
             <DialogContent>
+                <Switch
+                    value={isDriver}
+                    onChange={(e) => setIsDriver(e.target.value)}
+                >
+                    Is Driver
+                </Switch>
                 <div className="flex flex-col justify-around">
                     <div className="flex flex-row items-center justify-between">
                         {/*TOP BAR*/}
@@ -82,23 +84,9 @@ export default function EventDetailsView({ event, creator, user }) {
                             <Button
                                 variant="contained"
                                 className="black mb-5 w-52 bg-primary-100 text-background-100"
-                                onClick={handleClick}
                             >
                                 Request ride
                             </Button>
-                            <Popover
-                                id={id}
-                                open={openPopover}
-                                anchorEl={anchorEl}
-                                onClose={handleClosePopover}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'left',
-                                }}
-                            >
-                                <DriversCardView sx={{ p: 2 }} driver={user}></DriversCardView>
-
-                            </Popover>
                         </div>
 
                         {/*<div>*/}
@@ -137,11 +125,13 @@ export default function EventDetailsView({ event, creator, user }) {
                     </div>
                     <div className="h-max-48 h-48 overflow-y-scroll">
                         <List className="flex flex-row flex-wrap justify-center">
-                            {CarpoolerView({
-                                driver: user,
-                                seats: 4,
-                                passengers: [user, user],
-                            })}
+                            {isDriver
+                                ? DriverView({ members })
+                                : CarpoolerView({
+                                      driver: user,
+                                      seats: 4,
+                                      passengers: [user, user],
+                                  })}
                         </List>
                     </div>
                     <Divider variant="middle" />
@@ -161,6 +151,21 @@ export default function EventDetailsView({ event, creator, user }) {
             </DialogActions>
         </Dialog>
     );
+}
+
+function DriverView({ members }) {
+    const requireCarpooling = Object.values(members).filter(
+        (m) => m.requiresCarpooling
+    );
+    return requireCarpooling.map((m) => {
+        return (
+            <DriversCardPresenter
+                key={m.id}
+                id={m.id}
+                address={m.location.address}
+            />
+        );
+    });
 }
 
 function CarpoolerView({ driver, seats, passengers }) {
