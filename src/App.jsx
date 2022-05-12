@@ -47,7 +47,7 @@ export default function App() {
                             width: '100%',
                         }}
                     >
-                        <div className="flex h-screen w-full flex-row content-center justify-center space-x-0 pt-10">
+                        <div className="flex h-screen w-full flex-row content-center justify-center space-x-0 pt-20">
                             <SidebarPresenter className=" " user={user} />
                             <MainContentPresenter className=" " user={user} />
                         </div>
