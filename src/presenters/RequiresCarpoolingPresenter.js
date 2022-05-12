@@ -7,7 +7,7 @@ export default function RequiresCarpoolingPresenter({
     const submit = (carpool, address) => {
         if (carpool) {
             setCarpooling(true, {
-                longtitude: 0,
+                longitude: 0,
                 latitude: 0,
                 address,
             });
