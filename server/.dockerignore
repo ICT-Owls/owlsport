@@ -1,0 +1,7 @@
+# Dockerignore
+.github
+.vscode
+build
+node_modules
+package-lock.json
+.gitignore
