@@ -18,7 +18,12 @@ import {
 } from '../helpers/Format';
 import AvatarView from './AvatarView';
 
-export default function EventDetailsView({ event, creator, user }) {
+export default function EventDetailsView({
+    event,
+    creator,
+    user,
+    updateRequiresCarpooling,
+}) {
     const [open, setOpen] = React.useState(true);
 
     if (!event || !creator) return null;
@@ -34,6 +39,8 @@ export default function EventDetailsView({ event, creator, user }) {
 
     const startDate = new Date(startDateTime);
     const endDate = new Date(endDateTime);
+
+    const requiresCarpooling = members?.[user.id]?.requiresCarpooling | false;
 
     const handleClose = () => {
         setOpen(false);
@@ -65,12 +72,27 @@ export default function EventDetailsView({ event, creator, user }) {
                         </div>
 
                         <div>
-                            <Button
-                                variant="contained"
-                                className="black mb-5 w-52 bg-primary-100 text-background-100"
-                            >
-                                Request ride
-                            </Button>
+                            {requiresCarpooling ? (
+                                <Button
+                                    variant="contained"
+                                    className="black mb-5 w-52 bg-primary-100 text-background-100"
+                                    onClick={() =>
+                                        updateRequiresCarpooling(false)
+                                    }
+                                >
+                                    Cancel carpooling
+                                </Button>
+                            ) : (
+                                <Button
+                                    variant="contained"
+                                    className="black mb-5 w-52 bg-primary-100 text-background-100"
+                                    onClick={() =>
+                                        updateRequiresCarpooling(true)
+                                    }
+                                >
+                                    Request carpooling
+                                </Button>
+                            )}
                         </div>
 
                         <div className="flex items-center justify-center">

@@ -9,10 +9,11 @@ export default function EventDetailsPresenter({ user }) {
         creator: undefined,
     });
 
+    const opts = {
+        headers: { authorization: `Bearer ${user.accessToken}` },
+    };
+
     useEffect(() => {
-        const opts = {
-            headers: { authorization: `Bearer ${user.accessToken}` },
-        };
         eventApi
             .eventsIdGet(eventId, opts)
             .then((event) => {
@@ -26,7 +27,32 @@ export default function EventDetailsPresenter({ user }) {
             .catch((err) => console.error(err));
     }, [eventId]);
 
+    const updateRequiresCarpooling = (requiresCarpooling) => {
+        if (eventData.event.id)
+            eventApi
+                .eventsIdSelfPatch(
+                    {
+                        requiresCarpooling,
+                    },
+                    eventData.event.id,
+                    opts
+                )
+                .then((newMember) => {
+                    setEventData({
+                        event: {
+                            ...event,
+                            members: {
+                                ...event.members,
+                                [newMember.id]: newMember,
+                            },
+                        },
+                        creator,
+                    });
+                })
+                .catch((err) => console.error(err));
+    };
+
     const { event, creator } = eventData;
 
-    return EventDetailsView({ event, creator, user });
+    return EventDetailsView({ event, creator, user, updateRequiresCarpooling });
 }
