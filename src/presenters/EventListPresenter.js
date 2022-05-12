@@ -12,7 +12,7 @@ export default function EventListPresenter({ user }) {
                     if (data === null) return;
                     setEvents(
                         data.map((e) => {
-                            if (!e.members) e.members = [];
+                            if (!e.members) e.members = {};
                             return e;
                         })
                     );
