@@ -76,10 +76,7 @@ export default function SidebarView({
                                     >
                                         <AvatarView
                                             maxHeight="100%"
-                                            user={{
-                                                firstName: 'Test',
-                                                lastName: 'Testson',
-                                            }}
+                                            user={user}
                                         />
                                         Signed in
                                     </Box>
