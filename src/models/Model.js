@@ -60,7 +60,7 @@ export function useUser() {
 
 //-------- Public Functions --------
 
-//This function is run by App.jsx when mounted. Initialized the model
+//This function is run by App.tsx when mounted. Initialized the model
 export function initModel() {
     //If value does not exist in local storage, then load default value
     Object.keys(dataStruct).map((e) => {

@@ -2,7 +2,7 @@
 import { Box } from '@mui/material';
 import { StyledEngineProvider } from '@mui/material/styles';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { FC, useEffect, useLayoutEffect } from 'react';
 import './App.css';
 import { initModel, useUser } from './models/Model';
 import MainContentPresenter from './presenters/MainContentPresenter';
@@ -10,7 +10,7 @@ import NavbarPresenter from './presenters/NavbarPresenter';
 import SidebarPresenter from './presenters/SidebarPresenter';
 import { DarkTheme, LightTheme } from './Themes';
 
-export default function App() {
+const App: FC = () => {
     //Initalize model
     useLayoutEffect(() => initModel(), []);
     const [lightmode] = React.useState(true);
@@ -48,8 +48,8 @@ export default function App() {
                         }}
                     >
                         <div className="flex h-screen w-full flex-row content-center justify-center space-x-0 pt-10">
-                            <SidebarPresenter className=" " user={user} />
-                            <MainContentPresenter className=" " user={user} />
+                            <SidebarPresenter  user={user} />
+                            <MainContentPresenter user={user} />
                         </div>
                     </Box>
 
@@ -64,4 +64,6 @@ export default function App() {
             </ThemeProvider>
         </StyledEngineProvider>
     );
-}
+};
+
+export default App;
