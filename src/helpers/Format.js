@@ -1,3 +1,5 @@
+import format from 'date-fns/format';
+
 const months = [
     'Jan',
     'Feb',
@@ -30,7 +32,7 @@ const formatDateMonthDay = (date) => {
 };
 
 const formatFullDate = (date) => {
-    return date.toISOString();
+    return format(date, 'yyyy-MM-dd HH:mm');
 };
 
 export {
