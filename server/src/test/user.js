@@ -28,7 +28,7 @@ const generateTestCredentials = async function () {
 
     const credentials = await signInWithEmailAndPassword(
         auth,
-        'test@test.com',
+        'unittest@test.com',
         'testing'
     );
     return credentials;
