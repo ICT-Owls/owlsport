@@ -1,10 +1,9 @@
 /*  Presenters  */
 import { Box } from '@mui/material';
 import { StyledEngineProvider } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
-import './App.css';
 import React, { useEffect, useLayoutEffect } from 'react';
+import './App.css';
 import { initModel, useUser } from './models/Model';
 import MainContentPresenter from './presenters/MainContentPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
