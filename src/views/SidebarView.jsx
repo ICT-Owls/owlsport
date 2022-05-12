@@ -7,21 +7,20 @@ import AvatarView from './AvatarView';
 import SignInView from './SignInView';
 
 export default function SidebarView({
-                                        isLoggedIn,
-                                        openLogin,
-                                        openCreate,
-                                        setIsLoggedIn,
-                                        handleLoginVisibility,
-                                        handleCreateVisibility,
-                                        user,
-                                        signOut,
-                                    }) {
+    isLoggedIn,
+    openLogin,
+    openCreate,
+    setIsLoggedIn,
+    handleLoginVisibility,
+    handleCreateVisibility,
+    user,
+    signOut,
+}) {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
         <>
-            <div className='pt-10 h-auto w-60 justify-start bg-background-100 bg-opacity-80 text-left relative' >
-                <div className={'fixed'} >
-
+            <div className="relative h-auto w-60 justify-start bg-background-100 bg-opacity-80 pt-10 text-left">
+                <div className={'fixed'}>
                     <IconButton
                         href="/test"
                         color="secondary"
@@ -105,14 +104,18 @@ export default function SidebarView({
                                     <Button
                                         sx={{ justifyContent: 'left' }}
                                         color="secondary"
-                                        onClick={() => handleLoginVisibility(true)}
+                                        onClick={() =>
+                                            handleLoginVisibility(true)
+                                        }
                                     >
                                         Sign In
                                     </Button>
                                     <Button
                                         sx={{ justifyContent: 'left' }}
                                         color="secondary"
-                                        onClick={() => handleCreateVisibility(true)}
+                                        onClick={() =>
+                                            handleCreateVisibility(true)
+                                        }
                                     >
                                         Create Account
                                     </Button>
@@ -126,10 +129,10 @@ export default function SidebarView({
                 handleVisibility={handleLoginVisibility}
                 showMe={openLogin}
             />
-            <CreateAccountPresenter
+            {/*<CreateAccountPresenter
                 handleVisibility={handleCreateVisibility}
                 showMe={openCreate}
-            />
+            />*/}
         </>
     );
 }
