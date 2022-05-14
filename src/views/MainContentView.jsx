@@ -5,6 +5,7 @@ import EventListPresenter from '../presenters/EventListPresenter';
 import MainContentContainer from '../components/MainContentContainer';
 import EventDetailsPresenter from '../presenters/EventDetailsPresenter';
 import CarRegistrationPresenter from "../presenters/CarRegistrationPresenter";
+import MapPresenter from 'presenters/MapPresenter';
 
 export default function MainContentView({ user }) {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
@@ -24,6 +25,7 @@ export default function MainContentView({ user }) {
                     element={<CarRegistrationPresenter user={user} />}
                 />
                 <Route path="/" element={<ChatsPresenter />} />
+                <Route path="/whatever" element={<MapPresenter />} />
             </Routes>
         </MainContentContainer>
     ) : (
