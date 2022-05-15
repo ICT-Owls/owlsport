@@ -166,6 +166,7 @@
         "autoprefixer": "^10.4.5",
         "babel-plugin-transform-node-env-inline": "^0.4.3",
         "cross-env": "^7.0.3",
+        "eslint-plugin-googlemaps": "^1.4.13",
         "eslint-plugin-tailwindcss": "^3.5.0",
         "postcss": "^8.4.12",
         "prettier": "^2.6.2",
