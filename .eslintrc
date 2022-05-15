@@ -4,8 +4,6 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:tailwindcss/recommended",
         "plugin:react/recommended",
-        "googlemaps:web",
-        "plugin:googlemaps:recommended"
     ],
     "parser": "@babel/eslint-parser",
     "rules": {

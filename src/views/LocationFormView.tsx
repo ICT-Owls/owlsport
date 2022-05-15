@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-
+/*
 const LocationFormView = () => {
     return (<!--
     Copyright 2021 Google LLC
@@ -165,3 +165,4 @@ const LocationFormView = () => {
 };
 
 export default LocationFormView;
+*/
