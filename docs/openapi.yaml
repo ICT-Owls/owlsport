@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.2.1'
+    version: '0.2.2'
 paths:
     /user/authe:
         get:
@@ -315,6 +315,32 @@ paths:
                     description: 'Unauthenticated'
                 '404':
                     description: 'Event not found'
+    /geo/{place}:
+        get:
+            summary: 'Geocoding'
+            description: 'Get geo data by place name'
+            tags:
+                - geo
+            parameters:
+                - in: path
+                  name: place
+                  schema:
+                      type: string
+                  required: true
+                  description: 'Name of the place to get info about'
+            responses:
+                '200':
+                    description: 'Returns the geodata'
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: 'definitions.yaml#/components/schemas/GeoData'
+                '401':
+                    description: 'Unauthenticated'
+                '404':
+                    description: 'Place found'
 
 components:
     securitySchemes:
