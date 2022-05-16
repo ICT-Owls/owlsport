@@ -1,5 +1,4 @@
-import { ClickAwayListener } from '@mui/material';
-import React, { DOMElement, FC, RefObject, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 
 const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
     const [marker, setMarker] = React.useState<google.maps.Marker>();
@@ -34,7 +33,7 @@ type MapViewProps = {
     onClick?: (e: google.maps.MapMouseEvent) => void;
     onIdle?: (map: google.maps.Map) => void;
     markers?: google.maps.LatLng[];
-    children?: any[];
+    children?: unknown[];
 };
 
 const MapView: FC<MapViewProps> = (props: MapViewProps) => {
