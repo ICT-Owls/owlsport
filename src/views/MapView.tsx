@@ -1,3 +1,4 @@
+import LocationFormPresenter from 'presenters/LocationFormPresenter';
 import React, { FC, useEffect, useRef } from 'react';
 
 const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
@@ -67,12 +68,17 @@ const MapView: FC<MapViewProps> = (props: MapViewProps) => {
     }, [mapRef, map]);
 
     return (
-        <>
-            <div ref={mapRef} className={'h-full w-full bg-slate-600'} />
+        <div className={'relative h-full w-full '}>
+            <div className="absolute left-1/2 top-0 z-40">
+                <LocationFormPresenter />
+            </div>
+            <div ref={mapRef} className={'relative top-0 h-full w-full z-30 bg-slate-600'} >
+                
+            </div>
             {props.markers?.map((latlng, i: number) => (
                 <Marker key={i} map={map} position={latlng} />
             ))}
-        </>
+        </div>
     );
 };
 export default MapView;

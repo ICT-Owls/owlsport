@@ -42,7 +42,7 @@ const MapPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
     };
 
     return (
-        <MapWrapper apiKey={apiKey} render={render}/>
+        <MapWrapper id='google-maps' libraries={['places']} apiKey={apiKey} render={render}/>
     );
 };
 

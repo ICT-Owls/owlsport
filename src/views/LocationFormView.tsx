@@ -11,7 +11,12 @@ import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 
-type LocationFormViewProps = { options: Place[] };
+import {
+    Status as MapStatus,
+
+} from '@googlemaps/react-wrapper';
+
+type LocationFormViewProps = object;
 
 const GOOGLE_MAPS_API_KEY = '***REMOVED***';
 
@@ -123,76 +128,79 @@ const LocationFormView: FC<LocationFormViewProps> = (
     }, [value, inputValue, fetch]);
 
     return (
-        <Autocomplete
-            id="google-map-demo"
-            sx={{ width: 300 }}
-            getOptionLabel={(option) =>
-                typeof option === 'string' ? option : option.description
-            }
-            filterOptions={(x) => x}
-            options={options}
-            autoComplete
-            includeInputInList
-            filterSelectedOptions
-            value={value}
-            onChange={(event: any, newValue: PlaceType | null) => {
-                setOptions(newValue ? [newValue, ...options] : options);
-                setValue(newValue);
-            }}
-            onInputChange={(event, newInputValue) => {
-                setInputValue(newInputValue);
-            }}
-            renderInput={(params) => (
-                <TextField {...params} label="Add a location" fullWidth />
-            )}
-            renderOption={(props, option) => {
-                const matches =
-                    option.structured_formatting.main_text_matched_substrings;
-                const parts = parse(
-                    option.structured_formatting.main_text,
-                    matches.map((match: any) => [
-                        match.offset,
-                        match.offset + match.length,
-                    ])
-                );
+        <div className='bg-background-100'>
+            <Autocomplete
+                id="google-map-demo"
+                sx={{ width: 300 }}
+                getOptionLabel={(option) =>
+                    typeof option === 'string' ? option : option.description
+                }
+                filterOptions={(x) => x}
+                options={options}
+                autoComplete
+                includeInputInList
+                filterSelectedOptions
+                value={value}
+                onChange={(event: any, newValue: PlaceType | null) => {
+                    setOptions(newValue ? [newValue, ...options] : options);
+                    setValue(newValue);
+                }}
+                onInputChange={(event, newInputValue) => {
+                    setInputValue(newInputValue);
+                }}
+                renderInput={(params) => (
+                    <TextField {...params} label="Add a location" fullWidth />
+                )}
+                renderOption={(props, option) => {
+                    const matches =
+                        option.structured_formatting
+                            .main_text_matched_substrings;
+                    const parts = parse(
+                        option.structured_formatting.main_text,
+                        matches.map((match: any) => [
+                            match.offset,
+                            match.offset + match.length,
+                        ])
+                    );
 
-                return (
-                    <li {...props}>
-                        <Grid container alignItems="center">
-                            <Grid item>
-                                <Box
-                                    component={LocationOnIcon}
-                                    sx={{ color: 'text.secondary', mr: 2 }}
-                                />
-                            </Grid>
-                            <Grid item xs>
-                                {parts.map((part, index) => (
-                                    <span
-                                        key={index}
-                                        style={{
-                                            fontWeight: part.highlight
-                                                ? 700
-                                                : 400,
-                                        }}
+                    return (
+                        <li {...props}>
+                            <Grid container alignItems="center">
+                                <Grid item>
+                                    <Box
+                                        component={LocationOnIcon}
+                                        sx={{ color: 'text.secondary', mr: 2 }}
+                                    />
+                                </Grid>
+                                <Grid item xs>
+                                    {parts.map((part, index) => (
+                                        <span
+                                            key={index}
+                                            style={{
+                                                fontWeight: part.highlight
+                                                    ? 700
+                                                    : 400,
+                                            }}
+                                        >
+                                            {part.text}
+                                        </span>
+                                    ))}
+                                    <Typography
+                                        variant="body2"
+                                        color="text.secondary"
                                     >
-                                        {part.text}
-                                    </span>
-                                ))}
-                                <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                >
-                                    {
-                                        option.structured_formatting
-                                            .secondary_text
-                                    }
-                                </Typography>
+                                        {
+                                            option.structured_formatting
+                                                .secondary_text
+                                        }
+                                    </Typography>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </li>
-                );
-            }}
-        />
+                        </li>
+                    );
+                }}
+            />
+        </div>
     );
 };
 
