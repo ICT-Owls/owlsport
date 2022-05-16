@@ -11,7 +11,7 @@ import { validate, API_DATATYPES } from './validation';
 
 const backendApiConfig = new CarpoolingApiConfig({
     // Send request to same origin as the web page
-    basePath: 'localhost:32203',
+    basePath: 'https://carpooling-backend-sy465fjv3q-lz.a.run.app',
 });
 
 const eventApi = new EventApi(backendApiConfig);
