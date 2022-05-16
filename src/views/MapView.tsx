@@ -69,7 +69,7 @@ const MapView: FC<MapViewProps> = (props: MapViewProps) => {
 
     return (
         <div className={'relative h-full w-full '}>
-            <div className="absolute left-1/2 top-0 z-40">
+            <div className="absolute left-48 top-2 z-40">
                 <LocationFormPresenter />
             </div>
             <div ref={mapRef} className={'relative top-0 h-full w-full z-30 bg-slate-600'} >

@@ -11,10 +11,7 @@ import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
 import throttle from 'lodash/throttle';
 
-import {
-    Status as MapStatus,
-
-} from '@googlemaps/react-wrapper';
+import { Status as MapStatus } from '@googlemaps/react-wrapper';
 
 type LocationFormViewProps = object;
 
@@ -128,7 +125,7 @@ const LocationFormView: FC<LocationFormViewProps> = (
     }, [value, inputValue, fetch]);
 
     return (
-        <div className='bg-background-100'>
+        <div className="bg-background-100">
             <Autocomplete
                 id="google-map-demo"
                 sx={{ width: 300 }}
@@ -155,6 +152,7 @@ const LocationFormView: FC<LocationFormViewProps> = (
                     const matches =
                         option.structured_formatting
                             .main_text_matched_substrings;
+                    if (!matches) return;
                     const parts = parse(
                         option.structured_formatting.main_text,
                         matches.map((match: any) => [
