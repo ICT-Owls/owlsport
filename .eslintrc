@@ -3,7 +3,7 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:tailwindcss/recommended",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
     ],
     "parser": "@babel/eslint-parser",
     "rules": {
@@ -33,7 +33,7 @@
             }
         }
     ],
-    "plugins": ["react", "tailwindcss", "@typescript-eslint"],
+    "plugins": ["react", "tailwindcss", "@typescript-eslint", "googlemaps"],
     "parserOptions": {
         "babelOptions": {
             "presets": [
