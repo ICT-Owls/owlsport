@@ -47,6 +47,11 @@ const MapPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
                                 setTextInput={setTextInput}
                                 value={value}
                                 setValue={setValue}
+                                onMarkerChange={(
+                                    newMarker: google.maps.LatLng | null
+                                ) => {
+                                    if (newMarker) setMarker(newMarker);
+                                }}
                             />
                         </div>
                         <MapView

@@ -13,6 +13,7 @@ type LocationFormPresenterProps = {
     setValue?: (newValue: GooglePlace | null) => void;
     textInput?: string;
     setTextInput?: (newValue: string) => void;
+    onMarkerChange?: (marker: google.maps.LatLng | null) => void;
 };
 
 const LocationFormPresenter: FC<LocationFormPresenterProps> = (
@@ -21,17 +22,15 @@ const LocationFormPresenter: FC<LocationFormPresenterProps> = (
     const [marker, setMarker] = useState<google.maps.LatLng | null>(null);
 
     useEffect(() => {
+        props.onMarkerChange?.(marker);
+    }, [marker]);
+
+    useEffect(() => {
         if (props.value) {
             geocode(props.value.description).then(
-                (result: GeoData[] | undefined) => {
+                (result: google.maps.LatLng | null) => {
                     if (!result) return;
-                    const first: GeoData = result[0];
-                    setMarker(
-                        new google.maps.LatLng({
-                            lat: first.latitude,
-                            lng: first.longitude,
-                        })
-                    );
+                    setMarker(result);
                 }
             );
         }
