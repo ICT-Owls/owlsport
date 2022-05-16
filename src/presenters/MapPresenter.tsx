@@ -24,6 +24,10 @@ const MapPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
     const [textInput, setTextInput] = React.useState<string>();
     const [value, setValue] = React.useState<GooglePlace | null>();
 
+    React.useEffect(() => {
+        setMarker(new google.maps.LatLng(kistaCoords));
+    }, [value]);
+
     const render = (status: MapStatus) => {
         switch (status) {
             case MapStatus.LOADING:
@@ -38,7 +42,12 @@ const MapPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
                 return (
                     <div className={'relative h-full w-full '}>
                         <div className="absolute left-48 top-2 z-40">
-                            <LocationFormPresenter textInput={textInput} setTextInput={setTextInput} value={value} setValue={setValue} />
+                            <LocationFormPresenter
+                                textInput={textInput}
+                                setTextInput={setTextInput}
+                                value={value}
+                                setValue={setValue}
+                            />
                         </div>
                         <MapView
                             startAt={kistaCoords}
