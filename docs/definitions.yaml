@@ -1,5 +1,5 @@
 info: 
-    version: '0.2.1'
+    version: '0.2.2'
 components:
     schemas:
         # Information about the authentication status of the current user
@@ -168,4 +168,43 @@ components:
                     deprecated: true
                     type: number
                     description: 'UNIX timestamp of when the event was created'
+        GeoData: 
+            type: object
+            required:
+                - latitude
+                - longitude
+                - provider
+            properties:
+                latitude:
+                    type: number
+                longitude:
+                    type: number
+                provider:
+                    type: string
+                country:
+                    type: string
+                countryCode:
+                    type: string
+                city:
+                    type: string
+                zipcode:
+                    type: string
+                streetName:
+                    type: string
+                streetNumber:
+                    type: string
+                administrativeLevels:
+                    type: object
+                    parameters:
+                        level1long:
+                            type: string
+                        level1short:
+                            type: string
+                        level2long:
+                            type: string
+                        level2short:
+                            type: string
+
+            
+        
 
