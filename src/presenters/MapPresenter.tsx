@@ -16,7 +16,9 @@ const kistaCoords = {
 const apiKey = '***REMOVED***';
 
 const MapPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
-    const [clicks, setClicks] = React.useState<google.maps.LatLng[]>([]);
+    const [marker, setMarker] = React.useState<google.maps.LatLng>(
+        new google.maps.LatLng(kistaCoords)
+    );
 
     const render = (status: MapStatus) => {
         switch (status) {
@@ -32,9 +34,9 @@ const MapPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
                 return (
                     <MapView
                         startAt={kistaCoords}
-                        markers={clicks}
+                        markers={marker ? [marker] : []}
                         onClick={(e: google.maps.MapMouseEvent) => {
-                            setClicks([...clicks, e.latLng!]);
+                            setMarker(e.latLng!);
                         }}
                     />
                 );
@@ -42,7 +44,12 @@ const MapPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
     };
 
     return (
-        <MapWrapper id='google-maps' libraries={['places']} apiKey={apiKey} render={render}/>
+        <MapWrapper
+            id="google-maps"
+            libraries={['places']}
+            apiKey={apiKey}
+            render={render}
+        />
     );
 };
 
