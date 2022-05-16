@@ -54,6 +54,10 @@ import eventRoute from './routes/eventRoute.js';
 
 app.use('/events', eventRoute);
 
+import geoRoute from './routes/geoRoute.js';
+
+app.use('/geo', geoRoute);
+
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');

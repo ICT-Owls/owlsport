@@ -320,7 +320,7 @@ paths:
             summary: 'Geocoding'
             description: 'Get geo data by place name'
             tags:
-                - geodata
+                - geo
             parameters:
                 - in: path
                   name: place
