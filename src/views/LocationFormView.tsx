@@ -12,7 +12,7 @@ type LocationFormViewProps = { options: Place[] };
 const LocationFormView: FC<LocationFormViewProps> = (
     props: LocationFormViewProps
 ) => {
-    const PlaceTextField = () => {
+    const PlaceTextField = (props: object) => {
         return <TextField autoComplete="on country"></TextField>;
     };
     return (
