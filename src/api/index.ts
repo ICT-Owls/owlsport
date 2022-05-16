@@ -4,6 +4,7 @@ import {
     Configuration as CarpoolingApiConfig,
     UserApi,
     EventApi,
+    GeoApi,
 } from '../api-client';
 import { EventCreationParameters, Event } from './types';
 import { validate, API_DATATYPES } from './validation';
@@ -15,6 +16,7 @@ const backendApiConfig = new CarpoolingApiConfig({
 
 const eventApi = new EventApi(backendApiConfig);
 const userApi = new UserApi(backendApiConfig);
+const geoApi = new GeoApi(backendApiConfig);
 
 export async function createEvent(eventInfo: EventCreationParameters) {
     const token = localStorage.getItem('auth');
@@ -81,4 +83,18 @@ export async function getUser() {
     });
 
     return user;
+}
+
+export async function geocode(query: string) {
+    const token = localStorage.getItem('auth');
+    if (!token || !query) return;
+
+    const geoData = await geoApi.geoPlaceGet(
+        query.replace(' ', '+').replace(',', ''),
+        {
+            headers: { authorization: `Bearer ${token}` },
+        }
+    );
+
+    return geoData;
 }
