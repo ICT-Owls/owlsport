@@ -5,6 +5,7 @@ import {
 } from '@googlemaps/react-wrapper';
 import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import MapView from '../views/MapView';
+import LocationFormPresenter from './LocationFormPresenter';
 
 type MapPresenterProps = object;
 
@@ -32,13 +33,18 @@ const MapPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
                 );
             case MapStatus.SUCCESS:
                 return (
-                    <MapView
-                        startAt={kistaCoords}
-                        markers={marker ? [marker] : []}
-                        onClick={(e: google.maps.MapMouseEvent) => {
-                            setMarker(e.latLng!);
-                        }}
-                    />
+                    <div className={'relative h-full w-full '}>
+                        <div className="absolute left-48 top-2 z-40">
+                            <LocationFormPresenter />
+                        </div>
+                        <MapView
+                            startAt={kistaCoords}
+                            markers={marker ? [marker] : []}
+                            onClick={(e: google.maps.MapMouseEvent) => {
+                                setMarker(e.latLng!);
+                            }}
+                        />
+                    </div>
                 );
         }
     };
