@@ -6,6 +6,7 @@ import {
 import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import MapView from '../views/MapView';
 import LocationFormPresenter from './LocationFormPresenter';
+import { GooglePlace } from 'helpers/Location';
 
 type MapPresenterProps = object;
 
@@ -20,6 +21,8 @@ const MapPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
     const [marker, setMarker] = React.useState<google.maps.LatLng>(
         new google.maps.LatLng(kistaCoords)
     );
+    const [textInput, setTextInput] = React.useState<string>();
+    const [value, setValue] = React.useState<GooglePlace | null>();
 
     const render = (status: MapStatus) => {
         switch (status) {
@@ -35,7 +38,7 @@ const MapPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
                 return (
                     <div className={'relative h-full w-full '}>
                         <div className="absolute left-48 top-2 z-40">
-                            <LocationFormPresenter />
+                            <LocationFormPresenter textInput={textInput} setTextInput={setTextInput} value={value} setValue={setValue} />
                         </div>
                         <MapView
                             startAt={kistaCoords}

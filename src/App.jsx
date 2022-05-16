@@ -2,6 +2,7 @@
 import { Box } from '@mui/material';
 import { StyledEngineProvider } from '@mui/material/styles';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import { GoogleMapsLoader } from 'helpers/Location';
 import React, { useEffect, useLayoutEffect } from 'react';
 import './App.css';
 import { initModel, useUser } from './models/Model';
@@ -24,6 +25,7 @@ export default function App() {
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
+                <GoogleMapsLoader/>
                 <div
                     className="App absolute flex h-full w-full flex-col justify-start"
                     style={{

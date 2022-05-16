@@ -1,6 +1,9 @@
 import React, { FC } from 'react';
-import MapPresenter from '../presenters/MapPresenter';
-import { Place } from '../presenters/LocationFormPresenter';
+import {
+    GooglePlace,
+    usePlaceCompletion,
+    PlaceType,
+} from '../helpers/Location';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -9,44 +12,14 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
-import throttle from 'lodash/throttle';
 
 import { Status as MapStatus } from '@googlemaps/react-wrapper';
 
-type LocationFormViewProps = object;
-
-const GOOGLE_MAPS_API_KEY = '***REMOVED***';
-
-function loadScript(src: string, position: HTMLElement | null, id: string) {
-    if (!position) {
-        return;
-    }
-
-    const script = document.createElement('script');
-    script.setAttribute('async', '');
-    script.setAttribute('id', id);
-    script.src = src;
-    position.appendChild(script);
-}
-
-type MainTextMatchedSubstrings = {
-    offset: number;
-    length: number;
-};
-type StructuredFormatting = {
-    main_text: string;
-    secondary_text: string;
-    main_text_matched_substrings: readonly MainTextMatchedSubstrings[];
-};
-type PlaceType = {
-    description: string;
-    structured_formatting: StructuredFormatting;
-};
-
-const autocompleteService = { current: null };
-
-const PlaceTextField = (props: object) => {
-    return <TextField></TextField>;
+type LocationFormViewProps = {
+    value?: GooglePlace | null;
+    setValue?: (newValue: GooglePlace | null) => void;
+    textInput?: string;
+    setTextInput?: (newValue: string) => void;
 };
 
 const LocationFormView: FC<LocationFormViewProps> = (
@@ -55,74 +28,52 @@ const LocationFormView: FC<LocationFormViewProps> = (
     const [value, setValue] = React.useState<PlaceType | null>(null);
     const [inputValue, setInputValue] = React.useState('');
     const [options, setOptions] = React.useState<readonly PlaceType[]>([]);
-    const loaded = React.useRef(false);
-
-    if (typeof window !== 'undefined' && !loaded.current) {
-        if (!document.querySelector('#google-maps')) {
-            loadScript(
-                `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`,
-                document.querySelector('head'),
-                'google-maps'
-            );
-        }
-
-        loaded.current = true;
-    }
-
-    const fetch = React.useMemo(
-        () =>
-            throttle(
-                (
-                    request: { input: string },
-                    callback: (results?: readonly PlaceType[]) => void
-                ) => {
-                    (autocompleteService.current as any).getPlacePredictions(
-                        request,
-                        callback
-                    );
-                },
-                200
-            ),
-        []
-    );
+    const placeCompletion = usePlaceCompletion();
 
     React.useEffect(() => {
         let active = true;
-
-        if (!autocompleteService.current && (window as any).google) {
-            autocompleteService.current = new (
-                window as any
-            ).google.maps.places.AutocompleteService();
-        }
-        if (!autocompleteService.current) {
-            return undefined;
-        }
 
         if (inputValue === '') {
             setOptions(value ? [value] : []);
             return undefined;
         }
 
-        fetch({ input: inputValue }, (results?: readonly PlaceType[]) => {
-            if (active) {
-                let newOptions: readonly PlaceType[] = [];
+        placeCompletion(
+            { input: inputValue },
+            (results?: readonly PlaceType[]) => {
+                if (active) {
+                    let newOptions: readonly PlaceType[] = [];
 
-                if (value) {
-                    newOptions = [value];
+                    if (value) {
+                        newOptions = [value];
+                    }
+
+                    if (results) {
+                        newOptions = [...newOptions, ...results];
+                    }
+
+                    setOptions(newOptions);
                 }
-
-                if (results) {
-                    newOptions = [...newOptions, ...results];
-                }
-
-                setOptions(newOptions);
             }
-        });
+        );
+
+        props.setValue?.(
+            value &&
+                value?.description &&
+                value?.structured_formatting?.main_text
+                ? {
+                      description: value.description!,
+                      main_text: value.structured_formatting.main_text!,
+                      secondary_text:
+                          value?.structured_formatting.secondary_text,
+                  }
+                : null
+        );
 
         return () => {
             active = false;
         };
-    }, [value, inputValue, fetch]);
+    }, [value, inputValue, placeCompletion]);
 
     return (
         <div className="bg-background-100">
