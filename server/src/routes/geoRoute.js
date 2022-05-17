@@ -1,17 +1,10 @@
 const { body, param, oneOf } = require('express-validator');
 const { validate, authorize } = require('../utils.js');
-const NodeGeocoder = require('node-geocoder');
 
 const express = require('express');
 const router = express.Router();
 
-const geocoderOptions = {
-    provider: 'mapquest',
-    apiKey: '***REMOVED***', // for Mapquest, OpenCage, Google Premier
-    formatter: null, // 'gpx', 'string', ...
-};
-
-const geocoder = NodeGeocoder(geocoderOptions);
+require('isomorphic-fetch');
 
 /**
  * Get geo location from place name
@@ -22,13 +15,68 @@ router.get(
     param('place').isString(),
     validate,
     async (req, res) => {
-        const result = await geocoder.geocode({
-            address: 'req.params.place',
-            countryCode: 'se',
-            limit: 5,
-        });
-        if (!result) return res.status(404).send('Place not found');
-        return res.status(200).send(result);
+        const geoData = await (
+            await fetch(
+                'http://open.mapquestapi.com/nominatim/v1/search.php?key=***REMOVED***&countrycodes=se&format=json&q=' +
+                    req.params['place']
+            )
+        ).json();
+
+        /*const geoData = await geoApi.geoPlaceGet(accents(query), {
+        headers: { authorization: `Bearer ${token}` },
+    });*/
+
+        if (geoData.length < 1) {
+            return res.status(404).send('No results from mapquest');
+        }
+        try {
+            return res.status(200).send({
+                latitude: geoData[0].lat,
+                longitude: geoData[0].lon,
+                address: req.params['place'],
+            });
+        } catch (error) {
+            if (error.name !== 'TypeError') throw error;
+        }
+        console.error(geoData)[0];
+        return res.status(502).send('Bad data from mapquest');
+    }
+);
+
+router.get(
+    '/reverse',
+    authorize,
+    param('lat').isNumeric(),
+    param('lng').isNumeric(),
+    validate,
+    async (req, res) => {
+        const geoData = await (
+            await fetch(
+                'http://open.mapquestapi.com/nominatim/v1/reverse.php?key=***REMOVED***&format=json&lat=' +
+                    req.query['lat'] +
+                    '&lon=' +
+                    req.query['lng']
+            )
+        ).json();
+
+        /*const geoData = await geoApi.geoPlaceGet(accents(query), {
+        headers: { authorization: `Bearer ${token}` },
+    });*/
+
+        if (geoData.length < 1) {
+            return res.status(404).send('No results from mapquest');
+        }
+        try {
+            return res.status(200).send({
+                latitude: geoData[0].lat,
+                longitude: geoData[0].lon,
+                address: geoData[0].display_name,
+            });
+        } catch (error) {
+            if (error.name !== 'TypeError') throw error;
+        }
+
+        return res.status(404).send('Bad data received from mapquest');
     }
 );
 

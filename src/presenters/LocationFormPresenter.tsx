@@ -28,9 +28,9 @@ const LocationFormPresenter: FC<LocationFormPresenterProps> = (
     useEffect(() => {
         if (props.value) {
             geocode(props.value.description).then(
-                (result: google.maps.LatLng | null) => {
+                (result: GeoData | null) => {
                     if (!result) return;
-                    setMarker(result);
+                    setMarker(new google.maps.LatLng(result.latitude, result.longitude));
                 }
             );
         }
