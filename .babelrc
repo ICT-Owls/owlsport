@@ -4,5 +4,5 @@
         ["@babel/env", { "loose": true, "targets": { "browsers": ["> 0.2%, not dead, not op_mini all, last 4 Edge versions"] } }],
         "@babel/typescript"
     ],
-    "plugins": ["babel-plugin-transform-node-env-inline"]
+    "plugins": ["transform-inline-environment-variables"]
 }

@@ -5,19 +5,19 @@ import {
     UserApi,
     EventApi,
     GeoApi,
+    GeoData,
 } from '../api-client';
 import { EventCreationParameters, Event } from './types';
 import { validate, API_DATATYPES } from './validation';
-import accents from 'accents';
 
-const backendApiConfig = new CarpoolingApiConfig({
+const apiConf = new CarpoolingApiConfig({
     // Send request to same origin as the web page
-    basePath: 'https://carpooling-backend-sy465fjv3q-lz.a.run.app',
+    basePath: process.env.BACKEND_MODE === 'local' ? 'http://localhost:32203' :  'https://carpooling-backend-sy465fjv3q-lz.a.run.app',
 });
-
-const eventApi = new EventApi(backendApiConfig);
-const userApi = new UserApi(backendApiConfig);
-const geoApi = new GeoApi(backendApiConfig);
+console.log(apiConf.basePath);
+const eventApi = new EventApi(apiConf);
+const userApi = new UserApi(apiConf);
+const geoApi = new GeoApi(apiConf);
 
 export async function createEvent(eventInfo: EventCreationParameters) {
     const token = localStorage.getItem('auth');
@@ -79,20 +79,20 @@ export async function getUser() {
     const uid = localStorage.getItem('uid');
     if (!token || !uid) return;
 
-    const user = await userApi.userIdGet(uid, {
-        headers: { authorization: `Bearer ${token}` },
-    });
+    const user = await userApi.userIdGet(uid);
 
     return user;
 }
 
 export async function geocode(
     query: string
-): Promise<google.maps.LatLng | null> {
+): Promise<GeoData | null> {
     const token = localStorage.getItem('auth');
     if (!token || !query) return null;
 
-    
+    const geoData = await geoApi.geoPlaceGet(query, {
+        headers: { authorization: `Bearer ${token}` },
+    });
 
-    return null;
+    return geoData;
 }

@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.2.2'
+    version: '0.2.3'
 paths:
     /user/authe:
         get:
@@ -334,9 +334,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: array
-                                items:
-                                    $ref: 'definitions.yaml#/components/schemas/GeoData'
+                                $ref: 'definitions.yaml#/components/schemas/GeoData'
                 '400':
                     description: 'Bad Request'
                 '401':

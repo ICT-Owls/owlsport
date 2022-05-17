@@ -3,18 +3,13 @@ import {
     Wrapper as MapWrapper,
     Status as MapStatus,
 } from '@googlemaps/react-wrapper';
-import {
-    Alert,
-    CircularProgress,
-    SliderValueLabel,
-    Snackbar,
-} from '@mui/material';
+import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import MapView from '../views/MapView';
 import LocationFormPresenter from './LocationFormPresenter';
 import { GooglePlace } from 'helpers/Location';
 
-type MapPresenterProps = {
-    onPlace: (location: {
+type MapInputPresenterProps = {
+    onPlace?: (location: {
         address: string;
         longitude: number;
         latitude: number;
@@ -28,7 +23,9 @@ const kistaCoords = {
 
 const apiKey = '***REMOVED***';
 
-const MapInputPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
+const MapInputPresenter: FC<MapInputPresenterProps> = (
+    props: MapInputPresenterProps
+) => {
     const [marker, setMarker] = React.useState<google.maps.LatLng>(
         new google.maps.LatLng(kistaCoords)
     );
@@ -36,11 +33,7 @@ const MapInputPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
     const [value, setValue] = React.useState<GooglePlace | null>();
 
     React.useEffect(() => {
-        setMarker(new google.maps.LatLng(kistaCoords));
-    }, [value]);
-
-    React.useEffect(() => {
-        if (!marker || !value?.description) return;
+        if (!marker || !value?.description || !props.onPlace) return;
         props.onPlace({
             address: value?.description,
             longitude: marker.lng(),
@@ -78,7 +71,7 @@ const MapInputPresenter: FC<MapPresenterProps> = (props: MapPresenterProps) => {
                             startAt={kistaCoords}
                             markers={marker ? [marker] : []}
                             onClick={(e: google.maps.MapMouseEvent) => {
-                                setMarker(e.latLng!);
+                                if (e.latLng) setMarker(e.latLng);
                             }}
                         />
                     </div>
