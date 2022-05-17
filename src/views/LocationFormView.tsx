@@ -7,7 +7,9 @@ import {
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete, {
+    AutocompleteChangeReason,
+} from '@mui/material/Autocomplete';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -57,6 +59,12 @@ const LocationFormView: FC<LocationFormViewProps> = (
             }
         );
 
+        return () => {
+            active = false;
+        };
+    }, [value, inputValue, placeCompletion]);
+
+    React.useEffect(() => {
         props.setValue?.(
             value &&
                 value?.description &&
@@ -69,11 +77,7 @@ const LocationFormView: FC<LocationFormViewProps> = (
                   }
                 : null
         );
-
-        return () => {
-            active = false;
-        };
-    }, [value, inputValue, placeCompletion]);
+    }, [value]);
 
     return (
         <div className="bg-background-100">
@@ -89,9 +93,13 @@ const LocationFormView: FC<LocationFormViewProps> = (
                 includeInputInList
                 filterSelectedOptions
                 value={value}
-                onChange={(event: any, newValue: PlaceType | null) => {
+                onChange={(
+                    event: any,
+                    newValue: PlaceType | null,
+                    reason: AutocompleteChangeReason
+                ) => {
                     setOptions(newValue ? [newValue, ...options] : options);
-                    setValue(newValue);
+                    if (reason === 'selectOption') setValue(newValue);
                 }}
                 onInputChange={(event, newInputValue) => {
                     setInputValue(newInputValue);

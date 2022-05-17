@@ -8,6 +8,7 @@ import {
 } from '../api-client';
 import { EventCreationParameters, Event } from './types';
 import { validate, API_DATATYPES } from './validation';
+import accents from 'accents';
 
 const backendApiConfig = new CarpoolingApiConfig({
     // Send request to same origin as the web page
@@ -85,16 +86,28 @@ export async function getUser() {
     return user;
 }
 
-export async function geocode(query: string) {
+export async function geocode(
+    query: string
+): Promise<google.maps.LatLng | null> {
     const token = localStorage.getItem('auth');
-    if (!token || !query) return;
+    if (!token || !query) return null;
 
-    const geoData = await geoApi.geoPlaceGet(
-        query.replace(' ', '+').replace(',', ''),
-        {
-            headers: { authorization: `Bearer ${token}` },
-        }
-    );
+    const geoData: { lat: string; lon: string; _: any }[] = await (
+        await fetch(
+            'http://open.mapquestapi.com/nominatim/v1/search.php?key=***REMOVED***&countrycodes=se&format=json&q=' +
+                query
+        )
+    ).json();
 
-    return geoData;
+    /*const geoData = await geoApi.geoPlaceGet(accents(query), {
+        headers: { authorization: `Bearer ${token}` },
+    });*/
+
+    if (geoData && geoData.length > 0 && geoData[0].lat && geoData[0].lon)
+        return new google.maps.LatLng({
+            lat: Number.parseFloat(geoData[0].lat),
+            lng: Number.parseFloat(geoData[0].lon),
+        });
+
+    return null;
 }

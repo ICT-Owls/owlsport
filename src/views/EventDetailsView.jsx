@@ -22,6 +22,7 @@ import {
 import DriversCardPresenter from '../presenters/DriversCardPresenter';
 import RequiresCarpoolingPresenter from '../presenters/RequiresCarpoolingPresenter';
 import AvatarView from './AvatarView';
+import MapLocationPresenter from 'presenters/MapLocationPresenter';
 export default function EventDetailsView({
     event,
     creator,
@@ -153,7 +154,14 @@ export default function EventDetailsView({
                     </div>
                     <Divider variant="middle" />
 
-                    <div> Map goes here </div>
+                    <div className="h-52">
+                        <MapLocationPresenter
+                            location={{
+                                lng: event.location.longitude,
+                                lat: event.location.latitude,
+                            }}
+                        />
+                    </div>
                 </div>
             </DialogContent>
 

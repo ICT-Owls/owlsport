@@ -7,12 +7,18 @@ import {
     DialogTitle,
     TextField,
 } from '@mui/material';
+import MapInputPresenter from 'presenters/MapInputPresenter';
 import * as React from 'react';
 
 export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
     const [open, setOpen] = React.useState(false);
-    const [address, setAddress] = React.useState('');
+    const [location, setLocation] = React.useState(null);
     const [submitEnabled, setSubmitEnabled] = React.useState(false);
+
+    React.useEffect(() => {
+        if (location) setSubmitEnabled(true);
+        else setSubmitEnabled(false);
+    }, [location]);
 
     const handleClose = () => {
         setOpen(false);
@@ -44,7 +50,7 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
                         To request carpooling, please enter the location you
                         want to be picked up from.
                     </DialogContentText>
-                    <TextField
+                    {/*<TextField
                         autoFocus
                         margin="dense"
                         id="name"
@@ -58,6 +64,11 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
                             else setSubmitEnabled(false);
                             setAddress(e.target.value);
                         }}
+                    />*/}
+                    <MapInputPresenter
+                        onPlace={(location) => {
+                            setLocation(location);
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>
@@ -65,7 +76,7 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
                     <Button
                         disabled={!submitEnabled}
                         onClick={() => {
-                            submit(true, address);
+                            submit(true, location);
                             setOpen(false);
                         }}
                     >
