@@ -1,3 +1,5 @@
+import { getEvents } from 'api';
+import { useInterval } from 'helpers/Polling';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { auth, userApi } from '../helpers/Firebase';
@@ -14,6 +16,7 @@ import { auth, userApi } from '../helpers/Firebase';
 //Add Variable name, default value and a empty object for callbacks here:
 const dataStruct = {
     Example: { defaultValue: null, callbacks: {} },
+    events: { defaultValue: [], callbacks: {} },
 };
 
 //-------- Custom Hooks --------
@@ -58,6 +61,10 @@ export function useUser() {
     return [user];
 }
 
+export function useEventList() {
+    return useCustomHook('events');
+}
+
 //-------- Public Functions --------
 
 //This function is run by App.jsx when mounted. Initialized the model
@@ -72,6 +79,11 @@ export function initModel() {
     //  const unsub1 = mySubscribeFunc1(params)
     //  const unsub2 = mySubscribeFunc2(params)
     //  return(()=>{unsub1(); unsub2();})
+
+    // temporarily use polling to update events list
+    useInterval(async ()=>{
+        localStorage.setItem('events', await getEvents());
+    }, 5000);
 }
 
 //Read value from local storage.
