@@ -1,4 +1,5 @@
 import { Divider, TextField } from '@mui/material';
+import AvatarPresenter from 'presenters/AvatarPresenter';
 import React from 'react';
 import { generateAvatar } from '../helpers/Generators';
 
@@ -20,7 +21,7 @@ function Item({ sender, content }) {
 }
 
 function ChatSelection() {
-    return <img src={generateAvatar()} alt="" />;
+    return <AvatarPresenter />;
 }
 export default function ChatsView() {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
@@ -29,7 +30,7 @@ export default function ChatsView() {
             <div className="m-3 flex w-fit flex-col justify-end">
                 <div className="w-96 rounded-xl border-2 border-secondary-100 bg-background-100 shadow-md outline-double outline-1 outline-background-200">
                     <div className="flex h-auto w-auto flex-row items-center justify-start px-10 pt-3 child:w-14">
-                        <img src={generateAvatar()} alt="" />
+                        <AvatarPresenter />
                         <h2 className="h-fit">Eric</h2>
                     </div>
                     <Divider variant="middle" className="bg-secondary-100" />

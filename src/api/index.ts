@@ -87,13 +87,17 @@ export async function getEvents(): Promise<Event[] | null> {
     return [];
 }
 
-export async function getUser() {
+export async function getUser(id?: string) {
     const token = localStorage.getItem('auth');
-    const uid = localStorage.getItem('uid');
-    if (!token || !uid) return;
+    if (!token) return;
     try {
-        const user = await userApi.userIdGet(uid);
-
+        const user = id
+            ? await userApi.userIdGet(id, {
+                  headers: { authorization: `Bearer ${token}` },
+              })
+            : await userApi.userIdGet('', {
+                  headers: { authorization: `Bearer ${token}` },
+              });
         return user;
     } catch (e) {
         if (typeof e === 'object' && e !== null) handleError(e as Response);

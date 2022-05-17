@@ -6,7 +6,7 @@ import Show from 'helpers/Show';
 
 export default function AvatarView({ user }) {
     const [loaded, setLoaded] = useState(false);
-    const [url, setUrl] = useState(generateAvatar());
+    const [url, setUrl] = useState('/avatar.png');
     const [name, setName] = useState(undefined);
 
     const imgElem = React.useRef(null);
@@ -33,15 +33,20 @@ export default function AvatarView({ user }) {
     return (
         <>
             <img ref={imgElem} src={url} className="m-0 hidden h-0 w-0 p-0" />
-            <Tooltip title={name ? name : ''}>
+            <Tooltip title={name ? name : '[Deleted Account]'}>
                 <div>
                     <Skeleton
                         className={sizeStyle}
                         variant="circular"
-                        sx={{ display: (loaded ? 'none' : 'block') }}
+                        sx={{ display: loaded ? 'none' : 'block' }}
                     />
 
-                    <Avatar sx={{ display: (loaded ? 'block' : 'none') }} className={sizeStyle} alt={name} src={url} />
+                    <Avatar
+                        sx={{ display: loaded ? 'block' : 'none' }}
+                        className={sizeStyle}
+                        alt={name}
+                        src={url}
+                    />
                 </div>
             </Tooltip>
         </>
