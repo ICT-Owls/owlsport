@@ -2,7 +2,7 @@ import { getEvents } from 'api';
 import { useInterval } from 'helpers/Polling';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { auth, userApi } from '../helpers/Firebase';
+import { auth, isLoggedIn, userApi } from '../helpers/Firebase';
 
 //-------- ReadMe --------
 //To use a existing state, import the wrapper function for that state and use it like you would
@@ -71,18 +71,23 @@ export function useEventList() {
 export function initModel() {
     //If value does not exist in local storage, then load default value
     Object.keys(dataStruct).map((e) => {
-        localStorage.getItem(e) === undefined &&
+        localStorage.getItem(e) === null &&
             localStorage.setItem(e, JSON.stringify(dataStruct[e].defaultValue));
     });
+    
     //Put subsciption logic here with our own Database
     //
     //  const unsub1 = mySubscribeFunc1(params)
     //  const unsub2 = mySubscribeFunc2(params)
     //  return(()=>{unsub1(); unsub2();})
 
-    // temporarily use polling to update events list
-    useInterval(async ()=>{
-        localStorage.setItem('events', await getEvents());
+    // Temporarily use polling for this
+        console.log('setting up events interval');
+    setInterval(async () => {
+        if (!isLoggedIn()) return;
+        const events = await getEvents();
+        if (events != null) toLocalStorage('events', events);
+        console.log(events);
     }, 5000);
 }
 
