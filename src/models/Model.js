@@ -86,7 +86,6 @@ export function initModel() {
         if (!isLoggedIn()) return;
         const events = await getEvents();
         if (events != null) toLocalStorage('events', events);
-        console.log(events);
     }, 5000);
 }
 

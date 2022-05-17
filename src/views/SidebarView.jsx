@@ -91,7 +91,7 @@ export default function SidebarView({
                                     <Button
                                         sx={{ justifyContent: 'left' }}
                                         color="secondary"
-                                        href="/whatever"
+                                        href="/"
                                         onClick={() => signOut()}
                                     >
                                         Sign Out

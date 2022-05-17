@@ -9,6 +9,7 @@ import {
 } from '../api-client';
 import { EventCreationParameters, Event } from './types';
 import { validate, API_DATATYPES } from './validation';
+import { logOut } from 'helpers/Firebase';
 
 const apiConf = new CarpoolingApiConfig({
     // Send request to same origin as the web page
@@ -17,7 +18,7 @@ const apiConf = new CarpoolingApiConfig({
             ? 'http://localhost:32203'
             : 'https://carpooling-backend-sy465fjv3q-lz.a.run.app',
 });
-console.log(apiConf.basePath);
+
 const eventApi = new EventApi(apiConf);
 const userApi = new UserApi(apiConf);
 const geoApi = new GeoApi(apiConf);
@@ -26,17 +27,20 @@ export async function createEvent(eventInfo: EventCreationParameters) {
     const token = localStorage.getItem('auth');
     const uid = localStorage.getItem('uid');
     if (!token || !uid) return;
+    try {
+        const newEvent: Event = {
+            ...eventInfo,
+            id: generateString(16),
+            creatorId: uid,
+            creationDate: Date.now().valueOf(),
+        };
 
-    const newEvent: Event = {
-        ...eventInfo,
-        id: generateString(16),
-        creatorId: uid,
-        creationDate: Date.now().valueOf(),
-    };
-
-    await eventApi.eventsPost(newEvent, {
-        headers: { authorization: `Bearer ${token}` },
-    });
+        await eventApi.eventsPost(newEvent, {
+            headers: { authorization: `Bearer ${token}` },
+        });
+    } catch (e) {
+        if (typeof e === 'object' && e !== null) handleError(e as Response);
+    }
 }
 
 export async function getEvents(): Promise<Event[] | null> {
@@ -48,54 +52,68 @@ export async function getEvents(): Promise<Event[] | null> {
         return null;
     }
 
-    const events: Event[] = await eventApi.eventsGet({
-        headers: { authorization: `Bearer ${token}` },
-    });
+    try {
+        const events: Event[] = await eventApi.eventsGet({
+            headers: { authorization: `Bearer ${token}` },
+        });
 
-    let valid = true;
-    events.forEach((event) => {
-        const validation = validate(event, API_DATATYPES.Event);
-        if (!validation.success) {
-            if (process.env.NODE_ENV === 'development') {
-                console.warn(
-                    `Event failed to validate${
-                        validation.message ? `: "${validation?.message}"` : '.'
-                    }`
-                );
+        let valid = true;
+        events.forEach((event) => {
+            const validation = validate(event, API_DATATYPES.Event);
+            if (!validation.success) {
+                if (process.env.NODE_ENV === 'development') {
+                    console.warn(
+                        `Event failed to validate${
+                            validation.message
+                                ? `: "${validation?.message}"`
+                                : '.'
+                        }`
+                    );
+                }
+                valid = false;
             }
-            valid = false;
+        });
+        if (!valid) {
+            return null;
         }
-    });
-    if (!valid) {
-        return null;
-    }
 
-    if (process.env.NODE_ENV === 'development') {
-        console.info(`Fetched ${events.length} events`);
+        if (process.env.NODE_ENV === 'development') {
+            console.info(`Fetched ${events.length} events`);
+        }
+        return events;
+    } catch (e) {
+        if (typeof e === 'object' && e !== null) handleError(e as Response);
     }
-
-    return events;
+    return [];
 }
 
 export async function getUser() {
     const token = localStorage.getItem('auth');
     const uid = localStorage.getItem('uid');
     if (!token || !uid) return;
+    try {
+        const user = await userApi.userIdGet(uid);
 
-    const user = await userApi.userIdGet(uid);
-
-    return user;
+        return user;
+    } catch (e) {
+        if (typeof e === 'object' && e !== null) handleError(e as Response);
+    }
+    return null;
 }
 
 export async function geocode(query: string): Promise<GeoData | null> {
     const token = localStorage.getItem('auth');
     if (!token || !query) return null;
+    try {
+        const geoData = await geoApi.geoForwardPlaceGet(query, {
+            headers: { authorization: `Bearer ${token}` },
+        });
 
-    const geoData = await geoApi.geoForwardPlaceGet(query, {
-        headers: { authorization: `Bearer ${token}` },
-    });
-
-    return geoData;
+        return geoData;
+    } catch (e) {
+        if (typeof e === 'object' && e !== null) handleError(e as Response);
+    }
+    return null;
 }
 
 export async function reverseGeocode(
@@ -104,9 +122,24 @@ export async function reverseGeocode(
     const token = localStorage.getItem('auth');
     if (!token || !query) return null;
 
-    const geoData = await geoApi.geoReverseGet(query.lng(), query.lat(), {
-        headers: { authorization: `Bearer ${token}` },
-    });
+    try {
+        const geoData = await geoApi.geoReverseGet(query.lng(), query.lat(), {
+            headers: { authorization: `Bearer ${token}` },
+        });
 
-    return geoData.address;
+        return geoData.address;
+    } catch (e) {
+        if (typeof e === 'object' && e !== null) handleError(e as Response);
+    }
+    return null;
+}
+
+type Response = {
+    status: number;
+};
+
+function handleError(e: Response) {
+    if (e.status === 401) {
+        logOut();
+    }
 }
