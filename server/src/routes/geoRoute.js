@@ -59,25 +59,20 @@ router.get(
                     req.query['lng']
             )
         ).json();
-
         /*const geoData = await geoApi.geoPlaceGet(accents(query), {
         headers: { authorization: `Bearer ${token}` },
     });*/
-
-        if (geoData.length < 1) {
-            return res.status(404).send('No results from mapquest');
-        }
         try {
             return res.status(200).send({
-                latitude: geoData[0].lat,
-                longitude: geoData[0].lon,
-                address: geoData[0].display_name,
+                latitude: geoData.lat,
+                longitude: geoData.lon,
+                address: geoData.display_name,
             });
         } catch (error) {
             if (error.name !== 'TypeError') throw error;
         }
 
-        return res.status(404).send('Bad data received from mapquest');
+        return res.status(404).send('Failed to get address');
     }
 );
 
