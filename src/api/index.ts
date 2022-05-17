@@ -104,7 +104,7 @@ export async function reverseGeocode(
     const token = localStorage.getItem('auth');
     if (!token || !query) return null;
 
-    const geoData = await geoApi.geoReverseGet(query.lat(), query.lng(), {
+    const geoData = await geoApi.geoReverseGet(query.lng(), query.lat(), {
         headers: { authorization: `Bearer ${token}` },
     });
 
