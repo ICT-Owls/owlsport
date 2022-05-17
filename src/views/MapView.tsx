@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef } from 'react';
 
 const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
     const [marker, setMarker] = React.useState<google.maps.Marker>();
-    
+
     React.useEffect(() => {
         if (!marker) {
             setMarker(new google.maps.Marker());
@@ -34,6 +34,8 @@ type MapViewProps = {
     onIdle?: (map: google.maps.Map) => void;
     markers?: google.maps.LatLng[];
     children?: unknown[];
+    pan?: google.maps.LatLng
+    setPan?: (lngLat: google.maps.LatLng) => void;
 };
 
 const MapView: FC<MapViewProps> = (props: MapViewProps) => {
@@ -65,6 +67,11 @@ const MapView: FC<MapViewProps> = (props: MapViewProps) => {
             })
         );
     }, [mapRef, map]);
+
+    useEffect(() => {
+        if (!mapRef.current || !map || !props.pan) return;
+        map.panTo(props.pan);
+    }, [props.pan]);
 
     return (
         <>

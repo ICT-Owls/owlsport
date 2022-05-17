@@ -31,14 +31,18 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
     );
     const [textInput, setTextInput] = React.useState<string>();
     const [value, setValue] = React.useState<GooglePlace | null>();
+    const [pan, setPan] = React.useState<google.maps.LatLng>(marker);
 
     React.useEffect(() => {
         if (!marker || !value?.description || !props.onPlace) return;
+        
         props.onPlace({
             address: value?.description,
             longitude: marker.lng(),
             latitude: marker.lat(),
         });
+
+        setPan(marker);
     }, [marker]);
 
     const render = (status: MapStatus) => {
@@ -73,6 +77,8 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                             onClick={(e: google.maps.MapMouseEvent) => {
                                 if (e.latLng) setMarker(e.latLng);
                             }}
+                            pan={pan}
+                            setPan={setPan}
                         />
                     </div>
                 );

@@ -3,6 +3,18 @@ import React, { useEffect } from 'react';
 
 const GOOGLE_MAPS_API_KEY = '***REMOVED***';
 
+const kistaCoords = {
+    lng: 17.949738982453862,
+    lat: 59.4050838849778,
+};
+
+const swedenBounds: google.maps.LatLngBoundsLiteral = {
+    south: 11.0273686052,
+    west: 55.3617373725,
+    north: 23.9033785336,
+    east: 69.1062472602,
+};
+
 export type GooglePlace = {
     description: string;
     main_text: string;
@@ -47,7 +59,7 @@ export function usePlaceCompletion() {
                     callback: (results?: readonly PlaceType[]) => void
                 ) => {
                     (autocompleteService.current as any).getPlacePredictions(
-                        request,
+                        { ...request, bounds: swedenBounds, componentRestrictions:{country: 'se'} },
                         callback
                     );
                 },
