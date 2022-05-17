@@ -1,7 +1,8 @@
-const { body, param, oneOf } = require('express-validator');
+const { body, param, oneOf, query } = require('express-validator');
 const { validate, authorize } = require('../utils.js');
 
 const express = require('express');
+const { exists } = require('fs');
 const router = express.Router();
 
 require('isomorphic-fetch');
@@ -46,11 +47,10 @@ router.get(
 router.get(
     '/reverse',
     authorize,
-    param('lat').isNumeric(),
-    param('lng').isNumeric(),
+    query('lat').exists().withMessage("lat required").bail().isFloat(),
+    query('lng').exists().withMessage("lng required").bail().isFloat(),
     validate,
     async (req, res) => {
-        console.warn("Fetching lat:" + req.query['lat'] + ", lng:" + req.query['lng']);
         const geoData = await (
             await fetch(
                 'http://open.mapquestapi.com/nominatim/v1/reverse.php?key=***REMOVED***&format=json&lat=' +
@@ -60,8 +60,6 @@ router.get(
             )
         ).json();
 
-        console.warn("Received response from server:");
-        console.warn(geoData);
         /*const geoData = await geoApi.geoPlaceGet(accents(query), {
         headers: { authorization: `Bearer ${token}` },
     });*/
