@@ -1,4 +1,4 @@
-info: 
+info:
     version: '0.2.1'
 components:
     schemas:
@@ -125,9 +125,65 @@ components:
                 endDateTime:
                     type: integer
                     format: int32
+                drivers:
+                    type: object
+                    additionalProperties:
+                        $ref:
+                    description: 'Id of the user that is the driver'
                 creationDate:
                     type: number
                     description: 'UNIX timestamp of when the event was created'
+        Car:
+            type: object
+            required:
+                - model
+                - registration
+                - seats
+            properties:
+                model:
+                    type: string
+                    description: 'Model of the car'
+                registration:
+                    type: string
+                    description: 'Registration number of the car'
+                seats:
+                    type: integer
+                    description: 'number of seats in the car'
+        Passenger:
+            type: object
+            required:
+                - id
+                - seats
+                - location
+            properties:
+                id:
+                    $ref: '#/components/schemas/Id'
+                    description: 'Id of the passenger'
+                seats:
+                    type: integer
+                    description: 'Number of seats this passenger takes up, in case multiple people use the same account'
+                    default: 1
+                location:
+                    $ref: '#/components/schemas/Location'
+        Driver:
+            type: object
+            required:
+                - id
+                - car
+                - passengers
+            properties:
+                id:
+                    $ref: '#/components/schemas/Id'
+                    description: 'Id of the driver'
+                car:
+                    $ref: '#/components/schemas/Car'
+                    description: 'The car of this driver'
+                passengers:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/Passenger'
+                    items:
+                        $ref: '#/components/schemas/Id'
         EventCreationParameters:
             type: object
             required:
@@ -168,4 +224,3 @@ components:
                     deprecated: true
                     type: number
                     description: 'UNIX timestamp of when the event was created'
-
