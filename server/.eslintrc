@@ -19,6 +19,11 @@
             "env": {
                 "mocha": true
             }
+        },
+        {
+            "files": ["*.ts", "*.tsx"],
+            "plugins": ["@typescript-eslint"],
+            "extends": ["plugin:@typescript-eslint/recommended"]
         }
     ],
     "ignorePatterns": ["package-lock.json", "node_modules", "*.json"]
