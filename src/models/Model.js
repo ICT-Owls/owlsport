@@ -1,5 +1,4 @@
 import { getEvents } from 'api';
-import { useInterval } from 'helpers/Polling';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { auth, isLoggedIn, userApi } from '../helpers/Firebase';
