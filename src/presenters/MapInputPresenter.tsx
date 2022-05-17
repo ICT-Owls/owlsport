@@ -7,6 +7,7 @@ import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import MapView from '../views/MapView';
 import LocationFormPresenter from './LocationFormPresenter';
 import { GooglePlace } from 'helpers/Location';
+import { reverseGeocode } from 'api';
 
 type MapInputPresenterProps = {
     onPlace?: (location: {
@@ -35,7 +36,7 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
 
     React.useEffect(() => {
         if (!marker || !value?.description || !props.onPlace) return;
-        
+
         props.onPlace({
             address: value?.description,
             longitude: marker.lng(),
@@ -75,7 +76,13 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                             startAt={kistaCoords}
                             markers={marker ? [marker] : []}
                             onClick={(e: google.maps.MapMouseEvent) => {
-                                if (e.latLng) setMarker(e.latLng);
+                                if (e.latLng) {
+                                    reverseGeocode(e.latLng).then(
+                                        (addr: string | null) => {
+                                            if (addr) setValue({main_text:'reverse geocoding', description: addr, ...e.latLng});
+                                        }
+                                    );
+                                }
                             }}
                             pan={pan}
                             setPan={setPan}

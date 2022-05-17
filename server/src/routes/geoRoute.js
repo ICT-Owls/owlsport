@@ -10,7 +10,7 @@ require('isomorphic-fetch');
  * Get geo location from place name
  */
 router.get(
-    '/:place',
+    '/forward/:place',
     authorize,
     param('place').isString(),
     validate,
@@ -50,6 +50,7 @@ router.get(
     param('lng').isNumeric(),
     validate,
     async (req, res) => {
+        console.warn("Fetching lat:" + req.query['lat'] + ", lng:" + req.query['lng']);
         const geoData = await (
             await fetch(
                 'http://open.mapquestapi.com/nominatim/v1/reverse.php?key=***REMOVED***&format=json&lat=' +
@@ -59,6 +60,8 @@ router.get(
             )
         ).json();
 
+        console.warn("Received response from server:");
+        console.warn(geoData);
         /*const geoData = await geoApi.geoPlaceGet(accents(query), {
         headers: { authorization: `Bearer ${token}` },
     });*/

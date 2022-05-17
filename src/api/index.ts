@@ -12,7 +12,10 @@ import { validate, API_DATATYPES } from './validation';
 
 const apiConf = new CarpoolingApiConfig({
     // Send request to same origin as the web page
-    basePath: process.env.BACKEND_MODE === 'local' ? 'http://localhost:32203' :  'https://carpooling-backend-sy465fjv3q-lz.a.run.app',
+    basePath:
+        process.env.BACKEND_MODE === 'local'
+            ? 'http://localhost:32203'
+            : 'https://carpooling-backend-sy465fjv3q-lz.a.run.app',
 });
 console.log(apiConf.basePath);
 const eventApi = new EventApi(apiConf);
@@ -84,15 +87,26 @@ export async function getUser() {
     return user;
 }
 
-export async function geocode(
-    query: string
-): Promise<GeoData | null> {
+export async function geocode(query: string): Promise<GeoData | null> {
     const token = localStorage.getItem('auth');
     if (!token || !query) return null;
 
-    const geoData = await geoApi.geoPlaceGet(query, {
+    const geoData = await geoApi.geoForwardPlaceGet(query, {
         headers: { authorization: `Bearer ${token}` },
     });
 
     return geoData;
+}
+
+export async function reverseGeocode(
+    query: google.maps.LatLng
+): Promise<string | null> {
+    const token = localStorage.getItem('auth');
+    if (!token || !query) return null;
+
+    const geoData = await geoApi.geoReverseGet(query.lat(), query.lng(), {
+        headers: { authorization: `Bearer ${token}` },
+    });
+
+    return geoData.address;
 }
