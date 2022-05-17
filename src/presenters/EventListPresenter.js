@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { getEvents } from 'api';
 import EventListView from '../views/EventListView';
+import { useEventList } from 'models/Model';
 
 export default function EventListPresenter({ user }) {
-    const [events, setEvents] = React.useState([]);
+    const [events, setEvents] = useEventList();
 
     const loadEvents = function () {
         getEvents()
