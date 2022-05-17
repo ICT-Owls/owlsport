@@ -198,4 +198,33 @@ router.patch(
     }
 );
 
+router.post(
+    '/:id/car',
+    authorize,
+    param('id').isString(),
+    body('model').isString(),
+    body('registration').isString(),
+    body('seats').isNumeric(),
+    validate,
+    async (req, res) => {
+        const id = req.params.id;
+        const { model, registraction, seats } = req.body;
+
+        const eventRef = events.child(id);
+        const eventSnapshot = await eventRef.get();
+        if (!eventSnapshot.exists())
+            return res.status(404).send('Event not found');
+
+        const driverRef = events.child(`${id}/drivers/${req.user.uid}`);
+        await driverRef.set({
+            model,
+            registration,
+            seats,
+        });
+
+        const updatedEvent = await eventRef.get();
+        res.send(updatedEvent.val());
+    }
+);
+
 module.exports = router;
