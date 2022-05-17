@@ -92,22 +92,7 @@ export async function geocode(
     const token = localStorage.getItem('auth');
     if (!token || !query) return null;
 
-    const geoData: { lat: string; lon: string; _: any }[] = await (
-        await fetch(
-            'http://open.mapquestapi.com/nominatim/v1/search.php?key=***REMOVED***&countrycodes=se&format=json&q=' +
-                query
-        )
-    ).json();
-
-    /*const geoData = await geoApi.geoPlaceGet(accents(query), {
-        headers: { authorization: `Bearer ${token}` },
-    });*/
-
-    if (geoData && geoData.length > 0 && geoData[0].lat && geoData[0].lon)
-        return new google.maps.LatLng({
-            lat: Number.parseFloat(geoData[0].lat),
-            lng: Number.parseFloat(geoData[0].lon),
-        });
+    
 
     return null;
 }

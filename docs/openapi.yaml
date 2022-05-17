@@ -317,7 +317,7 @@ paths:
                     description: 'Event not found'
     /geo/{place}:
         get:
-            summary: 'Geocoding'
+            summary: 'Forward Geocoding'
             description: 'Get geo data by place name'
             tags:
                 - geo
@@ -337,10 +337,44 @@ paths:
                                 type: array
                                 items:
                                     $ref: 'definitions.yaml#/components/schemas/GeoData'
+                '400':
+                    description: 'Bad Request'
                 '401':
                     description: 'Unauthenticated'
                 '404':
                     description: 'Place found'
+    /geo/reverse:
+        get:
+            summary: 'Reverse Geocoding'
+            description: 'Get address from coordinates'
+            tags:
+                - geo
+            parameters:
+                - in: query
+                  name: lng
+                  schema:
+                      type: number
+                  required: true
+                  description: 'Longitude of place to get address of'
+                - in: query
+                  name: lat
+                  schema:
+                      type: number
+                  required: true
+                  description: 'Latitude of place to get address of'
+            responses:
+                '200':
+                    description: 'Returns the geodata'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/components/schemas/GeoData'
+                '400':
+                    description: 'Bad Request'
+                '401':
+                    description: 'Unauthenticated'
+                '404':
+                    description: 'No address found'
 
 components:
     securitySchemes:
