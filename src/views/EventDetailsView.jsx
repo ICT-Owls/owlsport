@@ -4,6 +4,7 @@ import {
     Avatar,
     AvatarGroup,
     Card,
+    DialogActions,
     Grid as Box,
     IconButton,
     Switch,
@@ -29,6 +30,7 @@ import DriversCardPresenter from '../presenters/DriversCardPresenter';
 import RequiresCarpoolingPresenter from '../presenters/RequiresCarpoolingPresenter';
 import AvatarView from './AvatarView';
 import MapLocationPresenter from 'presenters/MapLocationPresenter';
+import { leaveEvent } from 'api';
 export default function EventDetailsView({
     event,
     creator,
@@ -48,6 +50,7 @@ export default function EventDetailsView({
         members,
         startDateTime,
         endDateTime,
+        id
     } = event;
 
     const startDate = new Date(startDateTime);
@@ -60,6 +63,11 @@ export default function EventDetailsView({
     const handleClose = () => {
         setOpen(false);
         navigate('/events', { replace: true });
+    };
+
+    const handleLeave = () => {
+        leaveEvent(id);
+        handleClose();
     };
 
     return (
@@ -155,9 +163,7 @@ export default function EventDetailsView({
                     </div>
 
                     <div className="my-3 flex flex-row justify-around bg-gray-300 py-3">
-                        <div>Description</div>
-                        <div>Carpooling</div>
-                        <div>Events</div>
+                        <div>Cars</div>
                     </div>
                     <div className="h-max-48 h-48 overflow-y-scroll">
                         <List className="flex flex-row flex-wrap justify-center">
@@ -188,6 +194,9 @@ export default function EventDetailsView({
                     </div>
                 </div>
             </DialogContent>
+            <DialogActions>
+                <Button onClick={handleLeave}>I don{'\''}t want to attend this event</Button>
+            </DialogActions>
         </Dialog>
     );
 }

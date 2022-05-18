@@ -3,6 +3,7 @@ const { validate, authorize, validateLocation } = require('../utils.js');
 const { events, users } = require('../database.js');
 
 const express = require('express');
+const { async } = require('@firebase/util');
 const router = express.Router();
 
 /**
@@ -208,23 +209,35 @@ router.delete(
     validate,
     async (req, res) => {
         const id = req.params.id;
+        const eventRef = events.child(id);
+        const eventMemberRef = eventRef.child('members').child(req.user.uid);
+        const event = await eventRef.get();
 
-        const eventMemberRef = events.child(id).child('members').child(req.user.uid);
-        const eventMemberSnapPromise = eventMemberRef.get();
+        if (!event.exists()) {
+            console.warn('error occured when deleting user from event');
+            console.warn(e);
+            return res.status(404).send('Event does not exist');
+        }
 
-        const userEventRef = users.child(req.user.uid).child('events').child(id);
-        const userEventSnap = await userEventRef.get();
-        const eventMemberSnap = await eventMemberSnapPromise;
+        // If user making request is event owner, just remove the whole event
+        if (
+            event.child('creatorId').exists() &&
+            event.child('creatorId').val() === req.user.uid
+        ) {
+            eventRef.remove();
+            return res.status(200).send('User removed from event');
+        }
 
-        if (!((await eventMemberSnap).exists()))
-            return res.status(404).send('Not a member of an event with that ID');
-        
-        const eventMemberRemove = userEventSnap.exists() ? userEventRef.remove() : 0;
-
-        await eventMemberRef.remove();
-        await eventMemberRemove;
-        
-        res.status(200).send('User removed from event');
+        await eventMemberRef
+            .remove()
+            .then(() => {
+                return res.status(200).send('User removed from event');
+            })
+            .catch((e) => {
+                console.warn('error occured when deleting user from event');
+                console.warn(e);
+                return res.status(404).send('User could not be removed from event');
+            });
     }
 );
 
