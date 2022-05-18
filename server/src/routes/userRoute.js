@@ -3,7 +3,7 @@ const { validate, authorize } = require('../utils.js');
 const { users } = require('../database.js');
 const { AvatarGenerator } = require('random-avatar-generator');
 const express = require('express');
-const { randomInt, randomBytes, randomFillSync } = require('crypto');
+const { randomBytes } = require('crypto');
 const router = express.Router();
 
 const avatarGenerator = new AvatarGenerator();

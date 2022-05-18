@@ -195,7 +195,7 @@ export default function EventDetailsView({
                 </div>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleLeave}>I don{'\''}t want to attend this event</Button>
+                <Button onClick={handleLeave}>{creator.id === user.id ? "DELETE EVENT" : "I don't want to attend this event"}</Button>
             </DialogActions>
         </Dialog>
     );
