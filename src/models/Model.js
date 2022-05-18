@@ -16,6 +16,7 @@ import { auth, isLoggedIn, userApi } from '../helpers/Firebase';
 const dataStruct = {
     Example: { defaultValue: null, callbacks: {} },
     events: { defaultValue: [], callbacks: {} },
+    showChat: { defaultValue: false, callbacks: {} },
 };
 
 //-------- Custom Hooks --------
@@ -29,6 +30,10 @@ export function useExample() {
 
 export function useEventList() {
     return useCustomHook('events');
+}
+
+export function useChat() {
+    return useCustomHook('showChat');
 }
 
 //This function is the current implementation of User login persistance. Since auth()
