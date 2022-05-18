@@ -7,7 +7,9 @@ import {
     Divider,
     Link,
     List,
-    ListItem, ListItemText, ListSubheader,
+    ListItem,
+    ListItemText,
+    ListSubheader,
     Slide,
     Typography,
 } from '@mui/material';
@@ -22,14 +24,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function EventListView({ events, user, loadEvents }) {
-
-    const oldEvents = events.filter (o => o.endDateTime < Date.now());
-    const newEvents = events.filter (o => o.endDateTime > Date.now());
+    const oldEvents = events.filter((o) => o.endDateTime < Date.now());
+    const newEvents = events.filter((o) => o.endDateTime > Date.now());
 
     const [createOpen, setCreateOpen] = React.useState(false);
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
-        <Container sx={{ paddingTop: '2rem', height: '100%'}}>
+        <div className="">
             <Dialog
                 // for keeping CSS style in EventCreating.jsx
                 disablePortal={true}
@@ -51,8 +52,8 @@ export default function EventListView({ events, user, loadEvents }) {
                 </Container>
             </Dialog>
 
-                        <Box className={'flex flex-col items-start'}>
-            <Button
+            <Box className={'flex flex-col items-start'}>
+                <Button
                     className="w-fit justify-start self-start"
                     onClick={() => setCreateOpen(true)}
                 >
@@ -64,18 +65,16 @@ export default function EventListView({ events, user, loadEvents }) {
                 New Events
             </Typography>
 
-
-            <List className='overflow-y-scroll '
-                  // sx={{
-                  //     width: '100%',
-                  //     // maxWidth: 360,
-                  //     // position: 'relative',
-                  //     // overflow: 'scroll',
-                  //     // height: '100%',
-                  //     maxHeight: '80%',
-                  //     minHeight: '60%'}}
+            <List
+            // sx={{
+            //     width: '100%',
+            //     // maxWidth: 360,
+            //     // position: 'relative',
+            //     // overflow: 'scroll',
+            //     // height: '100%',
+            //     maxHeight: '80%',
+            //     minHeight: '60%'}}
             >
-
                 {newEvents.map((event) => {
                     return (
                         <ListItem
@@ -95,17 +94,16 @@ export default function EventListView({ events, user, loadEvents }) {
                 Old Events
             </Typography>
 
-            <List className='overflow-y-scroll'
-                  // sx={{
-                  //         width: '100%',
-                  //        // maxWidth: 360,
-                  //        // position: 'relative',
-                  //        // overflow: 'scroll',
-                  //        // height: '100%',
-                  //        maxHeight: '80%',
-                  //        minHeight: '60%'}}
-                >
-
+            <List
+            // sx={{
+            //         width: '100%',
+            //        // maxWidth: 360,
+            //        // position: 'relative',
+            //        // overflow: 'scroll',
+            //        // height: '100%',
+            //        maxHeight: '80%',
+            //        minHeight: '60%'}}
+            >
                 {oldEvents.map((event) => {
                     return (
                         <ListItem
@@ -120,9 +118,6 @@ export default function EventListView({ events, user, loadEvents }) {
                     );
                 })}
             </List>
-
-
-
 
             {/*<Box*/}
             {/*    sx={{ width: '100%', height: '80%', minHeight:'50vh', maxWidth: 360, bgcolor: 'yellow' }}*/}
@@ -153,7 +148,7 @@ export default function EventListView({ events, user, loadEvents }) {
             {/*    ))}*/}
             {/*</List>*/}
             {/*</Box>*/}
-        </Container>
+        </div>
     );
 }
 
