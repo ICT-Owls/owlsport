@@ -15,6 +15,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import MapInputPresenter from 'presenters/MapInputPresenter';
 import * as React from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import { userApi } from '../helpers/Firebase';
@@ -73,6 +74,8 @@ const EventCreatingView = ({
     setLocation,
     submit,
     user,
+    date,
+    setDate,
 }) => {
     const handleAddUser = async (options) => {
         const results = await Promise.allSettled(
@@ -161,11 +164,9 @@ const EventCreatingView = ({
                                     dark:bg-slate-700
                                     dark:text-gray-50
                                     "
-                                        value={startDateTime}
+                                        value={date}
                                         onChange={(newValue) => {
-                                            setStartDateTime(
-                                                Date.parse(newValue)
-                                            );
+                                            setDate(Date.parse(newValue));
                                         }}
                                     />
                                 </LocalizationProvider>
@@ -248,8 +249,8 @@ const EventCreatingView = ({
                                     value={location.address || ''}
                                     onChange={(e) =>
                                         setLocation({
-                                            longitude: 0,
-                                            latitude: 0,
+                                            longitude: location.longitude,
+                                            latitude: location.latitude,
                                             address: e.target.value,
                                         })
                                     }
@@ -317,8 +318,8 @@ const EventCreatingView = ({
                             <div className="relative rounded-lg bg-gray-100 p-8 sm:p-12">
                                 <TextareaAutosize
                                     aria-label="minimum height"
-                                    minRows={20}
-                                    maxRows={25}
+                                    minRows={15}
+                                    maxRows={20}
                                     placeholder="About"
                                     style={{ width: 400 }}
                                     value={description}
@@ -327,17 +328,12 @@ const EventCreatingView = ({
                                     }
                                 />
 
-                                <div className="mt-8">
-                                    <iframe
-                                        className="b-0 h-full w-full"
-                                        width="400"
-                                        height="300"
-                                        loading="lazy"
-                                        frameBorder="0"
-                                        allowFullScreen
-                                        referrerPolicy="no-referrer-when-downgrade"
-                                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCGxW2vdNkBmPIc4GEer8Y85xAXPpfMjwY&q=Space+Needle,Seattle+WA"
-                                    ></iframe>
+                                <div className="mt-8  h-96">
+                                    <MapInputPresenter
+                                        onPlace={(newLocation) =>
+                                            setLocation(newLocation)
+                                        }
+                                    />
                                 </div>
                             </div>
                         </div>

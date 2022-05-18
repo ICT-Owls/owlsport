@@ -15,14 +15,27 @@ export const EventCreatingPresenter = ({ user, onSubmit }) => {
         longitude: 0,
         latitude: 0,
     });
-    const [emails, setEmails] = React.useState([]);
+    const [date, setDate] = React.useState(Date.now());
 
     const submit = () => {
+        const startDate = new Date(startDateTime);
+        const endDate = new Date(endDateTime);
+
+        const newStartDate = new Date(date);
+        newStartDate.setUTCHours(startDate.getUTCHours());
+        newStartDate.setUTCMinutes(startDate.getUTCMinutes());
+        newStartDate.setUTCSeconds(startDate.getUTCSeconds());
+
+        const newEndDate = new Date(date);
+        newEndDate.setUTCHours(endDate.getUTCHours());
+        newEndDate.setUTCMinutes(endDate.getUTCMinutes());
+        newEndDate.setUTCSeconds(endDate.getUTCSeconds());
+
         createEvent({
             title,
             description,
-            startDateTime,
-            endDateTime,
+            startDateTime: newStartDate.getTime(),
+            endDateTime: newEndDate.getTime(),
             members,
             location,
         });
@@ -44,5 +57,7 @@ export const EventCreatingPresenter = ({ user, onSubmit }) => {
         setLocation,
         submit,
         user,
+        date,
+        setDate,
     });
 };

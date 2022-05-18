@@ -19,8 +19,8 @@ export default function SidebarView({
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
         <>
-            <div className="relative h-auto w-60 justify-start bg-background-100 bg-opacity-80 pt-10 text-left">
-                <div className={'fixed'}>
+            <div className="relative h-auto w-60 justify-start  rounded-tl-md rounded-bl-md bg-background-100 bg-opacity-80 text-left">
+                <div className="p-8">
                     <IconButton
                         href="/test"
                         color="secondary"
@@ -53,9 +53,9 @@ export default function SidebarView({
                             <Button
                                 sx={{ justifyContent: 'left' }}
                                 color="secondary"
-                                href="/about"
+                                href="/carregistration"
                             >
-                                About
+                                Car Registration
                             </Button>
                             <Button
                                 sx={{ justifyContent: 'left' }}
@@ -65,7 +65,8 @@ export default function SidebarView({
                             >
                                 Whatever
                             </Button>
-                            <Divider style={{ padding: '0px' }} />
+
+                            <Divider style={{ padding: '4px' }} />
 
                             {user ? (
                                 <>
@@ -76,10 +77,7 @@ export default function SidebarView({
                                     >
                                         <AvatarView
                                             maxHeight="100%"
-                                            user={{
-                                                firstName: 'Test',
-                                                lastName: 'Testson',
-                                            }}
+                                            user={user}
                                         />
                                         Signed in
                                     </Box>
@@ -93,7 +91,7 @@ export default function SidebarView({
                                     <Button
                                         sx={{ justifyContent: 'left' }}
                                         color="secondary"
-                                        href="/whatever"
+                                        href="/"
                                         onClick={() => signOut()}
                                     >
                                         Sign Out

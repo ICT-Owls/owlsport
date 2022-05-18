@@ -1,9 +1,12 @@
 const { body, param, oneOf } = require('express-validator');
 const { validate, authorize } = require('../utils.js');
 const { users } = require('../database.js');
-
+const { AvatarGenerator } = require('random-avatar-generator');
 const express = require('express');
+const { randomInt, randomBytes, randomFillSync } = require('crypto');
 const router = express.Router();
+
+const avatarGenerator = new AvatarGenerator();
 
 const avatarURLRequirements = {
     require_tld: false,
@@ -22,7 +25,10 @@ router.post(
     body('firstName').isString().withMessage('Invalid first name'),
     body('lastName').isString().withMessage('Invalid last name'),
     body('dateOfBirth').isNumeric().withMessage('Invalid date of birth'),
-    body('avatar').optional().isURL(avatarURLRequirements).withMessage('Invalid avatar url'),
+    body('avatar')
+        .optional()
+        .isURL(avatarURLRequirements)
+        .withMessage('Invalid avatar url'),
     validate,
     async (req, res) => {
         const { firstName, lastName, dateOfBirth, avatar } = req.body;
@@ -43,7 +49,11 @@ router.post(
             email: authUser.email,
             dateOfBirth: dateOfBirth,
             friends: [],
-            avatar: avatar ? avatar : '/img/avatar.png',
+            avatar: avatar
+                ? avatar
+                : avatarGenerator.generateRandomAvatar(
+                      randomBytes(100000).toString()
+                  ),
             creationDate: Date.now(),
         });
 
@@ -67,6 +77,10 @@ router.get(
         const userRef = users.child(id);
         const user = await (await userRef.get()).val();
         if (!user) return res.status(404).send('User not found');
+
+        // Update outdated users
+        if (!user.avatar)
+            user.avatar = avatarGenerator.generateRandomAvatar(randomBytes(100000).toString());
 
         res.send(user);
     }
@@ -127,8 +141,11 @@ router.patch(
         var update = {};
         if (email) update.email = email;
         if (friends) update.friends = friends;
-        if (avatar) update.avatar = avatar;
-
+        update.avatar = avatar
+            ? avatar
+            : avatarGenerator.generateRandomAvatar(
+                  randomBytes(100000).toString()
+              );
         await userRef.update(update);
 
         const updatedUser = await userRef.get();

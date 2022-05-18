@@ -1,6 +1,7 @@
+import { getEvents } from 'api';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { auth, userApi } from '../helpers/Firebase';
+import { auth, isLoggedIn, userApi } from '../helpers/Firebase';
 
 //-------- ReadMe --------
 //To use a existing state, import the wrapper function for that state and use it like you would
@@ -14,6 +15,7 @@ import { auth, userApi } from '../helpers/Firebase';
 //Add Variable name, default value and a empty object for callbacks here:
 const dataStruct = {
     Example: { defaultValue: null, callbacks: {} },
+    events: { defaultValue: [], callbacks: {} },
 };
 
 //-------- Custom Hooks --------
@@ -23,6 +25,10 @@ const dataStruct = {
 //Add your own wrappers here:
 export function useExample() {
     return useCustomHook('Example');
+}
+
+export function useEventList() {
+    return useCustomHook('events');
 }
 
 //This function is the current implementation of User login persistance. Since auth()
@@ -64,14 +70,23 @@ export function useUser() {
 export function initModel() {
     //If value does not exist in local storage, then load default value
     Object.keys(dataStruct).map((e) => {
-        localStorage.getItem(e) === undefined &&
+        localStorage.getItem(e) === null &&
             localStorage.setItem(e, JSON.stringify(dataStruct[e].defaultValue));
     });
+
     //Put subsciption logic here with our own Database
     //
     //  const unsub1 = mySubscribeFunc1(params)
     //  const unsub2 = mySubscribeFunc2(params)
     //  return(()=>{unsub1(); unsub2();})
+
+    // Temporarily use polling for this
+    console.log('setting up events interval');
+    setInterval(async () => {
+        if (!isLoggedIn()) return;
+        const events = await getEvents();
+        if (events != null) toLocalStorage('events', events);
+    }, 5000);
 }
 
 //Read value from local storage.

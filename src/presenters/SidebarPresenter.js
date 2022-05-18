@@ -1,16 +1,11 @@
 import SidebarView from '../views/SidebarView';
 import { useState } from 'react';
-import { auth } from '../helpers/Firebase';
+import { logOut } from '../helpers/Firebase';
 
 export default function SidebarPresenter({ user }) {
     const [openLogin, setOpenLogin] = useState(false);
     const [openCreate, setOpenCreate] = useState(false);
-    function signOut() {
-        auth.signOut().catch((error) =>
-            console.error('Signout failed: ', error)
-        );
-    }
-
+    
     function handleLoginVisibility(bool) {
         setOpenLogin(bool);
     }
@@ -23,6 +18,6 @@ export default function SidebarPresenter({ user }) {
         handleLoginVisibility,
         handleCreateVisibility,
         user,
-        signOut,
+        signOut: logOut,
     });
 }
