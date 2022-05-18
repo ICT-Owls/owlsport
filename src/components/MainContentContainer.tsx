@@ -6,6 +6,7 @@ const MainContentContainer = (props: any) => {
         <Box
             sx={{
                 marginX: '2rem',
+                height:'100%',
                 minHeight: '50vh',
                 maxWidth: '980px',
                 width: '100%',

@@ -27,13 +27,13 @@ export default function SidebarView({
                         aria-label="Search"
                         component="span"
                     >
-                        <Link to="/">
-                            <img
-                                src="Solid_Logotype.png"
-                                className="h-6 w-auto"
-                                alt=""
-                            />
-                        </Link>
+                        {/*<Link to="/">*/}
+                        {/*    <img*/}
+                        {/*        src="Solid_Logotype.png"*/}
+                        {/*        className="h-6 w-auto"*/}
+                        {/*        alt=""*/}
+                        {/*    />*/}
+                        {/*</Link>*/}
                     </IconButton>
 
                     <div className="sidebar_first">
@@ -81,13 +81,13 @@ export default function SidebarView({
                                         />
                                         Signed in
                                     </Box>
-                                    <Button
-                                        sx={{ justifyContent: 'left' }}
-                                        color="secondary"
-                                        href="/account"
-                                    >
-                                        Account
-                                    </Button>
+                                    {/*<Button*/}
+                                    {/*    sx={{ justifyContent: 'left' }}*/}
+                                    {/*    color="secondary"*/}
+                                    {/*    href="/account"*/}
+                                    {/*>*/}
+                                    {/*    Account*/}
+                                    {/*</Button>*/}
                                     <Button
                                         sx={{ justifyContent: 'left' }}
                                         color="secondary"
