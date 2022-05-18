@@ -132,7 +132,7 @@ components:
                 drivers:
                     type: object
                     additionalProperties:
-                        $ref:
+                        $ref: 'definitions.yaml#/components/schemas/Driver'
                     description: 'Id of the user that is the driver'
                 creationDate:
                     type: number
