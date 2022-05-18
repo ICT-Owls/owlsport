@@ -6,7 +6,7 @@ import * as React from 'react';
 import { formatUsername } from '../helpers/Format';
 import AvatarView from './AvatarView';
 
-export default function DriversCardView({ member, address }) {
+export default function DriversCardView({ member, address, seats }) {
     return (
         <div>
             <Card>
@@ -40,7 +40,7 @@ export default function DriversCardView({ member, address }) {
                                 variant="contained"
                                 className="border-primary rounded border bg-primary-100 transition duration-500"
                             >
-                                Pick Up
+                                Pick Up {seats}
                             </Button>
                         </div>
                     </div>

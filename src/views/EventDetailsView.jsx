@@ -182,6 +182,7 @@ function DriverView({ members }) {
                 key={m.id}
                 id={m.id}
                 address={m.location.address}
+                seats={m.seats}
             />
         );
     });
@@ -217,7 +218,7 @@ function CarpoolerView({ driver, seats, passengers }) {
                         </IconButton>
                     </div>
 
-                    <div className=" flex justify-start ">
+                    <div className="flex justify-start ">
                         <AvatarGroup max={seats}>
                             {[...Array(free)].map((i) => (
                                 <Avatar
