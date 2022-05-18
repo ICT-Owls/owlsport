@@ -324,7 +324,7 @@ paths:
                 '200':
                     description: 'User is removed from event'
                 '401':
-                    description: 'Unauthenticated, or not part of event'
+                    description: 'Unauthorized, or not part of event'
                 '404':
                     description: 'Event not found'
 
