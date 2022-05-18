@@ -214,18 +214,37 @@ router.post(
     validate,
     async (req, res) => {
         const id = req.params.id;
-        const { model, registraction, seats } = req.body;
+        const { model, registration, seats } = req.body;
 
         const eventRef = events.child(id);
         const eventSnapshot = await eventRef.get();
         if (!eventSnapshot.exists())
             return res.status(404).send('Event not found');
+        const event = eventSnapshot.val();
 
-        const driverRef = events.child(`${id}/drivers/${req.user.uid}`);
-        await driverRef.set({
-            model,
-            registration,
-            seats,
+        await eventRef.update({
+            members: {
+                ...delete event.members[req.user.uid],
+            },
+            drivers: {
+                ...event.drivers,
+                [req.user.uid]: {
+                    id: req.user.uid,
+                    car: {
+                        model,
+                        registration,
+                        seats,
+                    },
+                    passengers: [],
+                },
+            },
+        });
+
+        const updatedEvent = await eventRef.get();
+        res.send(updatedEvent.val());
+    }
+);
+
         });
 
         const updatedEvent = await eventRef.get();
