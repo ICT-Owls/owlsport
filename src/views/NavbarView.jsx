@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import PeopleIcon from '@mui/icons-material/People';
 import ChatIcon from '@mui/icons-material/Chat';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { useState } from 'react';
 import { useChat } from 'models/Model';
 
@@ -31,7 +32,7 @@ export default function NavbarView() {
             </Link>
             <div className={'col-span-4 m-2 flex w-full justify-center'}>
                 <TextField
-                    className="max-w-5xl"
+                    className="max-w-4xl"
                     placeholder="search"
                     fullWidth
                     id="navbar-search"
@@ -46,21 +47,24 @@ export default function NavbarView() {
                     <SearchIcon color="secondary" />
                 </IconButton>
             </div>
-            <div className=" col-span-1 flex justify-end">
-                <IconButton className="hidden md:block">
+            <div className=" col-span-1 flex justify-end pr-5">
+                <IconButton className="hidden xl:block">
                     <NotificationsNoneIcon />
                 </IconButton>
                 <IconButton
-                    className="hidden md:block"
+                    className="hidden xl:block"
                     onClick={() => setChat(!chat)}
                 >
                     <ChatIcon />
                 </IconButton>
-                <IconButton className="hidden md:block">
+                <IconButton className="hidden xl:block">
                     <PeopleIcon />
                 </IconButton>
+                <IconButton className="hidden xl:block">
+                    <SettingsIcon />
+                </IconButton>
                 <IconButton
-                    className="md:hidden"
+                    className="xl:hidden"
                     id="basic-button"
                     onClick={handleClick}
                 >
@@ -93,6 +97,13 @@ export default function NavbarView() {
                         }}
                     >
                         <PeopleIcon />
+                    </MenuItem>
+                    <MenuItem
+                        onClick={() => {
+                            handleClose();
+                        }}
+                    >
+                        <SettingsIcon />
                     </MenuItem>
                 </Menu>
             </div>
