@@ -1,10 +1,16 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { Avatar, AvatarGroup, Card, IconButton, Switch } from '@mui/material';
-import Box from '@mui/material/Box';
+import {
+    Avatar,
+    AvatarGroup,
+    Card,
+    Grid as Box,
+    IconButton,
+    Switch,
+} from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
+import CloseIcon from '@mui/icons-material/Close';
 import DialogContent from '@mui/material/DialogContent';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -68,19 +74,37 @@ export default function EventDetailsView({
             fullWidth={true}
         >
             <DialogContent>
-                <FormGroup>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                value={isDriver}
-                                onChange={(e) => setIsDriver(e.target.checked)}
-                            >
-                                Is Driver
-                            </Switch>
-                        }
-                        label={isDriver ? 'Driver sees: ' : 'Non-driver sees: '}
-                    />
-                </FormGroup>
+                <div className={'flex flex-row flex-nowrap'}>
+                    <div className={'w-1/2'}>
+                        <FormGroup>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        value={isDriver}
+                                        onChange={(e) =>
+                                            setIsDriver(e.target.checked)
+                                        }
+                                    >
+                                        Is Driver
+                                    </Switch>
+                                }
+                                label={
+                                    isDriver
+                                        ? 'Driver sees: '
+                                        : 'Non-driver sees: '
+                                }
+                            />
+                        </FormGroup>
+                    </div>
+                    <div className="flex w-1/2 flex-row-reverse ">
+                        <IconButton
+                            onClick={handleClose}
+                            sx={{ maxWidth: 'min-content' }}
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                    </div>
+                </div>
                 <div className="flex flex-col justify-around">
                     <div className="flex flex-row items-center justify-between">
                         {/*TOP BAR*/}
@@ -164,10 +188,6 @@ export default function EventDetailsView({
                     </div>
                 </div>
             </DialogContent>
-
-            <DialogActions>
-                <Button onClick={handleClose}>Save and exit</Button>
-            </DialogActions>
         </Dialog>
     );
 }
