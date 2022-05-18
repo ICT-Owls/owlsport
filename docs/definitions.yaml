@@ -88,6 +88,10 @@ components:
                     type: boolean
                     default: false
                     description: 'If the member required carpooling to the event'
+                seats:
+                    type: integer
+                    description: 'Number of seats this members takes up'
+                    default: 1
         Event:
             type: object
             required:

@@ -173,11 +173,16 @@ router.patch(
     param('id').isString(),
     body('location').optional().custom(validateLocation),
     body('requiresCarpooling').optional().isBoolean(),
-    oneOf([body('location').exists(), body('requiresCarpooling').exists()]),
+    body('seats').optional().isNumeric(),
+    oneOf([
+        body('location').exists(),
+        body('requiresCarpooling').exists(),
+        body('seats').exists(),
+    ]),
     validate,
     async (req, res) => {
         const id = req.params.id;
-        const { location, requiresCarpooling } = req.body;
+        const { location, requiresCarpooling, seats } = req.body;
 
         const memberRef = events.child(`${id}/members/${req.user.uid}`);
         const memberSnapshot = await memberRef.get();
@@ -190,6 +195,7 @@ router.patch(
         if (location) update.location = location;
         if (requiresCarpooling != undefined)
             update.requiresCarpooling = requiresCarpooling;
+        if (seats) update.seats = seats;
 
         await memberRef.update(update);
 
