@@ -64,6 +64,42 @@ router.post(
 );
 
 /**
+ * Get all users (name and email)
+ */
+router.get('/list', validate, async (req, res) => {
+    const usersRef = await users.get();
+    const userStore = usersRef.val();
+
+    if (!userStore || typeof userStore !== 'object') {
+        console.warn('invalid response from firebase in GET /list');
+        console.warn('-\t-\t-\t-\t-');
+        console.warn(userStore);
+        return res.send('[]');
+    }
+
+    const userList = Object.keys(userStore)
+        .map((userId) => {
+            if (
+                userStore[userId].email &&
+                userStore[userId].firstName &&
+                userStore[userId].lastName
+            )
+                return {
+                    email: userStore[userId].email,
+                    name:
+                        userStore[userId].firstName +
+                        ' ' +
+                        userStore[userId].lastName,
+                };
+        })
+        .filter((v) => {
+            return v !== undefined && v !== null;
+        });
+
+    return res.send(userList);
+});
+
+/**
  * Get a user by their ID.
  */
 router.get(

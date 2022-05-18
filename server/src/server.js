@@ -49,14 +49,17 @@ app.use(express.static(path.resolve('..', 'build')));
 
 import userRoute from './routes/userRoute.js';
 app.use('/user', userRoute);
+app.use('/api/user', userRoute);
 
 import eventRoute from './routes/eventRoute.js';
 
 app.use('/events', eventRoute);
+app.use('/api/user', eventRoute);
 
 import geoRoute from './routes/geoRoute.js';
 
 app.use('/geo', geoRoute);
+app.use('/api/geo', geoRoute);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

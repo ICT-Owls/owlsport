@@ -1,5 +1,5 @@
 info: 
-    version: '0.2.4'
+    version: '0.2.5'
 components:
     schemas:
         # Information about the authentication status of the current user

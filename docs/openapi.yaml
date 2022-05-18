@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.2.4'
+    version: '0.2.5'
 paths:
     /user/authe:
         get:
@@ -67,7 +67,6 @@ paths:
                     description: 'Unauthenticated'
                 '404':
                     description: 'User not found'
-
     /user:
         patch:
             summary: 'Update a user'
@@ -152,7 +151,38 @@ paths:
                     description: 'Unauthenticated'
                 '409':
                     description: 'User already exists'
-
+    /user/list:
+        get:
+            summary: 'Get a user'
+            description: 'Get a user by their user id'
+            tags:
+                - user
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      $ref: 'definitions.yaml#/components/schemas/Id'
+                  description: 'The user ID'
+            responses:
+                '200':
+                    description: 'A list of every registered user'
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items: 
+                                    type: object
+                                    properties:
+                                        fullname: 
+                                            type: string
+                                        email:
+                                            type: string
+                                    required:
+                                      - fullname
+                                      - email
+                '401':
+                    description: 'Unauthenticated'
     /events/{id}:
         get:
             summary: 'Get event by id'
