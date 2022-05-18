@@ -280,6 +280,13 @@ paths:
             description: 'Register your car for an event, this automatically marks you as a driver.'
             tags:
                 - event
+            parameters:
+                - in: path
+                  name: id
+                  schema:
+                      $ref: 'definitions.yaml#/components/schemas/Id'
+                  required: true
+                  description: 'Id of the event to register a car for'
             requestBody:
                 description: 'The car to register'
                 required: true
