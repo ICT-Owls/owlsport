@@ -27,6 +27,10 @@ export function useExample() {
     return useCustomHook('Example');
 }
 
+export function useEventList() {
+    return useCustomHook('events');
+}
+
 //This function is the current implementation of User login persistance. Since auth()
 //persists it does not make sense to store in local storage. Also, the user object provided
 //by auth() cannot be stringified easily. It would make sense to store both this and our own
@@ -60,10 +64,6 @@ export function useUser() {
     return [user];
 }
 
-export function useEventList() {
-    return useCustomHook('events');
-}
-
 //-------- Public Functions --------
 
 //This function is run by App.jsx when mounted. Initialized the model
@@ -73,7 +73,7 @@ export function initModel() {
         localStorage.getItem(e) === null &&
             localStorage.setItem(e, JSON.stringify(dataStruct[e].defaultValue));
     });
-    
+
     //Put subsciption logic here with our own Database
     //
     //  const unsub1 = mySubscribeFunc1(params)
@@ -81,7 +81,7 @@ export function initModel() {
     //  return(()=>{unsub1(); unsub2();})
 
     // Temporarily use polling for this
-        console.log('setting up events interval');
+    console.log('setting up events interval');
     setInterval(async () => {
         if (!isLoggedIn()) return;
         const events = await getEvents();
