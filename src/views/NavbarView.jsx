@@ -1,58 +1,49 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { IconButton, TextField } from '@mui/material';
+import { IconButton, TextField, Menu, MenuItem } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import PeopleIcon from '@mui/icons-material/People';
+import ChatIcon from '@mui/icons-material/Chat';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { useState } from 'react';
+import { useChat, useUser } from 'models/Model';
+import AvatarView from './AvatarView';
 
 export default function NavbarView() {
-    //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
-    /*
-    return (
-        <nav className="navbar is-fresh"
-        role='navigaion'
-        aria-label='main navigation'>
-            <IconButton color="secondary" aria-label="Search" component="span">
-                <img src="Logotype.png" className="h-10" alt="" />
-            </IconButton>
-            <Box
-                className="flex justify-start m-4"
-                sx={{
-                    width: 1000,
-                    maxWidth: '100%',
-                }}
-            >
-                <TextField
-                    fullWidth
-                    label="fullWidth"
-                    id="fullWidth"
-                    color="secondary"
-                />
-                <IconButton
-                    color="secondary"
-                    aria-label="Search"
-                    component="span"
-                >
-                    <SearchIcon color="secondary" sx={{ fontSize: 40 }} />
-                </IconButton>
-            </Box>
-        </nav>
-    );
-    /*/
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [chat, setChat] = useChat();
+    const [user] = useUser();
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     return (
         <div
             className={
-                'bg-primary fixed z-50 flex h-fit w-full justify-around bg-background-100 shadow-sm'
+                'fixed z-50 grid h-fit w-full grid-cols-12 bg-background-100 shadow-sm lg:grid-cols-6'
             }
         >
             <Link
                 to="/"
-                className={'ml-8 mr-8 flex items-center justify-center'}
+                className={'col-span-1 flex items-center justify-center'}
             >
                 <img src="Logotype.png" className={'h-10'} alt="" />
             </Link>
-            <div className={'m-2 flex w-full justify-start'}>
+            <div
+                className={
+                    'col-span-10 m-2 flex w-full justify-center lg:col-span-4'
+                }
+            >
                 <TextField
-                    fullWidth
+                    className="w-2/3 max-w-3xl"
                     placeholder="search"
+                    fullWidth
                     id="navbar-search"
                     color="secondary"
                     size="small"
@@ -64,8 +55,78 @@ export default function NavbarView() {
                 >
                     <SearchIcon color="secondary" />
                 </IconButton>
-            </div>{' '}
-            <div>{/* I act as a third item for formattings sake */}</div>
+            </div>
+            <div className=" col-span-1 flex justify-end pr-5">
+                <IconButton className="hidden lg:block">
+                    <NotificationsNoneIcon />
+                </IconButton>
+                <IconButton
+                    className="hidden lg:block"
+                    onClick={() => setChat(!chat)}
+                >
+                    <ChatIcon />
+                </IconButton>
+                <IconButton className="hidden lg:block">
+                    <PeopleIcon />
+                </IconButton>
+                <IconButton className="hidden lg:block">
+                    <SettingsIcon />
+                </IconButton>
+                <IconButton className="hidden lg:block">
+                    <AvatarView maxHeight="100%" user={user} />
+                </IconButton>
+
+                <IconButton
+                    className="lg:hidden"
+                    id="basic-button"
+                    onClick={handleClick}
+                >
+                    <ExpandMoreIcon />
+                </IconButton>
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                >
+                    <MenuItem
+                        onClick={() => {
+                            handleClose();
+                        }}
+                    >
+                        <AvatarView maxHeight="100%" user={user} />
+                    </MenuItem>
+                    <MenuItem
+                        onClick={() => {
+                            handleClose();
+                        }}
+                    >
+                        <NotificationsNoneIcon />
+                    </MenuItem>
+                    <MenuItem
+                        onClick={() => {
+                            handleClose();
+                            setChat(!chat);
+                        }}
+                    >
+                        <ChatIcon />
+                    </MenuItem>
+                    <MenuItem
+                        onClick={() => {
+                            handleClose();
+                        }}
+                    >
+                        <PeopleIcon />
+                    </MenuItem>
+                    <MenuItem
+                        onClick={() => {
+                            handleClose();
+                        }}
+                    >
+                        <SettingsIcon />
+                    </MenuItem>
+                </Menu>
+            </div>
         </div>
     );
     //*/

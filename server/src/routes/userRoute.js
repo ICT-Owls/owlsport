@@ -79,8 +79,12 @@ router.get(
         if (!user) return res.status(404).send('User not found');
 
         // Update outdated users
-        if (!user.avatar)
-            user.avatar = avatarGenerator.generateRandomAvatar(randomBytes(100000).toString());
+        if (!user.avatar) {
+            user.avatar = avatarGenerator.generateRandomAvatar(
+                randomBytes(100000).toString()
+            );
+            userRef.child('avatar').set(user.avatar);
+        }
 
         res.send(user);
     }
@@ -141,6 +145,7 @@ router.patch(
         var update = {};
         if (email) update.email = email;
         if (friends) update.friends = friends;
+
         update.avatar = avatar
             ? avatar
             : avatarGenerator.generateRandomAvatar(
