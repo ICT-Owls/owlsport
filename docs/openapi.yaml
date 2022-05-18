@@ -308,6 +308,46 @@ paths:
                 '404':
                     description: 'Event not found'
 
+    /events/{id}/pickup:
+        post:
+            summary: 'Pickup passenger'
+            description: 'Pickup a passenger.'
+            tags:
+                - event
+            parameters:
+                - in: path
+                  name: id
+                  schema:
+                      $ref: 'definitions.yaml#/components/schemas/Id'
+                  required: true
+                  description: 'Id of the event to pickup a passenger for'
+            requestBody:
+                description: 'The car to register'
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - passenger
+                            properties:
+                                passengerId:
+                                    $ref: 'definitions.yaml#/components/schemas/Id'
+                                    description: 'Id of the passenger to pickup'
+            responses:
+                '200':
+                    description: 'The updated event'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/components/schemas/Event'
+                '400':
+                    description: 'Invalid body, not a driver, no seats left, member does not require carpooling'
+                '401':
+                    description: 'Unauthenticated'
+                '404':
+                    description: 'Event not found, Passenger not found'
+
     /events:
         get:
             summary: 'List own events'

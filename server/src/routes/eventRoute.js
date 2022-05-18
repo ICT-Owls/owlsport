@@ -245,6 +245,60 @@ router.post(
     }
 );
 
+router.post(
+    '/:id/pickup',
+    authorize,
+    param('id').isString(),
+    body('passengerId').isString(),
+    validate,
+    async (req, res) => {
+        const id = req.params.id;
+        const { passengerId } = req.body;
+
+        if (req.user.uid === passengerId)
+            return res.status(400).send('Passenger id cannot equal own id');
+
+        const eventRef = events.child(id);
+        const eventSnapshot = await eventRef.get();
+        if (!eventSnapshot.exists())
+            return res.status(404).send('Event not found');
+        const event = eventSnapshot.val();
+
+        const passenger = event?.members?.[passengerId];
+        const driver = event?.drivers?.[req.user.uid];
+
+        if (!passenger) return res.status(404).send('Passenger not found');
+        if (!passenger.requiresCarpooling)
+            return res.status(400).send('Member does not require carpooling');
+
+        if (!driver) return res.status(404).send('Driver not found');
+
+        const freeSeats =
+            driver?.passengers?.reduce(
+                (prev, pass) => prev + (pass.seats || 1),
+                0
+            ) || driver.car.seats;
+        if (passenger.seats > freeSeats)
+            return res.status(400).send('Not enough seats');
+
+        await eventRef.update({
+            members: {
+                ...delete event.members[passengerId],
+            },
+            drivers: {
+                ...event.drivers,
+                [req.user.uid]: {
+                    ...driver,
+                    passengers: {
+                        ...driver.passengers,
+                        [passengerId]: {
+                            id: passengerId,
+                            location: passenger.location,
+                            seats: passenger.seats,
+                        },
+                    },
+                },
+            },
         });
 
         const updatedEvent = await eventRef.get();
