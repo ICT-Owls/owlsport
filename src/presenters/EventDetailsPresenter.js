@@ -27,13 +27,14 @@ export default function EventDetailsPresenter({ user }) {
             .catch((err) => console.error(err));
     }, [eventId]);
 
-    const setCarpooling = (requiresCarpooling, location) => {
+    const setCarpooling = (requiresCarpooling, location, seats) => {
         if (eventData.event.id)
             eventApi
                 .eventsIdSelfPatch(
                     {
                         requiresCarpooling,
                         location,
+                        seats,
                     },
                     eventData.event.id,
                     opts

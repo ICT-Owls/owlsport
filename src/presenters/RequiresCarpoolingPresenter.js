@@ -4,11 +4,11 @@ export default function RequiresCarpoolingPresenter({
     requiresCarpooling,
     setCarpooling,
 }) {
-    const submit = (carpool, address) => {
+    const submit = (carpool, location, seats) => {
         if (carpool) {
-            setCarpooling(true, location);
+            setCarpooling(true, location, seats);
         } else {
-            setCarpooling(false, undefined);
+            setCarpooling(false, undefined, seats);
         }
     };
 

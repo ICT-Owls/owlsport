@@ -13,6 +13,7 @@ import * as React from 'react';
 export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
     const [open, setOpen] = React.useState(false);
     const [location, setLocation] = React.useState(null);
+    const [seats, setSeats] = React.useState(1);
     const [submitEnabled, setSubmitEnabled] = React.useState(false);
 
     React.useEffect(() => {
@@ -30,7 +31,7 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
                 <Button
                     variant="contained"
                     className="black mb-5 w-52 bg-primary-100 text-background-100"
-                    onClick={() => submit(false, undefined)}
+                    onClick={() => submit(false, undefined, 1)}
                 >
                     Cancel carpooling
                 </Button>
@@ -70,13 +71,27 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
                             setLocation(location);
                         }}
                     />
+                    <TextField
+                        type="number"
+                        placeholder="Required seats"
+                        id="seats"
+                        label="seats"
+                        fullWidth
+                        value={seats}
+                        onChange={(e) => {
+                            const num = parseInt(e.target.value);
+                            if (num >= 1 && num <= 99) {
+                                setSeats(num);
+                            }
+                        }}
+                    ></TextField>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)}>Cancel</Button>
                     <Button
                         disabled={!submitEnabled}
                         onClick={() => {
-                            submit(true, location);
+                            submit(true, location, seats);
                             setOpen(false);
                         }}
                     >
