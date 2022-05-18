@@ -80,7 +80,7 @@ router.get(
 
         // Update outdated users
         if (!user.avatar)
-            user.avatar = generateRandomAvatar(randomBytes(100000).toString());
+            user.avatar = avatarGenerator.generateRandomAvatar(randomBytes(100000).toString());
 
         res.send(user);
     }
