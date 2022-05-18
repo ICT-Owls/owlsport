@@ -78,6 +78,10 @@ router.get(
         const user = await (await userRef.get()).val();
         if (!user) return res.status(404).send('User not found');
 
+        // Update outdated users
+        if (!user.avatar)
+            user.avatar = generateRandomAvatar(randomBytes(100000).toString());
+
         res.send(user);
     }
 );
