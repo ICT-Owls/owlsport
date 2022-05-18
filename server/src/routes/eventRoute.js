@@ -1,6 +1,6 @@
 const { body, param, oneOf } = require('express-validator');
 const { validate, authorize, validateLocation } = require('../utils.js');
-const { events } = require('../database.js');
+const { events, users } = require('../database.js');
 
 const express = require('express');
 const router = express.Router();
@@ -195,6 +195,36 @@ router.patch(
 
         const updatedMember = await memberRef.get();
         res.send(updatedMember.val());
+    }
+);
+
+/**
+ * Remove authenticated user from event by its ID.
+ */
+router.delete(
+    '/:id/self',
+    authorize,
+    param('id').isString(),
+    validate,
+    async (req, res) => {
+        const id = req.params.id;
+
+        const eventMemberRef = events.child(id).child('members').child(req.user.uid);
+        const eventMemberSnapPromise = eventMemberRef.get();
+
+        const userEventRef = users.child(req.user.uid).child('events').child(id);
+        const userEventSnap = await userEventRef.get();
+        const eventMemberSnap = await eventMemberSnapPromise;
+
+        if (!((await eventMemberSnap).exists()))
+            return res.status(404).send('Not a member of an event with that ID');
+        
+        const eventMemberRemove = userEventSnap.exists() ? userEventRef.remove() : 0;
+
+        await eventMemberRef.remove();
+        await eventMemberRemove;
+        
+        res.status(200).send('User removed from event');
     }
 );
 
