@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.2.5'
+    version: '0.2.6'
 paths:
     /user/authe:
         get:
@@ -171,16 +171,16 @@ paths:
                         application/json:
                             schema:
                                 type: array
-                                items: 
+                                items:
                                     type: object
                                     properties:
-                                        fullname: 
+                                        fullname:
                                             type: string
                                         email:
                                             type: string
                                     required:
-                                      - fullname
-                                      - email
+                                        - fullname
+                                        - email
                 '401':
                     description: 'Unauthenticated'
     /events/{id}:
@@ -303,6 +303,30 @@ paths:
                     description: 'Body is empty'
                 '404':
                     description: 'Event not found, or not part of this event'
+        delete:
+            summary: 'Remove yourself from event'
+            description: 'Remove yourself from an event.'
+            tags:
+                - event
+            parameters:
+                - in: path
+                  name: id
+                  schema:
+                    $ref: 'definitions.yaml#/components/schemas/Id'
+                  required: true
+                  description: 'Id of the event to remove user from'
+                - in: header
+                  name: Authorization
+                  schema:
+                    type: string
+                  required: true
+            responses:
+                '200':
+                    description: 'User is removed from event'
+                '401':
+                    description: 'Unauthenticated, or not part of event'
+                '404':
+                    description: 'Event not found'
 
     /events:
         get:
