@@ -14,7 +14,7 @@ import AvatarView from './AvatarView';
 export default function NavbarView() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [chat, setChat] = useChat();
-    const [user] = useUser;
+    const [user] = useUser();
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
