@@ -4,7 +4,7 @@ import ChatsPresenter from '../presenters/ChatsPresenter';
 import EventListPresenter from '../presenters/EventListPresenter';
 import MainContentContainer from '../components/MainContentContainer';
 import EventDetailsPresenter from '../presenters/EventDetailsPresenter';
-import CarRegistrationPresenter from "../presenters/CarRegistrationPresenter";
+import CarRegistrationPresenter from '../presenters/CarRegistrationPresenter';
 import LocationFormPresenter from 'presenters/LocationFormPresenter';
 import MapInputPresenter from 'presenters/MapInputPresenter';
 
@@ -25,7 +25,6 @@ export default function MainContentView({ user }) {
                     path="/carregistration"
                     element={<CarRegistrationPresenter user={user} />}
                 />
-                <Route path="/" element={<ChatsPresenter />} />
                 <Route path="/whatever" element={<MapInputPresenter />} />
             </Routes>
         </MainContentContainer>
