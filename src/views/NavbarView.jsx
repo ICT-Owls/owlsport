@@ -33,7 +33,7 @@ export default function NavbarView() {
                 to="/"
                 className={'col-span-1 flex items-center justify-center'}
             >
-                <img src="Logotype.png" className={'h-10'} alt="" />
+                <img src="Solid_Logotype.png" className={'h-10'} alt="" />
             </Link>
             <div
                 className={
