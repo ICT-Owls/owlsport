@@ -1,7 +1,8 @@
-const { body, param, oneOf } = require('express-validator');
+const { body, param, oneOf, query } = require('express-validator');
 const { validate, authorize } = require('../utils.js');
 
 const express = require('express');
+const { exists } = require('fs');
 const router = express.Router();
 
 require('isomorphic-fetch');
@@ -10,7 +11,7 @@ require('isomorphic-fetch');
  * Get geo location from place name
  */
 router.get(
-    '/:place',
+    '/forward/:place',
     authorize,
     param('place').isString(),
     validate,
@@ -46,8 +47,8 @@ router.get(
 router.get(
     '/reverse',
     authorize,
-    param('lat').isNumeric(),
-    param('lng').isNumeric(),
+    query('lat').exists().withMessage("lat required").bail().isFloat(),
+    query('lng').exists().withMessage("lng required").bail().isFloat(),
     validate,
     async (req, res) => {
         const geoData = await (
@@ -58,25 +59,20 @@ router.get(
                     req.query['lng']
             )
         ).json();
-
         /*const geoData = await geoApi.geoPlaceGet(accents(query), {
         headers: { authorization: `Bearer ${token}` },
     });*/
-
-        if (geoData.length < 1) {
-            return res.status(404).send('No results from mapquest');
-        }
         try {
             return res.status(200).send({
-                latitude: geoData[0].lat,
-                longitude: geoData[0].lon,
-                address: geoData[0].display_name,
+                latitude: geoData.lat,
+                longitude: geoData.lon,
+                address: geoData.display_name,
             });
         } catch (error) {
             if (error.name !== 'TypeError') throw error;
         }
 
-        return res.status(404).send('Bad data received from mapquest');
+        return res.status(404).send('Failed to get address');
     }
 );
 

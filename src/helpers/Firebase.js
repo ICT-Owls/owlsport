@@ -143,6 +143,7 @@ export const startLogin = (callback) => {
 
 export const logOut = () => {
     localStorage.removeItem('auth');
+    auth.signOut();
 };
 
 /* API */
@@ -153,22 +154,7 @@ export function subscribeToEvents(callback) {
 }
 
 export function isLoggedIn() {
-    return (
-        localStorage.getItem('auth') != null &&
-        localStorage.getItem('uid') != null
-    );
-}
-
-export async function getUser() {
-    const token = localStorage.getItem('auth');
-    const uid = localStorage.getItem('uid');
-    if (!token || !uid) return;
-
-    const user = await userApi.userIdGet(uid, {
-        headers: { authorization: `Bearer ${token}` },
-    });
-
-    return user;
+    return localStorage.getItem('auth') !== null && auth.currentUser != null;
 }
 
 /* *** */

@@ -45,6 +45,7 @@
         "firebase-admin": "^10.1.0",
         "isomorphic-fetch": "^3.0.0",
         "node-geocoder": "^4.0.0",
-        "path": "^0.12.7"
+        "path": "^0.12.7",
+        "random-avatar-generator": "^2.0.0"
     }
 }
