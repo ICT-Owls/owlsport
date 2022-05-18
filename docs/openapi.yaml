@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.2.2'
+    version: '0.2.4'
 paths:
     /user/authe:
         get:
@@ -315,9 +315,9 @@ paths:
                     description: 'Unauthenticated'
                 '404':
                     description: 'Event not found'
-    /geo/{place}:
+    /geo/forward/{place}:
         get:
-            summary: 'Geocoding'
+            summary: 'Forward Geocoding'
             description: 'Get geo data by place name'
             tags:
                 - geo
@@ -334,13 +334,45 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: array
-                                items:
-                                    $ref: 'definitions.yaml#/components/schemas/GeoData'
+                                $ref: 'definitions.yaml#/components/schemas/GeoData'
+                '400':
+                    description: 'Bad Request'
                 '401':
                     description: 'Unauthenticated'
                 '404':
                     description: 'Place found'
+    /geo/reverse:
+        get:
+            summary: 'Reverse Geocoding'
+            description: 'Get address from coordinates'
+            tags:
+                - geo
+            parameters:
+                - in: query
+                  name: lng
+                  schema:
+                      type: number
+                  required: true
+                  description: 'Longitude of place to get address of'
+                - in: query
+                  name: lat
+                  schema:
+                      type: number
+                  required: true
+                  description: 'Latitude of place to get address of'
+            responses:
+                '200':
+                    description: 'Returns the geodata'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: 'definitions.yaml#/components/schemas/GeoData'
+                '400':
+                    description: 'Bad Request'
+                '401':
+                    description: 'Unauthenticated'
+                '404':
+                    description: 'No address found'
 
 components:
     securitySchemes:
