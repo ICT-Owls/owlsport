@@ -7,11 +7,12 @@ import EventDetailsPresenter from '../presenters/EventDetailsPresenter';
 import CarRegistrationPresenter from '../presenters/CarRegistrationPresenter';
 import LocationFormPresenter from 'presenters/LocationFormPresenter';
 import MapInputPresenter from 'presenters/MapInputPresenter';
+import { Box } from '@mui/system';
 
 export default function MainContentView({ user }) {
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return user ? (
-        <MainContentContainer>
+        <div className="h-auto w-[60rem] overflow-y-auto rounded-tr-md bg-background-100 bg-opacity-80 p-5 shadow-md">
             <Routes>
                 <Route
                     path="/event/:eventId"
@@ -27,7 +28,7 @@ export default function MainContentView({ user }) {
                 />
                 <Route path="/whatever" element={<MapInputPresenter />} />
             </Routes>
-        </MainContentContainer>
+        </div>
     ) : (
         <h1>Not logged in</h1>
     );

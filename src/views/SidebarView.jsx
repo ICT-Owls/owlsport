@@ -19,7 +19,7 @@ export default function SidebarView({
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
         <>
-            <div className="relative h-auto w-60 justify-start  rounded-tl-md rounded-bl-md bg-background-100 bg-opacity-80 text-left">
+            <div className="relative h-auto w-60 justify-start rounded-tl-md bg-background-100 bg-opacity-80 text-left">
                 <div className="p-8">
                     <IconButton
                         href="/test"
@@ -27,13 +27,13 @@ export default function SidebarView({
                         aria-label="Search"
                         component="span"
                     >
-                        <Link to="/">
-                            <img
-                                src="Solid_Logotype.png"
-                                className="h-6 w-auto"
-                                alt=""
-                            />
-                        </Link>
+                        {/*<Link to="/">*/}
+                        {/*    <img*/}
+                        {/*        src="Solid_Logotype.png"*/}
+                        {/*        className="h-6 w-auto"*/}
+                        {/*        alt=""*/}
+                        {/*    />*/}
+                        {/*</Link>*/}
                     </IconButton>
 
                     <div className="sidebar_first">
@@ -81,13 +81,13 @@ export default function SidebarView({
                                         />
                                         Signed in
                                     </Box>
-                                    <Button
-                                        sx={{ justifyContent: 'left' }}
-                                        color="secondary"
-                                        href="/account"
-                                    >
-                                        Account
-                                    </Button>
+                                    {/*<Button*/}
+                                    {/*    sx={{ justifyContent: 'left' }}*/}
+                                    {/*    color="secondary"*/}
+                                    {/*    href="/account"*/}
+                                    {/*>*/}
+                                    {/*    Account*/}
+                                    {/*</Button>*/}
                                     <Button
                                         sx={{ justifyContent: 'left' }}
                                         color="secondary"
