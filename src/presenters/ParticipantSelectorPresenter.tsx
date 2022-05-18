@@ -22,10 +22,11 @@ export type UserOption = {
 };
 
 const newOptions = [
-    { label: 'Erik Eriksson', email: 'erik@erik.erik' },
-    { label: 'Test Test', email: 'test@test.com' },
-    { label: 'James Bond', email: 'the007@mi6.firebaseapp.io' },
-    { label: 'Best Friend', email: 'niceperson@smilemail.gov.uk' },
+    { label: 'Test Testson', email: 'test@test.com' },
+    { label: 'Hugo Sandell', email: 'hugossandell@gmail.com' },
+    { label: 'Maria Dodieva', email: 'syunkova@gmail.com' },
+    { label: 'Samson Emblad', email: 'samson@emblad.com' },
+    { label: 'Francis Gniady', email: 'franek.kg@gmail.com' },
 ]; // TODO: Load from user's friends (and other known users?)
 
 const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
