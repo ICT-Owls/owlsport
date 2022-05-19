@@ -17,7 +17,7 @@ const swedenBounds = {
 
 const acConf = {
     bounds: swedenBounds,
-    componentRestrictions: { country: 'se' },
+    components: ['country:se'],
 };
 
 // TODO: use axios instances
@@ -31,6 +31,7 @@ const autocomplete = async (req, res) => {
         params: {
             input: req.query['q']?.toString() || '',
             key: gmapKey,
+            ...acConf,
         },
         timeout: 1000,
     };
