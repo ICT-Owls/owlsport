@@ -434,8 +434,8 @@ paths:
             tags:
                 - geo
             parameters:
-                - in: path
-                  name: query
+                - in: query
+                  name: q
                   schema:
                       type: string
                   required: true
