@@ -23,8 +23,6 @@ const kistaCoords = {
     lat: 59.4050838849778,
 };
 
-const apiKey = '***REMOVED***';
-
 const MapInputPresenter: FC<MapInputPresenterProps> = (
     props: MapInputPresenterProps
 ) => {
