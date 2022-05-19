@@ -300,7 +300,7 @@ router.post(
                     ...driver,
                     isPassenger: false,
                     isDriver: true,
-                    passengers: [...driver.passengers, passenger.id],
+                    passengers: [...(driver.passengers || []), passenger.id],
                 },
             },
         });
