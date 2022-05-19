@@ -6,11 +6,13 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
+import MapLocationPresenter from 'presenters/MapLocationPresenter';
+import RegisterCarpoolingPresenter from 'presenters/RegisterCarpoolingPresenter';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -22,20 +24,21 @@ import {
 import DriversCardPresenter from '../presenters/DriversCardPresenter';
 import RequiresCarpoolingPresenter from '../presenters/RequiresCarpoolingPresenter';
 import AvatarView from './AvatarView';
-import MapLocationPresenter from 'presenters/MapLocationPresenter';
 export default function EventDetailsView({
     event,
-    creator,
+    users,
     user,
     setCarpooling,
+    pickup,
+    registerCar,
 }) {
     const [open, setOpen] = React.useState(true);
-    const [isDriver, setIsDriver] = React.useState(false);
     const navigate = useNavigate();
 
-    if (!event || !creator) return null;
+    if (event === undefined || users === undefined) return null;
 
     const {
+        creatorId,
         title,
         description,
         location,
@@ -47,9 +50,9 @@ export default function EventDetailsView({
     const startDate = new Date(startDateTime);
     const endDate = new Date(endDateTime);
 
-    const memberObj = members?.[user.id];
+    const userObj = members[user.id];
 
-    const requiresCarpooling = memberObj?.requiresCarpooling | false;
+    const { requiresCarpooling, isDriver, isPassenger } = userObj;
 
     const handleClose = () => {
         setOpen(false);
@@ -68,28 +71,16 @@ export default function EventDetailsView({
             fullWidth={true}
         >
             <DialogContent>
-                <FormGroup>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                value={isDriver}
-                                onChange={(e) => setIsDriver(e.target.checked)}
-                            >
-                                Is Driver
-                            </Switch>
-                        }
-                        label={isDriver ? 'Driver sees: ' : 'Non-driver sees: '}
-                    />
-                </FormGroup>
                 <div className="flex flex-col justify-around">
                     <div className="flex flex-row items-center justify-between">
                         {/*TOP BAR*/}
                         <div className="flex flex-col">
                             <h2 className="m-1 text-3xl font-bold">{title}</h2>
                             <div className="flex flex-row items-center">
-                                <AvatarView user={creator} />
+                                <AvatarView user={users[creatorId]} />
                                 <Typography className="m-2">
-                                    Organized by {formatUsername(creator)}
+                                    Organized by{' '}
+                                    {formatUsername(users[creatorId])}
                                 </Typography>
                             </div>
                         </div>
@@ -98,6 +89,12 @@ export default function EventDetailsView({
                             <RequiresCarpoolingPresenter
                                 requiresCarpooling={requiresCarpooling}
                                 setCarpooling={setCarpooling}
+                                isDriver={isDriver}
+                            />
+                            <RegisterCarpoolingPresenter
+                                isDriver={isDriver}
+                                registerCar={registerCar}
+                                requiresCarpooling={requiresCarpooling}
                             />
                         </div>
 
@@ -138,12 +135,8 @@ export default function EventDetailsView({
                     <div className="h-max-48 h-48 overflow-y-scroll">
                         <List className="flex flex-row flex-wrap justify-center">
                             {isDriver
-                                ? DriverView({ members })
-                                : CarpoolerView({
-                                      driver: user,
-                                      seats: 4,
-                                      passengers: [user, user],
-                                  })}
+                                ? DriverView({ members, pickup })
+                                : CarpoolerView({ members, users })}
                         </List>
                     </div>
                     <Divider variant="middle" />
@@ -172,9 +165,9 @@ export default function EventDetailsView({
     );
 }
 
-function DriverView({ members }) {
+function DriverView({ members, pickup }) {
     const requireCarpooling = Object.values(members).filter(
-        (m) => m.requiresCarpooling
+        (m) => m.requiresCarpooling && !m.isDriver && !m.isPassenger
     );
     return requireCarpooling.map((m) => {
         return (
@@ -183,69 +176,95 @@ function DriverView({ members }) {
                 id={m.id}
                 address={m.location.address}
                 seats={m.seats}
+                pickup={pickup}
             />
         );
     });
 }
 
-function CarpoolerView({ driver, seats, passengers }) {
-    const free = seats - passengers.length;
-    return (
-        <div className="m-2 inline-flex justify-start">
-            {/* <Card sx={{ minWidth: 150 }}> */}
-            <Card>
-                <div className="m-2 ml-4 flex flex-col">
-                    <div className="mr-2 flex flex-row items-center">
-                        <AvatarView user={driver} />
+function CarpoolerView({ members, users }) {
+    const drivers = Object.values(members).filter((m) => m.isDriver);
+    return drivers.map((d) => {
+        const { car, id, location, passengers } = d;
+        const { model, registration, seats } = car;
+        const passengerUsers = {};
+        for (let passengerId of passengers || []) {
+            passengerUsers[passengerId] = members[passengerId];
+        }
+        const free =
+            seats -
+            Object.values(passengerUsers).reduce((sum, p) => p.seats + sum, 0);
 
-                        <Typography
-                            className="ml-2"
-                            variant="h6"
-                            component="div"
-                        >
-                            {formatUsername(driver)}
-                        </Typography>
-                    </div>
+        let it = 0;
 
-                    <div className="flex">
-                        <IconButton
-                            aria-label="location"
-                            className="m-0"
-                            size="small"
-                        >
-                            <LocationOnIcon fontSize="small" />
-                            <p>Location</p>
-                        </IconButton>
-                    </div>
+        return (
+            <div key={d.id} className="m-2 inline-flex justify-start">
+                {/* <Card sx={{ minWidth: 150 }}> */}
+                <Card>
+                    <div className="m-2 ml-4 flex flex-col">
+                        <div className="mr-2 flex flex-row items-center">
+                            <AvatarView user={users[id]} />
 
-                    <div className="flex justify-start ">
-                        <AvatarGroup max={seats}>
-                            {[...Array(free)].map((i) => (
-                                <Avatar
-                                    key={i}
-                                    alt="Free Seat"
-                                    src="Logotype.png"
-                                />
-                            ))}
-                            {passengers.map((passenger) => (
-                                <AvatarView
-                                    key={passenger.id}
-                                    user={passenger}
-                                />
-                            ))}
-                        </AvatarGroup>
-
-                        <div className="ml-20 flex">
-                            <Button
-                                variant="contained"
-                                className="border-primary rounded border bg-primary-100 transition duration-500"
+                            <Typography
+                                className="ml-2"
+                                variant="h6"
+                                component="div"
                             >
-                                JOIN
-                            </Button>
+                                {formatUsername(users[id])}
+                            </Typography>
+                        </div>
+
+                        <div className="flex">
+                            <IconButton
+                                aria-label="location"
+                                className="m-0"
+                                size="small"
+                            >
+                                <LocationOnIcon fontSize="small" />
+                                <p>{location.address}</p>
+                            </IconButton>
+                        </div>
+
+                        <div className="flex justify-start ">
+                            <AvatarGroup max={seats}>
+                                {Array(free)
+                                    .fill(0)
+                                    .map((i) => {
+                                        console.log('x');
+                                        return (
+                                            <Avatar
+                                                key={it++}
+                                                alt="Free Seat"
+                                                src="avatar.png"
+                                            />
+                                        );
+                                    })}
+                                {Object.values(passengerUsers).flatMap(
+                                    (passenger) =>
+                                        Array(passenger.seats)
+                                            .fill(0)
+                                            .map((_) => (
+                                                <AvatarView
+                                                    key={`passenger.id${it++}`}
+                                                    user={users[passenger.id]}
+                                                />
+                                            ))
+                                )}
+                            </AvatarGroup>
+
+                            <div className="ml-20 flex">
+                                <Button
+                                    disabled={true}
+                                    variant="contained"
+                                    className="border-primary rounded border bg-primary-100 transition duration-500"
+                                >
+                                    JOIN
+                                </Button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </Card>
-        </div>
-    );
+                </Card>
+            </div>
+        );
+    });
 }

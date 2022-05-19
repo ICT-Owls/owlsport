@@ -1,8 +1,9 @@
 import React from 'react';
-import RequiresCarpoolingView from '../views/RequiresCarpoolingView';
+import RequiresCarpoolingView from 'views/RequiresCarpoolingView';
 export default function RequiresCarpoolingPresenter({
     requiresCarpooling,
     setCarpooling,
+    isDriver,
 }) {
     const submit = (carpool, location, seats) => {
         if (carpool) {
@@ -15,5 +16,6 @@ export default function RequiresCarpoolingPresenter({
     return RequiresCarpoolingView({
         requiresCarpooling,
         submit,
+        isDriver,
     });
 }

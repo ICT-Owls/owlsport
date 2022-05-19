@@ -10,7 +10,11 @@ import {
 import MapInputPresenter from 'presenters/MapInputPresenter';
 import * as React from 'react';
 
-export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
+export default function RequiresCarpoolingView({
+    requiresCarpooling,
+    submit,
+    isDriver,
+}) {
     const [open, setOpen] = React.useState(false);
     const [location, setLocation] = React.useState(null);
     const [seats, setSeats] = React.useState(1);
@@ -27,7 +31,7 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
 
     return (
         <>
-            {requiresCarpooling ? (
+            {isDriver ? null : requiresCarpooling ? (
                 <Button
                     variant="contained"
                     className="black mb-5 w-52 bg-primary-100 text-background-100"
@@ -49,7 +53,8 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
                 <DialogContent>
                     <DialogContentText>
                         To request carpooling, please enter the location you
-                        want to be picked up from.
+                        want to be picked up from, and the number of seats
+                        required.
                     </DialogContentText>
                     {/*<TextField
                         autoFocus
