@@ -140,16 +140,6 @@ export default function EventDetailsView({
                                       seats: 4,
                                       passengers: [user, user],
                                   })}
-                            <CarpoolerView
-                                driver={user}
-                                seats="4"
-                                passengers={[user, user]}
-                            />
-                            <CarpoolerView
-                                driver={user}
-                                seats="4"
-                                passengers={[user, user]}
-                            />
                         </List>
                     </div>
                     <Divider variant="fullWidth" />
@@ -187,9 +177,9 @@ export default function EventDetailsView({
 }
 
 function DriverView({ members }) {
-    const requireCarpooling = members ? Object.values(members).filter(
-        (m) => m.requiresCarpooling
-    ) : [];
+    const requireCarpooling = members
+        ? Object.values(members).filter((m) => m.requiresCarpooling)
+        : [];
     return requireCarpooling.map((m) => {
         return (
             <DriversCardPresenter
