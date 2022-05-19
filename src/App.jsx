@@ -33,7 +33,7 @@ export default function App() {
                 <div
                     className="App fixed flex h-screen w-screen flex-row justify-center child:mt-20"
                     style={{
-                        backgroundImage: `url('../background.png')`,
+                        backgroundImage: `url('../stacked-waves-haikei.svg')`,
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'left',
                         backgroundSize: 'cover',
