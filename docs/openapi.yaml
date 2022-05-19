@@ -293,7 +293,17 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: 'definitions.yaml#/components/schemas/Car'
+                            type: object
+                            properties:
+                                location:
+                                    $ref: 'definitions.yaml#/components/schemas/Location'
+                                    description: 'Where you will be driving from1'
+                                car:
+                                    $ref: 'definitions.yaml#/components/schemas/Car'
+                                    description: 'Your car'
+                            required:
+                                - location
+                                - car
             responses:
                 '200':
                     description: 'The updated event'

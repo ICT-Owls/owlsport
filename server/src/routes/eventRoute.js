@@ -208,13 +208,14 @@ router.post(
     '/:id/car',
     authorize,
     param('id').isString(),
-    body('model').isString(),
-    body('registration').isString(),
-    body('seats').isNumeric(),
+    body('car.model').isString(),
+    body('car.registration').isString(),
+    body('car.seats').isNumeric(),
+    body('location').custom(validateLocation),
     validate,
     async (req, res) => {
         const id = req.params.id;
-        const { model, registration, seats } = req.body;
+        const { car, location } = req.body;
 
         const eventRef = events.child(id);
         const eventSnapshot = await eventRef.get();
