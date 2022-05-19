@@ -32,7 +32,7 @@ export function useExample() {
 export function useEventList() {
     const [events, setEvents] = useCustomHook('events');
 
-    const poll = async ()=>{
+    const poll = async () => {
         if (!isLoggedIn()) return;
         const freshEvents = await getEvents();
         if (freshEvents != null) setEvents(freshEvents);
@@ -153,11 +153,13 @@ function useCustomHook(target) {
         fromLocalStorage(target) === undefined ||
         dataStruct[target] === undefined
     ) {
-        console.error(
-            'useCustomHook: Cannot find target: ',
-            target,
-            '. Make sure that it is defined in the datastruct and that it is available in localstorage'
-        );
+        if (process.env.NODE_ENV === 'development') {
+            console.error(
+                'useCustomHook: Cannot find target: ',
+                target,
+                '. Make sure that it is defined in the datastruct and that it is available in localstorage'
+            );
+        }
         return undefined;
     }
     const [val, setVal] = useState(fromLocalStorage(target));
