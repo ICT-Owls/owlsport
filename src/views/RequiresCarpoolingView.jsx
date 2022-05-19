@@ -45,7 +45,7 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
             )}
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Enter Location</DialogTitle>
-                <DialogContent>
+                <DialogContent sx={{minHeight: '50vh'}}>
                     <DialogContentText>
                         To request carpooling, please enter the location you
                         want to be picked up from.
