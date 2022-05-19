@@ -3,6 +3,7 @@ import EventCreatingView from '../views/EventCreatingView';
 import { createEvent } from '../api';
 
 export const EventCreatingPresenter = ({ user, onSubmit }) => {
+
     const [title, setTitle] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [startDateTime, setStartDateTime] = React.useState(Date.now());
@@ -31,13 +32,21 @@ export const EventCreatingPresenter = ({ user, onSubmit }) => {
         newEndDate.setUTCMinutes(endDate.getUTCMinutes());
         newEndDate.setUTCSeconds(endDate.getUTCSeconds());
 
+        let titleValue = title;
+        let locationValue = location;
+        if (!title || title.length === 0)
+            titleValue = "Unnamed event";
+        if (location.address === undefined)
+            locationValue= {address: 'No address',
+                longitude: 0, latitude: 0};
+
         createEvent({
-            title,
+            title: titleValue,
             description,
             startDateTime: newStartDate.getTime(),
             endDateTime: newEndDate.getTime(),
             members,
-            location,
+            location: locationValue,
         });
         onSubmit();
     };
