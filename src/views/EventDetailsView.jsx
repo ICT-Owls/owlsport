@@ -1,16 +1,13 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { Avatar, AvatarGroup, Card, IconButton, Switch } from '@mui/material';
-import Box from '@mui/material/Box';
+import { Avatar, AvatarGroup, Card, IconButton } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Divider from '@mui/material/Divider';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
+import { leaveEvent } from 'api';
 import MapLocationPresenter from 'presenters/MapLocationPresenter';
 import RegisterCarpoolingPresenter from 'presenters/RegisterCarpoolingPresenter';
 import * as React from 'react';
@@ -45,6 +42,7 @@ export default function EventDetailsView({
         members,
         startDateTime,
         endDateTime,
+        id,
     } = event;
 
     const startDate = new Date(startDateTime);
@@ -59,21 +57,26 @@ export default function EventDetailsView({
         navigate('/events', { replace: true });
     };
 
+    const handleLeave = () => {
+        leaveEvent(id);
+        handleClose();
+    };
+
     return (
         <Dialog
+            className="mt-20"
             disablePortal
             open={open}
             onClose={handleClose}
-            scroll={'body'}
             aria-labelledby="scroll-dialog-title"
             aria-describedby="scroll-dialog-description"
-            maxWidth={'lg'}
-            fullWidth={true}
+            fullWidth
+            maxWidth={'xl'}
         >
             <DialogContent>
                 <div className="flex flex-col justify-around">
                     <div className="flex flex-row items-center justify-between">
-                        {/*TOP BAR*/}
+                        <div className="h-20 w-20" />
                         <div className="flex flex-col">
                             <h2 className="m-1 text-3xl font-bold">{title}</h2>
                             <div className="flex flex-row items-center">
@@ -85,19 +88,6 @@ export default function EventDetailsView({
                             </div>
                         </div>
 
-                        <div>
-                            <RequiresCarpoolingPresenter
-                                requiresCarpooling={requiresCarpooling}
-                                setCarpooling={setCarpooling}
-                                isDriver={isDriver}
-                            />
-                            <RegisterCarpoolingPresenter
-                                isDriver={isDriver}
-                                registerCar={registerCar}
-                                requiresCarpooling={requiresCarpooling}
-                            />
-                        </div>
-
                         {/*<div>*/}
                         {/*    <Button*/}
                         {/*        variant="contained"*/}
@@ -107,12 +97,10 @@ export default function EventDetailsView({
                         {/*    </Button>*/}
                         {/*</div>*/}
 
-                        <div className="flex items-center justify-center">
-                            <Box className="m-2 flex aspect-square h-16 w-16 items-center justify-center rounded-lg bg-primary-100 p-3 text-background-100">
-                                <p className="text-xl font-bold">
-                                    {formatDateMonthDay(startDate)}
-                                </p>
-                            </Box>
+                        <div className=" m-2  flex aspect-square h-8 w-8 items-center  justify-center rounded-lg bg-primary-100 p-3 text-background-100">
+                            <p className="text-l">
+                                {formatDateMonthDay(startDate)}
+                            </p>
                         </div>
                     </div>
                     <div className="mt-6 flex flex-col items-center justify-center">
@@ -126,41 +114,50 @@ export default function EventDetailsView({
                             {formatLocation(location)}
                         </Typography>
                     </div>
-
-                    <div className="my-3 flex flex-row justify-around bg-gray-300 py-3">
-                        <div>Description</div>
-                        <div>Carpooling</div>
-                        <div>Events</div>
-                    </div>
-                    <div className="h-max-48 h-48 overflow-y-scroll">
+                    <Divider variant="fullWidth" />
+                    <div className="h-56 overflow-y-scroll">
                         <List className="flex flex-row flex-wrap justify-center">
                             {isDriver
                                 ? DriverView({ members, pickup })
                                 : CarpoolerView({ members, users })}
                         </List>
                     </div>
-                    <Divider variant="middle" />
-
+                    <Divider variant="fullWidth" />
                     <div className="my-2 h-fit w-full text-center text-sm">
-                        <h3 className="m-2">Description</h3>
+                        <h3 className="m-2">Map</h3>
                         {description}
                     </div>
                     <Divider variant="middle" />
-
-                    <div className="h-52">
-                        <MapLocationPresenter
-                            location={{
-                                lng: event.location.longitude,
-                                lat: event.location.latitude,
-                            }}
-                        />
+                    <div className="flex h-fit w-full flex-row justify-center">
+                        <div className="m-0 h-[40rem] w-full">
+                            <MapLocationPresenter
+                                location={{
+                                    lng: event.location.longitude,
+                                    lat: event.location.latitude,
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             </DialogContent>
-
-            <DialogActions>
-                <Button onClick={handleClose}>Save and exit</Button>
-            </DialogActions>
+            <Divider />
+            <div className="flex justify-between p-2">
+                <RequiresCarpoolingPresenter
+                    requiresCarpooling={requiresCarpooling}
+                    setCarpooling={setCarpooling}
+                    isDriver={isDriver}
+                />
+                <RegisterCarpoolingPresenter
+                    isDriver={isDriver}
+                    registerCar={registerCar}
+                    requiresCarpooling={requiresCarpooling}
+                />
+                <Button onClick={handleLeave}>
+                    {creatorId === user.id
+                        ? 'DELETE EVENT'
+                        : "I don't want to attend this event"}
+                </Button>
+            </div>
         </Dialog>
     );
 }

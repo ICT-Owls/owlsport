@@ -105,6 +105,14 @@ export async function getUser(id?: string) {
     return null;
 }
 
+export async function leaveEvent(eventId: string): Promise<boolean> {
+    const token = localStorage.getItem('auth');
+    if (!token || !eventId) return false;
+
+    eventApi.eventsIdSelfDelete(eventId, `Bearer ${token}`);
+    return true;
+}
+
 export async function geocode(query: string): Promise<GeoData | null> {
     const token = localStorage.getItem('auth');
     if (!token || !query) return null;

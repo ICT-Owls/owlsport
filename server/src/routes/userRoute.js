@@ -3,7 +3,7 @@ const { validate, authorize } = require('../utils.js');
 const { users } = require('../database.js');
 const { AvatarGenerator } = require('random-avatar-generator');
 const express = require('express');
-const { randomInt, randomBytes, randomFillSync } = require('crypto');
+const { randomBytes } = require('crypto');
 const router = express.Router();
 
 const avatarGenerator = new AvatarGenerator();
@@ -64,6 +64,42 @@ router.post(
 );
 
 /**
+ * Get all users (name and email)
+ */
+router.get('/list', validate, async (req, res) => {
+    const usersRef = await users.get();
+    const userStore = usersRef.val();
+
+    if (!userStore || typeof userStore !== 'object') {
+        console.warn('invalid response from firebase in GET /list');
+        console.warn('-\t-\t-\t-\t-');
+        console.warn(userStore);
+        return res.send('[]');
+    }
+
+    const userList = Object.keys(userStore)
+        .map((userId) => {
+            if (
+                userStore[userId].email &&
+                userStore[userId].firstName &&
+                userStore[userId].lastName
+            )
+                return {
+                    email: userStore[userId].email,
+                    name:
+                        userStore[userId].firstName +
+                        ' ' +
+                        userStore[userId].lastName,
+                };
+        })
+        .filter((v) => {
+            return v !== undefined && v !== null;
+        });
+
+    return res.send(userList);
+});
+
+/**
  * Get a user by their ID.
  */
 router.get(
@@ -79,8 +115,12 @@ router.get(
         if (!user) return res.status(404).send('User not found');
 
         // Update outdated users
-        if (!user.avatar)
-            user.avatar = avatarGenerator.generateRandomAvatar(randomBytes(100000).toString());
+        if (!user.avatar) {
+            user.avatar = avatarGenerator.generateRandomAvatar(
+                randomBytes(100000).toString()
+            );
+            userRef.child('avatar').set(user.avatar);
+        }
 
         res.send(user);
     }
@@ -141,6 +181,7 @@ router.patch(
         var update = {};
         if (email) update.email = email;
         if (friends) update.friends = friends;
+
         update.avatar = avatar
             ? avatar
             : avatarGenerator.generateRandomAvatar(

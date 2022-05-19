@@ -1,9 +1,8 @@
 const { body, param, oneOf } = require('express-validator');
 const { validate, authorize, validateLocation } = require('../utils.js');
-const { events } = require('../database.js');
+const { events, users } = require('../database.js');
 
 const express = require('express');
-const { resolveObjectURL } = require('buffer');
 const router = express.Router();
 
 /**
@@ -211,6 +210,50 @@ router.patch(
 
         const updatedMember = await memberRef.get();
         res.send(updatedMember.val());
+    }
+);
+
+/**
+ * Remove authenticated user from event by its ID.
+ */
+router.delete(
+    '/:id/self',
+    authorize,
+    param('id').isString(),
+    validate,
+    async (req, res) => {
+        const id = req.params.id;
+        const eventRef = events.child(id);
+        const eventMemberRef = eventRef.child('members').child(req.user.uid);
+        const event = await eventRef.get();
+
+        if (!event.exists()) {
+            console.warn('error occured when deleting user from event');
+            console.warn(e);
+            return res.status(404).send('Event does not exist');
+        }
+
+        // If user making request is event owner, just remove the whole event
+        if (
+            event.child('creatorId').exists() &&
+            event.child('creatorId').val() === req.user.uid
+        ) {
+            eventRef.remove();
+            return res.status(200).send('User removed from event');
+        }
+
+        await eventMemberRef
+            .remove()
+            .then(() => {
+                return res.status(200).send('User removed from event');
+            })
+            .catch((e) => {
+                console.warn('error occured when deleting user from event');
+                console.warn(e);
+                return res
+                    .status(404)
+                    .send('User could not be removed from event');
+            });
     }
 );
 

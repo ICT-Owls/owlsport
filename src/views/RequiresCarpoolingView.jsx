@@ -42,7 +42,7 @@ export default function RequiresCarpoolingView({
             ) : (
                 <Button
                     variant="contained"
-                    className="black mb-5 w-52 bg-primary-100 text-background-100"
+                    className="black w-52 bg-primary-100 text-background-100"
                     onClick={() => setOpen(true)}
                 >
                     Request carpooling

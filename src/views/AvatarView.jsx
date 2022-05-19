@@ -26,7 +26,10 @@ export default function AvatarView({ user }) {
     }, [imgElem]);
 
     useEffect(() => {
-        if (user) setName(user.firstName + ' ' + user.lastName);
+        if (user !== undefined && user !== null && typeof user === 'object') {
+            setName(user.firstName + ' ' + user.lastName);
+            if (user.avatar) setUrl(user.avatar);
+        }
     }, [user]);
 
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
