@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 //import { getEvents } from 'api';
 import EventListView from '../views/EventListView';
 import { useEventList } from '../models/Model';
-import { useLinkClickHandler, useLocation } from 'react-router-dom';
+import {  useLocation } from 'react-router-dom';
 
 export default function EventListPresenter({ user }) {
     const [events, pollEvents] = useEventList();

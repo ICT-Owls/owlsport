@@ -50,7 +50,7 @@ export default function EventDetailsView({
         members,
         startDateTime,
         endDateTime,
-        id
+        id,
     } = event;
 
     const startDate = new Date(startDateTime);
@@ -195,17 +195,24 @@ export default function EventDetailsView({
                 </div>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleLeave}>{creator.id === user.id ? "DELETE EVENT" : "I don't want to attend this event"}</Button>
+                <Button onClick={handleLeave}>
+                    {creator.id === user.id
+                        ? 'DELETE EVENT'
+                        : "I don't want to attend this event"}
+                </Button>
             </DialogActions>
         </Dialog>
     );
 }
 
 function DriverView({ members }) {
-    const requireCarpooling = members ? Object.values(members).filter(
-        (m) => m.requiresCarpooling
-    ) : [];
-    return requireCarpooling.map((m) => {
+    const filterList = () => {
+        return members
+            ? Object.values(members).filter((m) => m.requiresCarpooling)
+            : [];
+    };
+
+    return filterList(members).map((m) => {
         return (
             <DriversCardPresenter
                 key={m.id}
