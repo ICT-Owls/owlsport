@@ -79,13 +79,24 @@ const LocationFormView: FC<LocationFormViewProps> = (
         )
             return;
 
-        setValue?.({
+        const translatedValue = {
             description: props.value.description,
             structuredFormatting: {
                 mainText: props.value.main_text,
                 secondaryText: props.value.secondary_text,
             },
-        });
+        };
+
+        setOptions(
+            translatedValue &&
+                options.every(
+                    (v) => v.description !== translatedValue.description
+                )
+                ? [translatedValue, ...options]
+                : options
+        );
+
+        setValue?.(translatedValue);
     }, [props.value]);
 
     return (

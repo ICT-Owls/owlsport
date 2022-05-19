@@ -35,16 +35,16 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
     const [pan, setPan] = React.useState<google.maps.LatLng>(marker);
 
     React.useEffect(() => {
-        if (!marker || !value?.description || !props.onPlace) return;
-
+        if (!marker) return;
         setPan(marker);
+        if (!value?.description || !props.onPlace) return;
 
         props.onPlace({
             address: value?.description,
             longitude: marker.lng(),
             latitude: marker.lat(),
         });
-    }, [marker]);
+    }, [marker, value?.description]);
 
     const render = () => {
         switch (mapStatus) {
@@ -69,6 +69,16 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                                     newMarker: google.maps.LatLng | null
                                 ) => {
                                     if (newMarker) setMarker(newMarker);
+                                }}
+                                onAddressChange={(
+                                    newAddress: string | null
+                                ) => {
+                                    if (newAddress)
+                                        setValue({
+                                            description: newAddress,
+                                            main_text: 'reverse geocoding',
+                                            secondary_text: '',
+                                        });
                                 }}
                             />
                         </div>

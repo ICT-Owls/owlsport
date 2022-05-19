@@ -1,4 +1,3 @@
-import { randomInt } from 'helpers/Generators';
 import React, { FC, useEffect, useRef } from 'react';
 
 const Marker: React.FC<google.maps.MarkerOptions> = (options) => {

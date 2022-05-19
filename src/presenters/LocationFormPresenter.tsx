@@ -14,6 +14,7 @@ type LocationFormPresenterProps = {
     textInput?: string;
     setTextInput?: (newValue: string) => void;
     onMarkerChange?: (marker: google.maps.LatLng | null) => void;
+    onAddressChange?: (address: string | null) => void;
 };
 
 const LocationFormPresenter: FC<LocationFormPresenterProps> = (
@@ -26,8 +27,11 @@ const LocationFormPresenter: FC<LocationFormPresenterProps> = (
     }, [marker]);
 
     useEffect(() => {
+        if(!props.value) return;
+        props.onAddressChange?.(props.value?.description);
+
         // If value is defined and the new value was not attained through reverse geocoding
-        if (props.value && props.value.main_text !== 'reverse geocoding') {
+        if (props.value.main_text !== 'reverse geocoding') {
             geocode(props.value.description).then(
                 (result: GeoData | null) => {
                     if (!result) return;
