@@ -334,15 +334,11 @@ describe('Events', function () {
             });
 
             assert.equal(res.status, 200);
-            assert.notProperty(res.body.members || {}, member.id);
-            assert.equal(res.body.drivers[testUser.id].id, testUser.id);
-            assert.deepEqual(res.body.drivers[testUser.id].passengers, {
-                [member.id]: {
-                    id: member.id,
-                    location: member.location,
-                    seats: member.seats,
-                },
-            });
+            assert.equal(res.body.members[member.id].isPassenger, true);
+            assert.deepEqual(res.body.members[testUser.id].passengers, [
+                passengerId,
+            ]);
+            assert.deepEqual(res.body.members[testUser.id].isDriver, true);
         });
     });
 });
