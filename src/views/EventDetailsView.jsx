@@ -202,9 +202,9 @@ export default function EventDetailsView({
 }
 
 function DriverView({ members }) {
-    const requireCarpooling = Object.values(members).filter(
+    const requireCarpooling = members ? Object.values(members).filter(
         (m) => m.requiresCarpooling
-    );
+    ) : [];
     return requireCarpooling.map((m) => {
         return (
             <DriversCardPresenter
