@@ -28,8 +28,17 @@ export function useExample() {
     return useCustomHook('Example');
 }
 
+// Returns a poll function instead of a setter
 export function useEventList() {
-    return useCustomHook('events');
+    const [events, setEvents] = useCustomHook('events');
+
+    const poll = async ()=>{
+        if (!isLoggedIn()) return;
+        const freshEvents = await getEvents();
+        if (freshEvents != null) setEvents(freshEvents);
+    };
+
+    return [events, poll];
 }
 
 export function useChat() {
@@ -90,7 +99,7 @@ export function initModel() {
     setInterval(async () => {
         if (!isLoggedIn()) return;
         const events = await getEvents();
-        if (events != null) toLocalStorage('events', events);
+        if (events != null) setValue('events', events);
     }, 5000);
 }
 
