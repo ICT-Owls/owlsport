@@ -76,6 +76,8 @@ components:
             type: object
             required:
                 - id
+                - isDriver
+                - isPassenger
                 - requiresCarpooling
             properties:
                 id:
@@ -92,6 +94,20 @@ components:
                     type: integer
                     description: 'Number of seats this members takes up'
                     default: 1
+                isDriver:
+                    type: boolean
+                    description: 'If this event member is a driver'
+                isPassenger:
+                    type: boolean
+                    description: 'If this event member is a passenger'
+                    Driver:
+                car:
+                    $ref: '#/components/schemas/Car'
+                    description: 'The car of this driver'
+                passengers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Id'
         Event:
             type: object
             required:
@@ -129,11 +145,6 @@ components:
                 endDateTime:
                     type: integer
                     format: int32
-                drivers:
-                    type: object
-                    additionalProperties:
-                        $ref: 'definitions.yaml#/components/schemas/Driver'
-                    description: 'Id of the user that is the driver'
                 creationDate:
                     type: number
                     description: 'UNIX timestamp of when the event was created'
@@ -153,41 +164,6 @@ components:
                 seats:
                     type: integer
                     description: 'number of seats in the car'
-        Passenger:
-            type: object
-            required:
-                - id
-                - seats
-                - location
-            properties:
-                id:
-                    $ref: '#/components/schemas/Id'
-                    description: 'Id of the passenger'
-                seats:
-                    type: integer
-                    description: 'Number of seats this passenger takes up, in case multiple people use the same account'
-                    default: 1
-                location:
-                    $ref: '#/components/schemas/Location'
-        Driver:
-            type: object
-            required:
-                - id
-                - car
-                - passengers
-            properties:
-                id:
-                    $ref: '#/components/schemas/Id'
-                    description: 'Id of the driver'
-                car:
-                    $ref: '#/components/schemas/Car'
-                    description: 'The car of this driver'
-                passengers:
-                    type: object
-                    additionalProperties:
-                        $ref: '#/components/schemas/Passenger'
-                    items:
-                        $ref: '#/components/schemas/Id'
         EventCreationParameters:
             type: object
             required:

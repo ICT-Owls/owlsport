@@ -3,6 +3,7 @@ const { validate, authorize, validateLocation } = require('../utils.js');
 const { events } = require('../database.js');
 
 const express = require('express');
+const { resolveObjectURL } = require('buffer');
 const router = express.Router();
 
 /**
@@ -38,6 +39,12 @@ router.post(
         } = req.body;
         const authUser = req.user;
 
+        for (let key of Object.keys(members || {})) {
+            members[key].isPassenger = false;
+            members[key].isDriver = false;
+            members[key].requiresCarpooling = false;
+        }
+
         const eventRef = events.push();
         await eventRef.set({
             creatorId: authUser.uid,
@@ -51,6 +58,8 @@ router.post(
                 [authUser.uid]: {
                     id: authUser.uid,
                     requiresCarpooling: false,
+                    isDriver: false,
+                    isPassenger: false,
                 },
                 ...members,
             },
@@ -70,6 +79,7 @@ router.get('/', authorize, async (req, res) => {
     const userId = req.user.uid;
 
     const eventsRef = await events.get();
+    if (eventsRef.val() === undefined) return res.send([]);
     const userEvents = Object.values(eventsRef.val()).filter(
         (e) => e.creatorId == userId || e.members?.hasOwnProperty(userId)
     );
@@ -225,18 +235,14 @@ router.post(
 
         await eventRef.update({
             members: {
-                ...delete event.members[req.user.uid],
-            },
-            drivers: {
-                ...event.drivers,
+                ...event.members,
                 [req.user.uid]: {
-                    id: req.user.uid,
-                    car: {
-                        model,
-                        registration,
-                        seats,
-                    },
+                    ...event.members[req.user.uid],
+                    isDriver: true,
+                    isPassenger: false,
                     passengers: [],
+                    car,
+                    location,
                 },
             },
         });
@@ -266,7 +272,7 @@ router.post(
         const event = eventSnapshot.val();
 
         const passenger = event?.members?.[passengerId];
-        const driver = event?.drivers?.[req.user.uid];
+        const driver = event?.members?.[req.user.uid];
 
         if (!passenger) return res.status(404).send('Passenger not found');
         if (!passenger.requiresCarpooling)
@@ -284,20 +290,17 @@ router.post(
 
         await eventRef.update({
             members: {
-                ...delete event.members[passengerId],
-            },
-            drivers: {
-                ...event.drivers,
-                [req.user.uid]: {
+                ...event.members,
+                [passenger.id]: {
+                    ...passenger,
+                    isPassenger: true,
+                    isDriver: false,
+                },
+                [driver.id]: {
                     ...driver,
-                    passengers: {
-                        ...driver.passengers,
-                        [passengerId]: {
-                            id: passengerId,
-                            location: passenger.location,
-                            seats: passenger.seats,
-                        },
-                    },
+                    isPassenger: false,
+                    isDriver: true,
+                    passengers: [...driver.passengers, passenger.id],
                 },
             },
         });
