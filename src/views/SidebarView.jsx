@@ -19,7 +19,7 @@ export default function SidebarView({
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
         <>
-            <div className="relative h-auto w-60 justify-start rounded-tl-md bg-background-100 bg-opacity-80 text-left">
+            <div className="relative h-auto w-60 justify-start rounded-tl-md bg-sideandmain-100 text-left">
                 <div className="p-8">
                     <IconButton
                         href="/test"

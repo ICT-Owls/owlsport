@@ -31,9 +31,16 @@ export default function NavbarView() {
         >
             <Link
                 to="/"
-                className={'col-span-1 flex items-center justify-center'}
+                className={
+                    'col-span-1 m-auto ml-5 flex items-center justify-center rounded-3xl p-2 transition delay-100 duration-100 ease-in-out hover:bg-slate-100'
+                }
             >
-                <img src="Solid_Logotype.png" className={'h-10'} alt="" />
+                <img
+                    src="Solid_Logotype.png"
+                    className=" hidden h-10 lg:inline"
+                    alt=""
+                />
+                <img src="Logotype.png" className=" h-10 lg:hidden" alt="" />
             </Link>
             <div
                 className={
@@ -45,7 +52,7 @@ export default function NavbarView() {
                     placeholder="search"
                     fullWidth
                     id="navbar-search"
-                    color="secondary"
+                    color="primary"
                     size="small"
                 />
                 <IconButton

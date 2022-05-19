@@ -18,11 +18,14 @@ module.exports = {
                     200: '#e8eaec',
                     100: '#ffffff',
                 },
+                sideandmain: {
+                    100: '	rgba(255, 255, 255, 0.8)',
+                    200: '	rgba(255, 255, 255, 0.9)',
+                },
             },
-            backgroundImage: theme => ({
-                'background': "url('../background.png')",
+            backgroundImage: (theme) => ({
+                background: "url('../background.png')",
             }),
-
         },
     },
     plugins: [

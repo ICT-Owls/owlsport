@@ -129,7 +129,7 @@ export default function EventDetailsView({
                     </div>
                     <Divider variant="middle" />
                     <div className="flex h-fit w-full flex-row justify-center">
-                        <div className="m-0 h-[40rem] w-full">
+                        <div className="m-0 h-[40rem] w-[60rem] ">
                             <MapLocationPresenter
                                 location={{
                                     lng: event.location.longitude,
