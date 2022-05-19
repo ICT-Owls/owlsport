@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.2.6'
+    version: '0.2.7'
 paths:
     /user/authe:
         get:
@@ -427,6 +427,32 @@ paths:
                     description: 'Unauthenticated'
                 '404':
                     description: 'No address found'
+    /geo/autocomplete:
+        get:
+            summary: 'Autocomplete'
+            description: 'Autocomplete a place query'
+            tags:
+                - geo
+            parameters:
+                - in: path
+                  name: query
+                  schema:
+                      type: string
+                  required: true
+                  description: 'Query to attempt to autocomplete'
+            responses:
+                '200':
+                    description: 'Returns autocomplete info (actually in json format)'
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+                '400':
+                    description: 'Bad Request'
+                '401':
+                    description: 'Unauthenticated'
+                '404':
+                    description: 'No results found'
 
 components:
     securitySchemes:
