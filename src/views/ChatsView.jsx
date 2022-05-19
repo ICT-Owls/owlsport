@@ -62,7 +62,7 @@ export default function ChatsView() {
                     </div>
                 </div>
                 <TextField
-                    className="max-h-72 w-full"
+                    className="max-h-72 w-full rounded-md bg-slate-100 bg-opacity-80"
                     id="outlined-textarea"
                     label="Multiline Placeholder"
                     placeholder="Placeholder"

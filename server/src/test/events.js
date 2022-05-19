@@ -34,9 +34,7 @@ const generateTestCredentials = async function () {
     return credentials;
 };
 
-var testToken = undefined;
-var testUser = undefined;
-var testEvent = undefined;
+let testToken = undefined;
 
 const get = function (path) {
     return chai
@@ -67,6 +65,9 @@ const del = function (path) {
 };
 
 describe('Events', function () {
+    let testUser = undefined;
+    let testEvent = undefined;
+
     before(async function () {
         const credentials = await generateTestCredentials();
         testToken = credentials.user.accessToken;
@@ -196,6 +197,20 @@ describe('Events', function () {
             var res = await patch(`/events/${testEvent.id}`).send(event);
             assert.equal(res.status, 200);
             assert.deepEqual(res.body, { ...testEvent, ...event });
+            testEvent = { ...testEvent, ...event };
+        });
+    });
+
+    describe('/GET /events/:id', function () {
+        it('return 401 without authentication', async function () {
+            var res = await chai.request(app).get(`/events/${testEvent.id}`);
+            assert.equal(res.status, 401);
+        });
+
+        it('return 200 with valid body when authenticated', async function () {
+            var res = await get(`/events/${testEvent.id}`);
+            assert.equal(res.status, 200);
+            assert.deepEqual(res.body, { ...testEvent });
         });
     });
 
@@ -215,6 +230,7 @@ describe('Events', function () {
                         id: testUser.id,
                         location: undefined,
                         requriesCarpooling: false,
+                        seats: 1,
                     },
                 },
             });
@@ -226,9 +242,11 @@ describe('Events', function () {
         it('return 200 with valid body', async function () {
             var res = await patch(`/events/${testEvent.id}/self`).send({
                 requiresCarpooling: true,
+                seats: 2,
             });
             assert.equal(res.status, 200);
             assert.equal(res.body.requiresCarpooling, true);
+            assert.equal(res.body.seats, 2);
         });
     });
 
@@ -241,6 +259,111 @@ describe('Events', function () {
         it('return 200 when authenticated', async function () {
             var res = await get('/events/');
             assert.equal(res.body.length, 1);
+        });
+    });
+
+    describe('/POST /events/:id/car', function () {
+        const test_car = {
+            model: 'Ferrari',
+            registration: 'ABC 123',
+            seats: 3,
+        };
+        const test_location = {
+            address: 'Nowhere',
+            latitude: 51.774,
+            longitude: 31.222,
+        };
+
+        it('return 401 without authentication', async function () {
+            var res = await chai
+                .request(app)
+                .post(`/events/${testEvent.id}/car`);
+            assert.equal(res.status, 401);
+        });
+
+        it('return 400 with empty body', async function () {
+            var res = await post(`/events/${testEvent.id}/car`);
+            assert.equal(res.status, 400);
+        });
+
+        it('return 404 with invalid id', async function () {
+            var res = await post(`/events/unknown123/car`).send({
+                car: test_car,
+                location: test_location,
+            });
+            assert.equal(res.status, 404);
+        });
+
+        it('return 200 with valid body', async function () {
+            var res = await post(`/events/${testEvent.id}/car`).send({
+                car: test_car,
+                location: test_location,
+            });
+            assert.equal(res.status, 200);
+            assert.equal(res.body.members[testUser.id].isDriver, true);
+            assert.equal(res.body.members[testUser.id].isPassenger, false);
+        });
+    });
+
+    describe('/POST /events/:id/pickup', function () {
+        it('return 401 without authentication', async function () {
+            var res = await chai
+                .request(app)
+                .post(`/events/${testEvent.id}/pickup`);
+            assert.equal(res.status, 401);
+        });
+
+        it('return 400 with empty body', async function () {
+            var res = await post(`/events/${testEvent.id}/pickup`);
+            assert.equal(res.status, 400);
+        });
+
+        it('return 404 with unknown event', async function () {
+            var res = await post(`/events/unknown123/pickup`).send({
+                passengerId: '123',
+            });
+            assert.equal(res.status, 404);
+        });
+
+        it('return 400 is passenger id equals user id', async function () {
+            var res = await post(`/events/unknown123/pickup`).send({
+                passengerId: testUser.id,
+            });
+            assert.equal(res.status, 400);
+        });
+
+        it('return 200 with correct body', async function () {
+            const member = {
+                id: '123',
+                location: {
+                    address: 'stockholm',
+                },
+                seats: 1,
+                requiresCarpooling: true,
+            };
+
+            // setup
+            await events.child(testEvent.id).update({
+                members: {
+                    [member.id]: member,
+                },
+            });
+
+            var res = await post(`/events/${testEvent.id}/pickup`).send({
+                passengerId: member.id,
+            });
+
+            assert.equal(
+                res.status,
+                200,
+                'Received response: "' + res.text + '"'
+            );
+
+            assert.equal(res.body.members[member.id].isPassenger, true);
+            assert.deepEqual(res.body.members[testUser.id].passengers, [
+                passengerId,
+            ]);
+            assert.deepEqual(res.body.members[testUser.id].isDriver, true);
         });
     });
 });
