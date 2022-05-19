@@ -5,11 +5,11 @@ WORKDIR /carpooling-server
 
 EXPOSE 80/tcp
 EXPOSE 80/udp
-
 COPY src ./src
 COPY package.json ./
 COPY .babelrc ./
 COPY tsconfig.json ./
+COPY .env ./
 
 RUN ["npm", "i"]
 

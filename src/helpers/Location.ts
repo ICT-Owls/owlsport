@@ -1,19 +1,13 @@
 import throttle from 'lodash/throttle';
 import React, { useEffect } from 'react';
+import {
+    Wrapper as MapWrapper,
+    Status as MapStatus,
+} from '@googlemaps/react-wrapper';
+import { useMapStatus } from 'models/Model';
+import { geoAutocomplete } from 'api';
+import { Place } from 'api-client';
 
-const GOOGLE_MAPS_API_KEY = '***REMOVED***';
-
-const kistaCoords = {
-    lng: 17.949738982453862,
-    lat: 59.4050838849778,
-};
-
-const swedenBounds: google.maps.LatLngBoundsLiteral = {
-    south: 11.0273686052,
-    west: 55.3617373725,
-    north: 23.9033785336,
-    east: 69.1062472602,
-};
 
 export type GooglePlace = {
     description: string;
@@ -21,33 +15,31 @@ export type GooglePlace = {
     secondary_text?: string;
 };
 
-function loadScript(src: string, position: HTMLElement | null, id: string) {
-    if (!position) {
-        return;
-    }
+const BROWSER_API_KEY = "***REMOVED***";
 
-    const script = document.createElement('script');
-    script.setAttribute('async', '');
-    script.setAttribute('id', id);
-    script.src = src;
-    position.appendChild(script);
-}
-
-export function GoogleMapsLoader() {
-    const loaded = React.useRef(false);
-
-    if (typeof window !== 'undefined' && !loaded.current) {
-        if (!document.querySelector('#google-maps')) {
-            loadScript(
-                `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`,
-                document.querySelector('head'),
-                'google-maps'
-            );
+/* Some funky legacy code for loading scripts
+    function loadScript(src: string, position: HTMLElement | null, id: string) {
+        if (!position) {
+            return;
         }
-        loaded.current = true;
-    }
 
-    return null;
+        const script = document.createElement('script');
+        script.setAttribute('async', '');
+        script.setAttribute('id', id);
+        script.src = src;
+        position.appendChild(script);
+    }
+*/
+
+export function GoogleMapsLoader(props: { children: any[], onStatusChange?: (status: keyof typeof MapStatus) => void }) {
+    const [,setStatus] = useMapStatus();
+    return MapWrapper({
+        children: props.children,
+        apiKey: BROWSER_API_KEY,
+        callback: (status: keyof typeof MapStatus) => {
+            setStatus(status);
+        },
+    });
 }
 
 export function usePlaceCompletion() {
@@ -55,43 +47,15 @@ export function usePlaceCompletion() {
         () =>
             throttle(
                 (
-                    request: { input: string },
-                    callback: (results?: readonly PlaceType[]) => void
+                    query: string,
+                    callback: (results?: readonly Place[]) => void
                 ) => {
-                    (autocompleteService.current as any).getPlacePredictions(
-                        { ...request, bounds: swedenBounds, componentRestrictions:{country: 'se'} },
-                        callback
-                    );
+                    geoAutocomplete(query).then(callback);
+
                 },
                 200
             ),
         []
     );
-
-    useEffect(() => {
-        if (!autocompleteService.current && (window as any).google) {
-            autocompleteService.current = new (
-                window as any
-            ).google.maps.places.AutocompleteService();
-        }
-    }, [fetch]);
-
     return fetch;
 }
-
-// Place predict API types
-export type MainTextMatchedSubstrings = {
-    offset: number;
-    length: number;
-};
-export type StructuredFormatting = {
-    main_text: string;
-    secondary_text: string;
-    main_text_matched_substrings: readonly MainTextMatchedSubstrings[];
-};
-export type PlaceType = {
-    description: string;
-    structured_formatting: StructuredFormatting;
-};
-
-const autocompleteService = { current: null };

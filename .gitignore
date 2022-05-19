@@ -9,6 +9,9 @@
 !.vscode/settings.json
 .idea
 
+# secrets
+.env.secret
+
 # testing
 /coverage
 

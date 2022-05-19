@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.2.7'
+    version: '0.2.8'
 paths:
     /user/authe:
         get:
@@ -446,7 +446,9 @@ paths:
                     content:
                         text/plain:
                             schema:
-                                type: string
+                                type: array
+                                items:
+                                    $ref: 'definitions.yaml#/components/schemas/Place'
                 '400':
                     description: 'Bad Request'
                 '401':

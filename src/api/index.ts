@@ -6,6 +6,7 @@ import {
     EventApi,
     GeoApi,
     GeoData,
+    Place,
 } from '../api-client';
 import { EventCreationParameters, Event } from './types';
 import { validate, API_DATATYPES } from './validation';
@@ -144,6 +145,18 @@ export async function reverseGeocode(
         if (typeof e === 'object' && e !== null) handleError(e as Response);
     }
     return null;
+}
+
+export async function geoAutocomplete(
+    query: string
+): Promise<Place[]> {
+    const token = localStorage.getItem('auth');
+    if (!token || !query) return [];
+    const serverResponse = await geoApi.geoAutocompleteGet(query, {
+        headers: { authorization: `Bearer ${token}` },
+    });
+
+    return serverResponse;
 }
 
 type Response = {

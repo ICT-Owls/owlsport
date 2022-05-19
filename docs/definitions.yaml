@@ -1,5 +1,5 @@
-info: 
-    version: '0.2.7'
+info:
+    version: '0.2.8'
 components:
     schemas:
         # Information about the authentication status of the current user
@@ -168,7 +168,7 @@ components:
                     deprecated: true
                     type: number
                     description: 'UNIX timestamp of when the event was created'
-        GeoData: 
+        GeoData:
             type: object
             required:
                 - latitude
@@ -179,9 +179,28 @@ components:
                     type: number
                 longitude:
                     type: number
-                address: 
+                address:
                     type: string
-
-            
-        
+        Place:
+            type: object
+            required:
+                - description
+                - strctured_formatting
+            properties:
+                description:
+                    type: string
+                structuredFormatting:
+                    type: object
+                    mainText: 
+                        type: string;
+                    secondaryText: 
+                        type: string;
+                    mainTextMatchedSubstrings: 
+                        type: array
+                        items:
+                            type: object
+                            offset: 
+                                type: number;
+                            length: 
+                                type: number;
 

@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import {
     GooglePlace,
-    usePlaceCompletion,
-    PlaceType,
+    usePlaceCompletion
 } from '../helpers/Location';
 
 import Box from '@mui/material/Box';
@@ -14,7 +13,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import parse from 'autosuggest-highlight/parse';
-
+import { Place } from 'api-client';
 
 type LocationFormViewProps = {
     value?: GooglePlace | null;
@@ -26,9 +25,9 @@ type LocationFormViewProps = {
 const LocationFormView: FC<LocationFormViewProps> = (
     props: LocationFormViewProps
 ) => {
-    const [value, setValue] = React.useState<PlaceType | null>(null);
+    const [value, setValue] = React.useState<Place | null>(null);
     const [inputValue, setInputValue] = React.useState('');
-    const [options, setOptions] = React.useState<readonly PlaceType[]>([]);
+    const [options, setOptions] = React.useState<readonly Place[]>([]);
     const placeCompletion = usePlaceCompletion();
 
     React.useEffect(() => {
@@ -39,24 +38,21 @@ const LocationFormView: FC<LocationFormViewProps> = (
             return undefined;
         }
 
-        placeCompletion(
-            { input: inputValue },
-            (results?: readonly PlaceType[]) => {
-                if (active) {
-                    let newOptions: readonly PlaceType[] = [];
+        placeCompletion(inputValue, (results?: readonly Place[]) => {
+            if (active) {
+                let newOptions: readonly Place[] = [];
 
-                    if (value) {
-                        newOptions = [value];
-                    }
-
-                    if (results) {
-                        newOptions = [...newOptions, ...results];
-                    }
-
-                    setOptions(newOptions);
+                if (value) {
+                    newOptions = [value];
                 }
+
+                if (results) {
+                    newOptions = [...newOptions, ...results];
+                }
+
+                setOptions(newOptions);
             }
-        );
+        });
 
         return () => {
             active = false;
@@ -67,12 +63,12 @@ const LocationFormView: FC<LocationFormViewProps> = (
         props.setValue?.(
             value &&
                 value?.description &&
-                value?.structured_formatting?.main_text
+                value?.structuredFormatting?.mainText
                 ? {
-                      description: value.description!,
-                      main_text: value.structured_formatting.main_text!,
+                      description: value.description,
+                      main_text: value.structuredFormatting.mainText,
                       secondary_text:
-                          value?.structured_formatting.secondary_text,
+                          value?.structuredFormatting.secondaryText,
                   }
                 : null
         );
@@ -94,7 +90,7 @@ const LocationFormView: FC<LocationFormViewProps> = (
                 value={value}
                 onChange={(
                     event: any,
-                    newValue: PlaceType | null,
+                    newValue: Place | null,
                     reason: AutocompleteChangeReason
                 ) => {
                     setOptions(newValue ? [newValue, ...options] : options);
@@ -108,11 +104,11 @@ const LocationFormView: FC<LocationFormViewProps> = (
                 )}
                 renderOption={(props, option) => {
                     const matches =
-                        option.structured_formatting
-                            .main_text_matched_substrings;
+                        option.structuredFormatting
+                            .mainTextMatchedSubstrings;
                     if (!matches) return;
                     const parts = parse(
-                        option.structured_formatting.main_text,
+                        option.structuredFormatting.mainText,
                         matches.map((match: any) => [
                             match.offset,
                             match.offset + match.length,
@@ -146,8 +142,8 @@ const LocationFormView: FC<LocationFormViewProps> = (
                                         color="text.secondary"
                                     >
                                         {
-                                            option.structured_formatting
-                                                .secondary_text
+                                            option.structuredFormatting
+                                                .secondaryText
                                         }
                                     </Typography>
                                 </Grid>

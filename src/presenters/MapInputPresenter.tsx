@@ -8,6 +8,7 @@ import MapView from '../views/MapView';
 import LocationFormPresenter from './LocationFormPresenter';
 import { GooglePlace } from 'helpers/Location';
 import { reverseGeocode } from 'api';
+import { useMapStatus } from 'models/Model';
 
 type MapInputPresenterProps = {
     onPlace?: (location: {
@@ -27,6 +28,7 @@ const apiKey = '***REMOVED***';
 const MapInputPresenter: FC<MapInputPresenterProps> = (
     props: MapInputPresenterProps
 ) => {
+    const [mapStatus] = useMapStatus();
     const [marker, setMarker] = React.useState<google.maps.LatLng>(
         new google.maps.LatLng(kistaCoords)
     );
@@ -46,8 +48,8 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
         setPan(marker);
     }, [marker]);
 
-    const render = (status: MapStatus) => {
-        switch (status) {
+    const render = () => {
+        switch (mapStatus) {
             case MapStatus.LOADING:
                 return <CircularProgress />;
             case MapStatus.FAILURE:
@@ -79,7 +81,13 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                                 if (e.latLng) {
                                     reverseGeocode(e.latLng).then(
                                         (addr: string | null) => {
-                                            if (addr) setValue({main_text:'reverse geocoding', description: addr, ...e.latLng});
+                                            if (addr)
+                                                setValue({
+                                                    main_text:
+                                                        'reverse geocoding',
+                                                    description: addr,
+                                                    ...e.latLng,
+                                                });
                                         }
                                     );
                                 }
@@ -89,17 +97,12 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                         />
                     </div>
                 );
+            default:
+                return null;
         }
     };
 
-    return (
-        <MapWrapper
-            id="google-maps"
-            libraries={['places']}
-            apiKey={apiKey}
-            render={render}
-        />
-    );
+    return render();
 };
 
 export default MapInputPresenter;

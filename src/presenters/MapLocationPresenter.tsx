@@ -3,24 +3,20 @@ import {
     Wrapper as MapWrapper,
     Status as MapStatus,
 } from '@googlemaps/react-wrapper';
-import {
-    Alert,
-    CircularProgress,
-    Snackbar,
-} from '@mui/material';
+import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import MapView from '../views/MapView';
+import { useMapStatus } from 'models/Model';
 
 type MapLocationPresenterProps = {
     location: { lng: number; lat: number };
 };
 
-const apiKey = '***REMOVED***';
-
 const MapLocationPresenter: FC<MapLocationPresenterProps> = (
     props: MapLocationPresenterProps
 ) => {
-    const render = (status: MapStatus) => {
-        switch (status) {
+    const [mapStatus] = useMapStatus();
+    const render = () => {
+        switch (mapStatus) {
             case MapStatus.LOADING:
                 return <CircularProgress />;
             case MapStatus.FAILURE:
@@ -38,17 +34,12 @@ const MapLocationPresenter: FC<MapLocationPresenterProps> = (
                         />
                     </div>
                 );
+            default:
+                return null;
         }
     };
 
-    return (
-        <MapWrapper
-            id="google-maps"
-            libraries={['places']}
-            apiKey={apiKey}
-            render={render}
-        />
-    );
+    return render();
 };
 
 export default MapLocationPresenter;
