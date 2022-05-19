@@ -21,9 +21,11 @@ export default function App() {
     const [chat] = useChat();
 
     //logs if current user changes
-    useEffect(() => {
-        console.log('Current User Object: ', user);
-    }, [user]);
+    if (process.env.NODE_ENV == 'development') {
+        useEffect(() => {
+            console.info('Current User Object: ', user);
+        }, [user]);
+    }
 
     return (
         <StyledEngineProvider injectFirst>
