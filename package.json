@@ -4,7 +4,8 @@
     "private": true,
     "scripts": {
         "prepare": "npm run generate-api-client",
-        "start-dev": "cross-env node scripts/start-dev.js",
+        "start-dev": "node scripts/start-dev.js",
+        "start-dev-local": "cross-env BACKEND_MODE=local node scripts/start-dev.js",
         "lint": "npx eslint --no-error-on-unmatched-pattern --ext .js,.jsx,.ts,.tsx src/ scripts/ test/ public/ config/",
         "build": "cross-env CI=false node scripts/build.js",
         "build4local": "cross-env CI=false BACKEND_MODE=local node scripts/build.js",
