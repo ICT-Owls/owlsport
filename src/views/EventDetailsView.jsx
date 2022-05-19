@@ -50,7 +50,7 @@ export default function EventDetailsView({
         members,
         startDateTime,
         endDateTime,
-        id
+        id,
     } = event;
 
     const startDate = new Date(startDateTime);
@@ -72,50 +72,37 @@ export default function EventDetailsView({
 
     return (
         <Dialog
+            className="mt-20"
             disablePortal
             open={open}
             onClose={handleClose}
-            scroll={'body'}
             aria-labelledby="scroll-dialog-title"
             aria-describedby="scroll-dialog-description"
-            maxWidth={'lg'}
-            fullWidth={true}
+            maxWidth={'xl'}
         >
             <DialogContent>
-                <div className={'flex flex-row flex-nowrap'}>
-                    <div className={'w-1/2'}>
-                        <FormGroup>
-                            <FormControlLabel
-                                control={
-                                    <Switch
-                                        value={isDriver}
-                                        onChange={(e) =>
-                                            setIsDriver(e.target.checked)
-                                        }
-                                    >
-                                        Is Driver
-                                    </Switch>
-                                }
-                                label={
-                                    isDriver
-                                        ? 'Driver sees: '
-                                        : 'Non-driver sees: '
-                                }
-                            />
-                        </FormGroup>
-                    </div>
-                    <div className="flex w-1/2 flex-row-reverse ">
-                        <IconButton
-                            onClick={handleClose}
-                            sx={{ maxWidth: 'min-content' }}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                    </div>
+                <div className="flex justify-between">
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                value={isDriver}
+                                onChange={(e) => setIsDriver(e.target.checked)}
+                            >
+                                Is Driver
+                            </Switch>
+                        }
+                        label={isDriver ? 'Driver sees: ' : 'Non-driver sees: '}
+                    />
+                    <IconButton
+                        onClick={handleClose}
+                        sx={{ maxWidth: 'min-content' }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
                 </div>
                 <div className="flex flex-col justify-around">
                     <div className="flex flex-row items-center justify-between">
-                        {/*TOP BAR*/}
+                        <div className="h-20 w-20" />
                         <div className="flex flex-col">
                             <h2 className="m-1 text-3xl font-bold">{title}</h2>
                             <div className="flex flex-row items-center">
@@ -126,28 +113,10 @@ export default function EventDetailsView({
                             </div>
                         </div>
 
-                        <div>
-                            <RequiresCarpoolingPresenter
-                                requiresCarpooling={requiresCarpooling}
-                                setCarpooling={setCarpooling}
-                            />
-                        </div>
-
-                        {/*<div>*/}
-                        {/*    <Button*/}
-                        {/*        variant="contained"*/}
-                        {/*        className="black mb-5 w-52 bg-primary-100 text-background-100"*/}
-                        {/*    >*/}
-                        {/*        Request ride*/}
-                        {/*    </Button>*/}
-                        {/*</div>*/}
-
-                        <div className="flex items-center justify-center">
-                            <Box className="m-2 flex aspect-square h-16 w-16 items-center justify-center rounded-lg bg-primary-100 p-3 text-background-100">
-                                <p className="text-xl font-bold">
-                                    {formatDateMonthDay(startDate)}
-                                </p>
-                            </Box>
+                        <div className=" m-2  flex aspect-square h-8 w-8 items-center  justify-center rounded-lg bg-primary-100 p-3 text-background-100">
+                            <p className="text-l">
+                                {formatDateMonthDay(startDate)}
+                            </p>
                         </div>
                     </div>
                     <div className="mt-6 flex flex-col items-center justify-center">
@@ -161,11 +130,8 @@ export default function EventDetailsView({
                             {formatLocation(location)}
                         </Typography>
                     </div>
-
-                    <div className="my-3 flex flex-row justify-around bg-gray-300 py-3">
-                        <div>Cars</div>
-                    </div>
-                    <div className="h-max-48 h-48 overflow-y-scroll">
+                    <Divider variant="fullWidth" />
+                    <div className="h-56 overflow-y-scroll">
                         <List className="flex flex-row flex-wrap justify-center">
                             {isDriver
                                 ? DriverView({ members })
@@ -174,29 +140,48 @@ export default function EventDetailsView({
                                       seats: 4,
                                       passengers: [user, user],
                                   })}
+                            <CarpoolerView
+                                driver={user}
+                                seats="4"
+                                passengers={[user, user]}
+                            />
+                            <CarpoolerView
+                                driver={user}
+                                seats="4"
+                                passengers={[user, user]}
+                            />
                         </List>
                     </div>
-                    <Divider variant="middle" />
-
+                    <Divider variant="fullWidth" />
                     <div className="my-2 h-fit w-full text-center text-sm">
-                        <h3 className="m-2">Description</h3>
+                        <h3 className="m-2">Map</h3>
                         {description}
                     </div>
                     <Divider variant="middle" />
-
-                    <div className="h-52">
-                        <MapLocationPresenter
-                            location={{
-                                lng: event.location.longitude,
-                                lat: event.location.latitude,
-                            }}
-                        />
+                    <div className="flex h-fit w-full flex-row justify-center">
+                        <div className="m-0 h-[40rem] w-full">
+                            <MapLocationPresenter
+                                location={{
+                                    lng: event.location.longitude,
+                                    lat: event.location.latitude,
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             </DialogContent>
-            <DialogActions>
-                <Button onClick={handleLeave}>{creator.id === user.id ? "DELETE EVENT" : "I don't want to attend this event"}</Button>
-            </DialogActions>
+            <Divider />
+            <div className="flex justify-between p-2">
+                <RequiresCarpoolingPresenter
+                    requiresCarpooling={requiresCarpooling}
+                    setCarpooling={setCarpooling}
+                />
+                <Button onClick={handleLeave}>
+                    {creator.id === user.id
+                        ? 'DELETE EVENT'
+                        : "I don't want to attend this event"}
+                </Button>
+            </div>
         </Dialog>
     );
 }
