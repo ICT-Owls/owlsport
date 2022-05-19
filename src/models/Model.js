@@ -107,7 +107,7 @@ export function initModel() {
         if (!isLoggedIn()) return;
         const events = await getEvents();
         if (events != null) setValue('events', events);
-    }, 5000);
+    }, 10000);
 }
 
 //Read value from local storage.
