@@ -1,3 +1,4 @@
+import { randomInt } from 'helpers/Generators';
 import React, { FC, useEffect, useRef } from 'react';
 
 const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
@@ -34,7 +35,7 @@ type MapViewProps = {
     onIdle?: (map: google.maps.Map) => void;
     markers?: google.maps.LatLng[];
     children?: unknown[];
-    pan?: google.maps.LatLng
+    pan?: google.maps.LatLng;
     setPan?: (lngLat: google.maps.LatLng) => void;
 };
 
@@ -78,7 +79,7 @@ const MapView: FC<MapViewProps> = (props: MapViewProps) => {
             <div
                 ref={mapRef}
                 className={'relative top-0 z-30 h-full w-full bg-slate-600'}
-            ></div>
+            />
             {props.markers?.map((latlng, i: number) => (
                 <Marker key={i} map={map} position={latlng} />
             ))}

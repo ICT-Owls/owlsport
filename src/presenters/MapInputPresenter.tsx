@@ -37,13 +37,13 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
     React.useEffect(() => {
         if (!marker || !value?.description || !props.onPlace) return;
 
+        setPan(marker);
+
         props.onPlace({
             address: value?.description,
             longitude: marker.lng(),
             latitude: marker.lat(),
         });
-
-        setPan(marker);
     }, [marker]);
 
     const render = () => {
@@ -77,6 +77,7 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                             markers={marker ? [marker] : []}
                             onClick={(e: google.maps.MapMouseEvent) => {
                                 if (e.latLng) {
+                                    setMarker(e.latLng);
                                     reverseGeocode(e.latLng).then(
                                         (addr: string | null) => {
                                             if (addr)

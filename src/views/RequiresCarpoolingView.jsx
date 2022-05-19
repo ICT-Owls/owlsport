@@ -45,7 +45,7 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
             )}
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Enter Location</DialogTitle>
-                <DialogContent sx={{minHeight: '50vh'}}>
+                <DialogContent sx={{ minHeight: '50vh' }}>
                     <DialogContentText>
                         To request carpooling, please enter the location you
                         want to be picked up from.
@@ -65,11 +65,13 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
                             setAddress(e.target.value);
                         }}
                     />*/}
-                    <MapInputPresenter
-                        onPlace={(location) => {
-                            setLocation(location);
-                        }}
-                    />
+                    <div className="h-full w-full">
+                        <MapInputPresenter
+                            onPlace={(location) => {
+                                setLocation(location);
+                            }}
+                        />
+                    </div>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)}>Cancel</Button>

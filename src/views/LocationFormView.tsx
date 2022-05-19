@@ -1,8 +1,5 @@
 import React, { FC } from 'react';
-import {
-    GooglePlace,
-    usePlaceCompletion
-} from '../helpers/Location';
+import { GooglePlace, usePlaceCompletion } from '../helpers/Location';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -63,16 +60,33 @@ const LocationFormView: FC<LocationFormViewProps> = (
         props.setValue?.(
             value &&
                 value?.description &&
-                value?.structuredFormatting?.mainText
+                value?.description !== props.value?.description && // TODO: Ugly way of dealing with bad infinite loop
+                value?.structuredFormatting?.mainText &&
+                value?.structuredFormatting?.mainText !== 'reverse geocoding'
                 ? {
                       description: value.description,
                       main_text: value.structuredFormatting.mainText,
-                      secondary_text:
-                          value?.structuredFormatting.secondaryText,
+                      secondary_text: value?.structuredFormatting.secondaryText,
                   }
                 : null
         );
     }, [value]);
+
+    React.useEffect(() => {
+        if (
+            !props.value ||
+            value?.description === props.value?.description // TODO: Ugly way of dealing with bad infinite loop
+        )
+            return;
+
+        setValue?.({
+            description: props.value.description,
+            structuredFormatting: {
+                mainText: props.value.main_text,
+                secondaryText: props.value.secondary_text,
+            },
+        });
+    }, [props.value]);
 
     return (
         <div className="bg-background-100">
@@ -104,8 +118,7 @@ const LocationFormView: FC<LocationFormViewProps> = (
                 )}
                 renderOption={(props, option) => {
                     const matches =
-                        option.structuredFormatting
-                            .mainTextMatchedSubstrings;
+                        option.structuredFormatting.mainTextMatchedSubstrings;
                     if (!matches) return;
                     const parts = parse(
                         option.structuredFormatting.mainText,
