@@ -3,6 +3,7 @@ const { validate, authorize } = require('../utils.js');
 
 const express = require('express');
 const { exists } = require('fs');
+const autocomplete = require('./autocomplete.js');
 const router = express.Router();
 
 require('isomorphic-fetch');
@@ -47,8 +48,8 @@ router.get(
 router.get(
     '/reverse',
     authorize,
-    query('lat').exists().withMessage("lat required").bail().isFloat(),
-    query('lng').exists().withMessage("lng required").bail().isFloat(),
+    query('lat').exists().withMessage('lat required').bail().isFloat(),
+    query('lng').exists().withMessage('lng required').bail().isFloat(),
     validate,
     async (req, res) => {
         const geoData = await (
@@ -75,5 +76,7 @@ router.get(
         return res.status(404).send('Failed to get address');
     }
 );
+
+router.get('/autocomplete', authorize, validate, autocomplete);
 
 module.exports = router;

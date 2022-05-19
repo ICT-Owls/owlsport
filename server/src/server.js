@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import { admin } from './database.js';
 
 import cors from 'cors';
@@ -14,6 +16,8 @@ if (isNaN(port)) {
     console.error('Environment variable PORT must be set!');
     process.exit(1);
 }
+
+const devToken = '1fW1l0jBIVM3Hz8Fv8ge';
 
 // TODO: Bad bad, fix later
 app.use(
@@ -33,19 +37,36 @@ app.use(async (req, _res, next) => {
             // Firebase auth token
             const idToken = req.headers.authorization.split('Bearer ')[1];
 
+            const decodedToken = await admin
+                .auth()
+                .verifyIdToken(idToken, true);
+            // The authenticated user is available as the 'user' prop on the express req.
+            // This can also be used to check if the user has been authenticated or not.
+            req['user'] = decodedToken;
+        } catch (err) {
+            console.log(err.code);
+        }
+    } else if (req.headers?.authorization === devToken) {
+        try {
+            // Firebase auth token
+            const idToken = await (
+                await signInWithEmailAndPassword(
+                    getAuth(),
+                    'dev@dev.dev',
+                    devToken
+                )
+            ).user.getIdToken();
             const decodedToken = await admin.auth().verifyIdToken(idToken);
             // The authenticated user is available as the 'user' prop on the express req.
             // This can also be used to check if the user has been authenticated or not.
             req['user'] = decodedToken;
         } catch (err) {
-            console.log(err);
+            console.log(err.code);
         }
     }
 
     next();
 });
-
-app.use(express.static(path.resolve('..', 'build')));
 
 import userRoute from './routes/userRoute.js';
 app.use('/user', userRoute);
@@ -57,6 +78,14 @@ app.use('/events', eventRoute);
 app.use('/api/user', eventRoute);
 
 import geoRoute from './routes/geoRoute.js';
+import { allowedNodeEnvironmentFlags } from 'process';
+import {
+    getAuth,
+    signInWithCustomToken,
+    signInWithEmailAndPassword,
+} from 'firebase/auth';
+import { auth } from 'firebase-admin';
+import { getApp } from 'firebase/app';
 
 app.use('/geo', geoRoute);
 app.use('/api/geo', geoRoute);
@@ -65,6 +94,8 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });
+
+app.use(express.static(path.resolve('..', 'build')));
 
 app.listen(port, () => {
     console.log(`Web server listening on port ${port}`);

@@ -1,3 +1,4 @@
+import { Status as MapStatus } from '@googlemaps/react-wrapper';
 import { getEvents } from 'api';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,6 +18,7 @@ const dataStruct = {
     Example: { defaultValue: null, callbacks: {} },
     events: { defaultValue: [], callbacks: {} },
     showChat: { defaultValue: false, callbacks: {} },
+    mapStatus: { defaultValue: MapStatus.LOADING, callbacks: {} },
 };
 
 //-------- Custom Hooks --------
@@ -28,12 +30,26 @@ export function useExample() {
     return useCustomHook('Example');
 }
 
+// Returns a poll function instead of a setter
 export function useEventList() {
-    return useCustomHook('events');
+    const [events, setEvents] = useCustomHook('events');
+
+    const poll = async () => {
+        if (!isLoggedIn()) return;
+        const freshEvents = await getEvents();
+        if (freshEvents != null) setEvents(freshEvents);
+    };
+
+    return [events, poll];
 }
 
 export function useChat() {
     return useCustomHook('showChat');
+}
+
+export function useMapStatus() {
+    const hook = useCustomHook('mapStatus');
+    return hook || [null, () => null];
 }
 
 //This function is the current implementation of User login persistance. Since auth()
@@ -90,8 +106,8 @@ export function initModel() {
     setInterval(async () => {
         if (!isLoggedIn()) return;
         const events = await getEvents();
-        if (events != null) toLocalStorage('events', events);
-    }, 5000);
+        if (events != null) setValue('events', events);
+    }, 10000);
 }
 
 //Read value from local storage.
@@ -144,11 +160,13 @@ function useCustomHook(target) {
         fromLocalStorage(target) === undefined ||
         dataStruct[target] === undefined
     ) {
-        console.error(
-            'useCustomHook: Cannot find target: ',
-            target,
-            '. Make sure that it is defined in the datastruct and that it is available in localstorage'
-        );
+        if (process.env.NODE_ENV === 'development') {
+            console.error(
+                'useCustomHook: Cannot find target: ',
+                target,
+                '. Make sure that it is defined in the datastruct and that it is available in localstorage'
+            );
+        }
         return undefined;
     }
     const [val, setVal] = useState(fromLocalStorage(target));

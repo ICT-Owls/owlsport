@@ -1,5 +1,5 @@
 import { GooglePlace } from 'helpers/Location';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, Ref, useEffect, useRef, useState } from 'react';
 import LocationFormView from '../views/LocationFormView';
 import { geocode } from '../api/index';
 import { GeoData } from 'api/types';
@@ -14,6 +14,7 @@ type LocationFormPresenterProps = {
     textInput?: string;
     setTextInput?: (newValue: string) => void;
     onMarkerChange?: (marker: google.maps.LatLng | null) => void;
+    onAddressChange?: (address: string | null) => void;
 };
 
 const LocationFormPresenter: FC<LocationFormPresenterProps> = (
@@ -26,7 +27,11 @@ const LocationFormPresenter: FC<LocationFormPresenterProps> = (
     }, [marker]);
 
     useEffect(() => {
-        if (props.value) {
+        if(!props.value) return;
+        props.onAddressChange?.(props.value?.description);
+
+        // If value is defined and the new value was not attained through reverse geocoding
+        if (props.value.main_text !== 'reverse geocoding') {
             geocode(props.value.description).then(
                 (result: GeoData | null) => {
                     if (!result) return;
@@ -34,7 +39,7 @@ const LocationFormPresenter: FC<LocationFormPresenterProps> = (
                 }
             );
         }
-    }, [props.value]);
+    }, [props.value?.description]);
 
     return (
         <LocationFormView

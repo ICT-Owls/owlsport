@@ -1,4 +1,15 @@
+require('dotenv').config();
+const { NodePath } = require('@babel/core');
 const { validationResult } = require('express-validator');
+const GoogleMapsClient = require('@googlemaps/google-maps-services-js/dist/client').Client
+
+let gmapKey = process.env.GOOGLE_MAPS_API_KEY;
+
+if(!gmapKey){
+    console.error("No google maps api key set");
+}
+
+const gmapClient = new GoogleMapsClient({});
 
 /**
  * Express middleware that checks for validation errors,
@@ -27,4 +38,4 @@ const validateLocation = function (loc) {
     );
 };
 
-module.exports = { validate, authorize, validateLocation };
+module.exports = { validate, authorize, validateLocation, gmapClient, gmapKey};
