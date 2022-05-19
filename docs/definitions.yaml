@@ -1,5 +1,5 @@
-info: 
-    version: '0.2.6'
+info:
+    version: '0.2.7'
 components:
     schemas:
         # Information about the authentication status of the current user
@@ -76,6 +76,8 @@ components:
             type: object
             required:
                 - id
+                - isDriver
+                - isPassenger
                 - requiresCarpooling
             properties:
                 id:
@@ -88,6 +90,24 @@ components:
                     type: boolean
                     default: false
                     description: 'If the member required carpooling to the event'
+                seats:
+                    type: integer
+                    description: 'Number of seats this members takes up'
+                    default: 1
+                isDriver:
+                    type: boolean
+                    description: 'If this event member is a driver'
+                isPassenger:
+                    type: boolean
+                    description: 'If this event member is a passenger'
+                    Driver:
+                car:
+                    $ref: '#/components/schemas/Car'
+                    description: 'The car of this driver'
+                passengers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Id'
         Event:
             type: object
             required:
@@ -128,6 +148,22 @@ components:
                 creationDate:
                     type: number
                     description: 'UNIX timestamp of when the event was created'
+        Car:
+            type: object
+            required:
+                - model
+                - registration
+                - seats
+            properties:
+                model:
+                    type: string
+                    description: 'Model of the car'
+                registration:
+                    type: string
+                    description: 'Registration number of the car'
+                seats:
+                    type: integer
+                    description: 'number of seats in the car'
         EventCreationParameters:
             type: object
             required:
@@ -168,7 +204,7 @@ components:
                     deprecated: true
                     type: number
                     description: 'UNIX timestamp of when the event was created'
-        GeoData: 
+        GeoData:
             type: object
             required:
                 - latitude
@@ -179,9 +215,5 @@ components:
                     type: number
                 longitude:
                     type: number
-                address: 
+                address:
                     type: string
-
-            
-        
-

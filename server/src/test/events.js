@@ -215,6 +215,7 @@ describe('Events', function () {
                         id: testUser.id,
                         location: undefined,
                         requriesCarpooling: false,
+                        seats: 1,
                     },
                 },
             });
@@ -226,9 +227,11 @@ describe('Events', function () {
         it('return 200 with valid body', async function () {
             var res = await patch(`/events/${testEvent.id}/self`).send({
                 requiresCarpooling: true,
+                seats: 2,
             });
             assert.equal(res.status, 200);
             assert.equal(res.body.requiresCarpooling, true);
+            assert.equal(res.body.seats, 2);
         });
     });
 
@@ -241,6 +244,101 @@ describe('Events', function () {
         it('return 200 when authenticated', async function () {
             var res = await get('/events/');
             assert.equal(res.body.length, 1);
+        });
+    });
+
+    describe('/POST /events/:id/car', function () {
+        it('return 401 without authentication', async function () {
+            var res = await chai
+                .request(app)
+                .post(`/events/${testEvent.id}/car`);
+            assert.equal(res.status, 401);
+        });
+
+        it('return 400 with empty body', async function () {
+            var res = await post(`/events/${testEvent.id}/car`);
+            assert.equal(res.status, 400);
+        });
+
+        it('return 400 with empty body', async function () {
+            var res = await post(`/events/unknown123/car`).send({
+                model: 'Ferrari',
+                registration: 'ABC 123',
+                seats: 3,
+            });
+            assert.equal(res.status, 404);
+        });
+
+        it('return 200 with correct body', async function () {
+            const car = {
+                model: 'Ferrari',
+                registration: 'ABC 123',
+                seats: 3,
+            };
+            var res = await post(`/events/${testEvent.id}/car`).send(car);
+            assert.deepEqual(res.body.drivers[testUser.id], {
+                id: testUser.id,
+                car,
+            });
+            assert.property(res.body.drivers, testUser.id);
+            assert.notProperty(res.body.members || {}, testUser.id);
+        });
+    });
+
+    describe('/POST /events/:id/pickup', function () {
+        it('return 401 without authentication', async function () {
+            var res = await chai
+                .request(app)
+                .post(`/events/${testEvent.id}/pickup`);
+            assert.equal(res.status, 401);
+        });
+
+        it('return 400 with empty body', async function () {
+            var res = await post(`/events/${testEvent.id}/pickup`);
+            assert.equal(res.status, 400);
+        });
+
+        it('return 404 with unknown event', async function () {
+            var res = await post(`/events/unknown123/pickup`).send({
+                passengerId: '123',
+            });
+            assert.equal(res.status, 404);
+        });
+
+        it('return 400 is passenger id equals user id', async function () {
+            var res = await post(`/events/unknown123/pickup`).send({
+                passengerId: testUser.id,
+            });
+            assert.equal(res.status, 400);
+        });
+
+        it('return 200 with correct body', async function () {
+            const member = {
+                id: '123',
+                location: {
+                    address: 'stockholm',
+                },
+                seats: 1,
+                requiresCarpooling: true,
+            };
+
+            // setup
+            await events.child(testEvent.id).update({
+                members: {
+                    [member.id]: member,
+                },
+            });
+
+            var res = await post(`/events/${testEvent.id}/pickup`).send({
+                passengerId: member.id,
+            });
+
+            assert.equal(res.status, 200);
+            assert.equal(res.body.members[member.id].isPassenger, true);
+            assert.deepEqual(res.body.members[testUser.id].passengers, [
+                passengerId,
+            ]);
+            assert.deepEqual(res.body.members[testUser.id].isDriver, true);
         });
     });
 });

@@ -110,7 +110,6 @@ export default function EventListView({ events, user, loadEvents }) {
                     ( <div/> )
             }
 
-
             {
                 haveOldEvents ?
                     (

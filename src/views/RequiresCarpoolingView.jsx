@@ -10,9 +10,14 @@ import {
 import MapInputPresenter from 'presenters/MapInputPresenter';
 import * as React from 'react';
 
-export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
+export default function RequiresCarpoolingView({
+    requiresCarpooling,
+    submit,
+    isDriver,
+}) {
     const [open, setOpen] = React.useState(false);
     const [location, setLocation] = React.useState(null);
+    const [seats, setSeats] = React.useState(1);
     const [submitEnabled, setSubmitEnabled] = React.useState(false);
 
     React.useEffect(() => {
@@ -26,11 +31,11 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
 
     return (
         <>
-            {requiresCarpooling ? (
+            {isDriver ? null : requiresCarpooling ? (
                 <Button
                     variant="contained"
-                    className="black w-52 bg-primary-100 text-background-100"
-                    onClick={() => submit(false, undefined)}
+                    className="black mb-5 w-52 bg-primary-100 text-background-100"
+                    onClick={() => submit(false, undefined, 1)}
                 >
                     Cancel carpooling
                 </Button>
@@ -48,7 +53,8 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
                 <DialogContent>
                     <DialogContentText>
                         To request carpooling, please enter the location you
-                        want to be picked up from.
+                        want to be picked up from, and the number of seats
+                        required.
                     </DialogContentText>
                     {/*<TextField
                         autoFocus
@@ -70,13 +76,27 @@ export default function RequiresCarpoolingView({ requiresCarpooling, submit }) {
                             setLocation(location);
                         }}
                     />
+                    <TextField
+                        type="number"
+                        placeholder="Required seats"
+                        id="seats"
+                        label="seats"
+                        fullWidth
+                        value={seats}
+                        onChange={(e) => {
+                            const num = parseInt(e.target.value);
+                            if (num >= 1 && num <= 99) {
+                                setSeats(num);
+                            }
+                        }}
+                    ></TextField>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)}>Cancel</Button>
                     <Button
                         disabled={!submitEnabled}
                         onClick={() => {
-                            submit(true, location);
+                            submit(true, location, seats);
                             setOpen(false);
                         }}
                     >
