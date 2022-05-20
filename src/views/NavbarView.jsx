@@ -80,7 +80,7 @@ export default function NavbarView() {
                     <SettingsIcon />
                 </IconButton>
                 <IconButton className="hidden lg:block">
-                    <AvatarView maxHeight="100%" user={user} />
+                    {user ? <AvatarView maxHeight="100%" user={user} /> : null}
                 </IconButton>
 
                 <IconButton

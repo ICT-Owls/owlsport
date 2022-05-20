@@ -18,6 +18,7 @@ export default function MainContentView({ user }) {
                     path="/event/:eventId"
                     element={<EventDetailsPresenter user={user} />}
                 />
+
                 <Route
                     path="/events"
                     element={<EventListPresenter user={user} />}
@@ -27,6 +28,10 @@ export default function MainContentView({ user }) {
                     element={<CarRegistrationPresenter user={user} />}
                 />
                 <Route path="/whatever" element={<MapInputPresenter />} />
+                <Route
+                    path="/"
+                    element={<EventListPresenter user={user} />}
+                />
             </Routes>
         </div>
     ) : (

@@ -46,7 +46,6 @@ export default function App() {
                     <SidebarPresenter user={user} />
                     <div className="h-full w-10 bg-gradient-to-r from-sideandmain-100 to-sideandmain-200" />
                     <MainContentPresenter user={user} />
-                    <div className="w-[17.5rem]" />
                     {chat && <ChatsPresenter />}
                 </div>
             </ThemeProvider>
