@@ -68,6 +68,7 @@ export default function EventListView({ events, user, loadEvents }) {
             </Dialog>
 
             <Box className={'flex flex-col items-start'}>
+                <Typography fontSize={'1.5rem'} fontFamily={'monospace'} color={"#AAA"}>Events</Typography>
                 <Button
                     className="w-fit justify-start self-start"
                     onClick={() => setCreateOpen(true)}
