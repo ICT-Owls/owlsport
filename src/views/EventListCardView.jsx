@@ -80,7 +80,7 @@ function MemberBox({ members, user }) {
                 'flex flex-row flex-wrap items-center justify-center last:mr-2 child:m-1'
             }
         >
-            {Object.values(members).map((m) => (
+            {Object.values(members || {}).map((m) => (
                 <AvatarPresenter key={m} user={m.id} />
             ))}
         </List>

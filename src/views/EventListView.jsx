@@ -27,6 +27,12 @@ export default function EventListView({ events, user, loadEvents }) {
     const oldEvents = events.filter((o) => o.endDateTime < Date.now());
     const newEvents = events.filter((o) => o.endDateTime > Date.now());
 
+    const haveNewEvents = newEvents.length > 0;
+    const haveOldEvents = oldEvents.length > 0;
+
+    // console.log(newEvents.length);
+    // console.log(oldEvents.length);
+
     const [createOpen, setCreateOpen] = React.useState(false);
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
@@ -61,63 +67,93 @@ export default function EventListView({ events, user, loadEvents }) {
                 </Button>
             </Box>
 
-            <Typography textAlign={'center'} variant="h5" py-10>
-                New Events
-            </Typography>
+            {
+                haveNewEvents ?
+                    (
+                        <Typography textAlign={'center'} variant="h5" py-10>
+                            New Events
+                        </Typography>
+                    )
+                    :
+                    ( <div/> )
+            }
 
-            <List
-            // sx={{
-            //     width: '100%',
-            //     // maxWidth: 360,
-            //     // position: 'relative',
-            //     // overflow: 'scroll',
-            //     // height: '100%',
-            //     maxHeight: '80%',
-            //     minHeight: '60%'}}
-            >
-                {newEvents.map((event) => {
-                    return (
-                        <ListItem
-                            key={event.id}
-                            sx={{ p: 0, mx: 0, my: '1rem' }}
+            {
+                haveNewEvents ?
+                    (
+                        <List
+                            // sx={{
+                            //     width: '100%',
+                            //     // maxWidth: 360,
+                            //     // position: 'relative',
+                            //     // overflow: 'scroll',
+                            //     // height: '100%',
+                            //     maxHeight: '80%',
+                            //     minHeight: '60%'}}
                         >
-                            {EventListCardView({
-                                ...event,
-                                user,
+                            {newEvents.map((event) => {
+                                return (
+                                    <ListItem
+                                        key={event.id}
+                                        sx={{p: 0, mx: 0, my: '1rem'}}
+                                    >
+                                        {EventListCardView({
+                                            ...event,
+                                            user,
+                                        })}
+                                    </ListItem>
+                                );
                             })}
-                        </ListItem>
-                    );
-                })}
-            </List>
+                        </List>
+                    )
+                    :
+                    ( <div/> )
+            }
 
-            <Typography textAlign={'center'} variant="h5" py-10>
-                Old Events
-            </Typography>
+            {
+                haveOldEvents ?
+                    (
+                        <Typography textAlign={'center'} variant="h5" py-10>
+                            Old Events
+                        </Typography>
+                    )
+                    :
+                    ( <div/> )
+            }
 
-            <List
-            // sx={{
-            //         width: '100%',
-            //        // maxWidth: 360,
-            //        // position: 'relative',
-            //        // overflow: 'scroll',
-            //        // height: '100%',
-            //        maxHeight: '80%',
-            //        minHeight: '60%'}}
-            >
-                {oldEvents.map((event) => {
-                    return (
-                        <ListItem
-                            key={event.id}
-                            sx={{ p: 0, mx: 0, my: '1rem' }}
+            {
+                haveOldEvents ?
+                    (
+
+                        <List
+                        // sx={{
+                        //         width: '100%',
+                        //        // maxWidth: 360,
+                        //        // position: 'relative',
+                        //        // overflow: 'scroll',
+                        //        // height: '100%',
+                        //        maxHeight: '80%',
+                        //        minHeight: '60%'}}
                         >
-                            {EventListCardView({
-                                ...event,
-                                user,
+                            {oldEvents.map((event) => {
+                                return (
+                                    <ListItem
+                                        key={event.id}
+                                        sx={{ p: 0, mx: 0, my: '1rem' }}
+                                    >
+                                        {EventListCardView({
+                                            ...event,
+                                            user,
+                                        })}
+                                    </ListItem>
+                                );
                             })}
-                        </ListItem>
-                    );
-                })}
-            </List>
+                        </List>
+                    )
+                    :
+                    ( <div/> )
+            }
+
 
             {/*<Box*/}
             {/*    sx={{ width: '100%', height: '80%', minHeight:'50vh', maxWidth: 360, bgcolor: 'yellow' }}*/}

@@ -21,32 +21,36 @@ export default function App() {
     const [chat] = useChat();
 
     //logs if current user changes
-    useEffect(() => {
-        console.log('Current User Object: ', user);
-    }, [user]);
+    if (process.env.NODE_ENV == 'development') {
+        useEffect(() => {
+            console.info('Current User Object: ', user);
+        }, [user]);
+    }
 
     return (
         <StyledEngineProvider injectFirst>
+        <GoogleMapsLoader>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-                <GoogleMapsLoader>
                     <NavbarPresenter />
 
-                    <div
-                        className="App fixed flex h-screen w-screen flex-row justify-center child:mt-20"
-                        style={{
-                            backgroundImage: `url('../background.png')`,
-                            backgroundRepeat: 'no-repeat',
-                            backgroundPosition: 'left',
-                            backgroundSize: 'cover',
-                            backgroundAttachment: 'fixed',
-                        }}
-                    >
-                        <SidebarPresenter user={user} />
-                        <MainContentPresenter user={user} />
-                        {chat && <ChatsPresenter />}
-                    </div>
-                </GoogleMapsLoader>
+                <div
+                    className="App fixed flex h-screen w-screen flex-row justify-center child:mt-20"
+                    style={{
+                        backgroundImage: `url('../stacked-waves-haikei.svg')`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'left',
+                        backgroundSize: 'cover',
+                        backgroundAttachment: 'fixed',
+                    }}
+                >
+                    <SidebarPresenter user={user} />
+                    <div className="h-full w-10 bg-gradient-to-r from-sideandmain-100 to-sideandmain-200" />
+                    <MainContentPresenter user={user} />
+                    <div className="w-[17.5rem]" />
+                    {chat && <ChatsPresenter />}
+                </div>
             </ThemeProvider>
+        </GoogleMapsLoader>
         </StyledEngineProvider>
     );
 }
