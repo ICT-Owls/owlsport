@@ -12,8 +12,6 @@ import path from 'path';
 const log = require ('ololog')
 log.handleNodeErrors();
 
-import nice from 'ansicolor';
-
 const app = express();
 
 const port = parseInt(process.env.PORT);
