@@ -1,6 +1,7 @@
 import * as React from 'react';
 import EventCreatingView from '../views/EventCreatingView';
 import { createEvent } from '../api';
+import { useEventList } from 'models/Model';
 
 export const EventCreatingPresenter = ({ user, onSubmit }) => {
     const [title, setTitle] = React.useState('');
@@ -9,6 +10,7 @@ export const EventCreatingPresenter = ({ user, onSubmit }) => {
     const [endDateTime, setEndDateTime] = React.useState(
         Date.now() + 1000 * 3600
     );
+    const [, pollEvents] = useEventList();
     const [members, setMembers] = React.useState([]);
     const [location, setLocation] = React.useState({
         address: undefined,
@@ -38,6 +40,8 @@ export const EventCreatingPresenter = ({ user, onSubmit }) => {
             endDateTime: newEndDate.getTime(),
             members,
             location,
+        }).then(() => {
+            pollEvents();
         });
         onSubmit();
     };

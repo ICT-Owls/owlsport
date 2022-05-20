@@ -1,21 +1,16 @@
 import {
     Box,
     Button,
-    Card,
     Container,
     Dialog,
-    Divider,
-    Link,
     List,
     ListItem,
-    ListItemText,
-    ListSubheader,
     Slide,
     Typography,
 } from '@mui/material';
-import Tabs from '@mui/material/Tabs';
+import { useEventList } from 'models/Model';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { EventCreatingPresenter } from '../presenters/EventCreatingPresenter';
 import EventListCardView from './EventListCardView';
 
@@ -24,11 +19,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function EventListView({ events, user, loadEvents }) {
-    const oldEvents = events.filter((o) => o.endDateTime < Date.now());
-    const newEvents = events.filter((o) => o.endDateTime > Date.now());
+    const [, pollEvents] = useEventList();
 
-    const haveNewEvents = newEvents.length > 0;
-    const haveOldEvents = oldEvents.length > 0;
+    const [oldEvents, setOldEvents] = useState(
+        events.filter((o) => o.endDateTime <= Date.now())
+    );
+    const [newEvents, setNewEvents] = useState(
+        events.filter((o) => o.endDateTime > Date.now())
+    );
+
+    const [haveNewEvents, setHaveNewEvents] = useState(false);
+    const [haveOldEvents, setHaveOldEvents] = useState(false);
+
+    useEffect(() => {
+        setOldEvents(events.filter((o) => o.endDateTime <= Date.now()));
+        setNewEvents(events.filter((o) => o.endDateTime > Date.now()));
+        setHaveNewEvents(newEvents.length > 0);
+        setHaveOldEvents(oldEvents.length > 0);
+    }, [events]);
 
     // console.log(newEvents.length);
     // console.log(oldEvents.length);
@@ -42,6 +50,7 @@ export default function EventListView({ events, user, loadEvents }) {
                 disablePortal={true}
                 open={createOpen}
                 onClose={() => {
+                    pollEvents();
                     setCreateOpen(false);
                 }}
                 maxWidth="xl"
@@ -67,93 +76,79 @@ export default function EventListView({ events, user, loadEvents }) {
                 </Button>
             </Box>
 
-            {
-                haveNewEvents ?
-                    (
-                        <Typography textAlign={'center'} variant="h5" py-10>
-                            New Events
-                        </Typography>
-                    )
-                    :
-                    ( <div/> )
-            }
+            {haveNewEvents ? (
+                <Typography textAlign={'center'} variant="h5" py-10>
+                    New Events
+                </Typography>
+            ) : (
+                <div />
+            )}
 
-            {
-                haveNewEvents ?
-                    (
-                        <List
-                            // sx={{
-                            //     width: '100%',
-                            //     // maxWidth: 360,
-                            //     // position: 'relative',
-                            //     // overflow: 'scroll',
-                            //     // height: '100%',
-                            //     maxHeight: '80%',
-                            //     minHeight: '60%'}}
-                        >
-                            {newEvents.map((event) => {
-                                return (
-                                    <ListItem
-                                        key={event.id}
-                                        sx={{p: 0, mx: 0, my: '1rem'}}
-                                    >
-                                        {EventListCardView({
-                                            ...event,
-                                            user,
-                                        })}
-                                    </ListItem>
-                                );
-                            })}
-                        </List>
-                    )
-                    :
-                    ( <div/> )
-            }
+            {haveNewEvents ? (
+                <List
+                // sx={{
+                //     width: '100%',
+                //     // maxWidth: 360,
+                //     // position: 'relative',
+                //     // overflow: 'scroll',
+                //     // height: '100%',
+                //     maxHeight: '80%',
+                //     minHeight: '60%'}}
+                >
+                    {newEvents.map((event) => {
+                        return (
+                            <ListItem
+                                key={event.id}
+                                sx={{ p: 0, mx: 0, my: '1rem' }}
+                            >
+                                {EventListCardView({
+                                    ...event,
+                                    user,
+                                })}
+                            </ListItem>
+                        );
+                    })}
+                </List>
+            ) : (
+                <div />
+            )}
 
-            {
-                haveOldEvents ?
-                    (
-                        <Typography textAlign={'center'} variant="h5" py-10>
-                            Old Events
-                        </Typography>
-                    )
-                    :
-                    ( <div/> )
-            }
+            {haveOldEvents ? (
+                <Typography textAlign={'center'} variant="h5" py-10>
+                    Old Events
+                </Typography>
+            ) : (
+                <div />
+            )}
 
-            {
-                haveOldEvents ?
-                    (
-
-                        <List
-                        // sx={{
-                        //         width: '100%',
-                        //        // maxWidth: 360,
-                        //        // position: 'relative',
-                        //        // overflow: 'scroll',
-                        //        // height: '100%',
-                        //        maxHeight: '80%',
-                        //        minHeight: '60%'}}
-                        >
-                            {oldEvents.map((event) => {
-                                return (
-                                    <ListItem
-                                        key={event.id}
-                                        sx={{ p: 0, mx: 0, my: '1rem' }}
-                                    >
-                                        {EventListCardView({
-                                            ...event,
-                                            user,
-                                        })}
-                                    </ListItem>
-                                );
-                            })}
-                        </List>
-                    )
-                    :
-                    ( <div/> )
-            }
-
+            {haveOldEvents ? (
+                <List
+                // sx={{
+                //         width: '100%',
+                //        // maxWidth: 360,
+                //        // position: 'relative',
+                //        // overflow: 'scroll',
+                //        // height: '100%',
+                //        maxHeight: '80%',
+                //        minHeight: '60%'}}
+                >
+                    {oldEvents.map((event) => {
+                        return (
+                            <ListItem
+                                key={event.id}
+                                sx={{ p: 0, mx: 0, my: '1rem' }}
+                            >
+                                {EventListCardView({
+                                    ...event,
+                                    user,
+                                })}
+                            </ListItem>
+                        );
+                    })}
+                </List>
+            ) : (
+                <div />
+            )}
 
             {/*<Box*/}
             {/*    sx={{ width: '100%', height: '80%', minHeight:'50vh', maxWidth: 360, bgcolor: 'yellow' }}*/}

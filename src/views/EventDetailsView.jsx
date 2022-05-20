@@ -8,6 +8,7 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import { leaveEvent } from 'api';
+import { useEventList } from 'models/Model';
 import MapLocationPresenter from 'presenters/MapLocationPresenter';
 import RegisterCarpoolingPresenter from 'presenters/RegisterCarpoolingPresenter';
 import * as React from 'react';
@@ -31,6 +32,7 @@ export default function EventDetailsView({
 }) {
     const [open, setOpen] = React.useState(true);
     const navigate = useNavigate();
+    const [, pollEvents] = useEventList();
 
     if (event === undefined || users === undefined) return null;
 
@@ -58,7 +60,9 @@ export default function EventDetailsView({
     };
 
     const handleLeave = () => {
-        leaveEvent(id);
+        leaveEvent(id).then(() => {
+            pollEvents();
+        });
         handleClose();
     };
 
