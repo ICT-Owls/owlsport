@@ -320,8 +320,13 @@ router.post(
         if (!passenger) return res.status(404).send('Passenger not found');
         if (!passenger.requiresCarpooling)
             return res.status(400).send('Member does not require carpooling');
-
+            
         if (!driver) return res.status(404).send('Driver not found');
+
+        if (!driver.car) return res.status(404).set('Driver has no car');
+
+        if (!driver.car.seats)
+            return res.status(404).set("Driver's car has no seats property");
 
         const freeSeats =
             driver?.passengers?.reduce(

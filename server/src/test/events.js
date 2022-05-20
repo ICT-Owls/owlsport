@@ -3,12 +3,14 @@ const { database } = require('../database.js');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const { assert } = require('chai');
+const prettier = require('prettier');
 
 chai.use(chaiHttp);
 
 const { initializeApp } = require('firebase/app');
 const { getAuth, signInWithEmailAndPassword } = require('firebase/auth');
 const { events } = require('../database.js');
+const { doesNotMatch } = require('assert');
 
 const generateTestCredentials = async function () {
     const firebaseConfig = {
@@ -230,6 +232,8 @@ describe('Events', function () {
                         id: testUser.id,
                         location: undefined,
                         requriesCarpooling: false,
+                        isDriver: true,
+                        isPassenger: false,
                         seats: 1,
                     },
                 },
@@ -306,6 +310,44 @@ describe('Events', function () {
     });
 
     describe('/POST /events/:id/pickup', function () {
+        const member = {
+            id: '123',
+            location: {
+                address: 'Nowhere',
+                latitude: 51.774,
+                longitude: 31.222,
+            },
+            seats: 1,
+            requiresCarpooling: true,
+            isDriver: false,
+            isPassenger: true,
+        };
+
+        before(async function () {
+            // setup
+            return await events.child(testEvent.id).update({
+                members: {
+                    [member.id]: member,
+                    [testUser.id]: {
+                        id: testUser.id,
+                        location: {
+                            address: 'Nowhere',
+                            latitude: 51.774,
+                            longitude: 31.222,
+                        },
+                        car: {
+                            model: 'CoolCar 2007',
+                            registration: 'TNR 117',
+                            seats: 3,
+                        },
+                        requiresCarpooling: false,
+                        isDriver: true,
+                        isPassenger: false,
+                    },
+                },
+            });
+        });
+
         it('return 401 without authentication', async function () {
             var res = await chai
                 .request(app)
@@ -333,22 +375,6 @@ describe('Events', function () {
         });
 
         it('return 200 with correct body', async function () {
-            const member = {
-                id: '123',
-                location: {
-                    address: 'stockholm',
-                },
-                seats: 1,
-                requiresCarpooling: true,
-            };
-
-            // setup
-            await events.child(testEvent.id).update({
-                members: {
-                    [member.id]: member,
-                },
-            });
-
             var res = await post(`/events/${testEvent.id}/pickup`).send({
                 passengerId: member.id,
             });
@@ -356,7 +382,17 @@ describe('Events', function () {
             assert.equal(
                 res.status,
                 200,
-                'Received response: "' + res.text + '"'
+                'Received response: "' +
+                    res.text +
+                    '"\n' +
+                    'Event in database: \n' +
+                    prettier.format(
+                        JSON.stringify(
+                            (await events.child(testEvent.id).get()).toJSON()
+                        ),
+                        { semi: false, parser: 'json' }
+                    ) +
+                    '\n'
             );
 
             assert.equal(res.body.members[member.id].isPassenger, true);
