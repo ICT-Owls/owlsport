@@ -1,3 +1,4 @@
+import { Status as MapStatus } from '@googlemaps/react-wrapper';
 import { getEvents } from 'api';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,6 +18,7 @@ const dataStruct = {
     Example: { defaultValue: null, callbacks: {} },
     events: { defaultValue: [], callbacks: {} },
     showChat: { defaultValue: false, callbacks: {} },
+    mapStatus: { defaultValue: MapStatus.LOADING, callbacks: {} },
 };
 
 //-------- Custom Hooks --------
@@ -43,6 +45,11 @@ export function useEventList() {
 
 export function useChat() {
     return useCustomHook('showChat');
+}
+
+export function useMapStatus() {
+    const hook = useCustomHook('mapStatus');
+    return hook || [null, () => null];
 }
 
 //This function is the current implementation of User login persistance. Since auth()
@@ -100,7 +107,7 @@ export function initModel() {
         if (!isLoggedIn()) return;
         const events = await getEvents();
         if (events != null) setValue('events', events);
-    }, 5000);
+    }, 10000);
 }
 
 //Read value from local storage.

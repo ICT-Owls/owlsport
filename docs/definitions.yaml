@@ -1,5 +1,5 @@
 info:
-    version: '0.2.7'
+    version: '0.2.8'
 components:
     schemas:
         # Information about the authentication status of the current user
@@ -217,3 +217,26 @@ components:
                     type: number
                 address:
                     type: string
+        Place:
+            type: object
+            required:
+                - description
+                - strctured_formatting
+            properties:
+                description:
+                    type: string
+                structuredFormatting:
+                    type: object
+                    mainText: 
+                        type: string;
+                    secondaryText: 
+                        type: string;
+                    mainTextMatchedSubstrings: 
+                        type: array
+                        items:
+                            type: object
+                            offset: 
+                                type: number;
+                            length: 
+                                type: number;
+

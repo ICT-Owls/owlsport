@@ -8,6 +8,7 @@ import MapView from '../views/MapView';
 import LocationFormPresenter from './LocationFormPresenter';
 import { GooglePlace } from 'helpers/Location';
 import { reverseGeocode } from 'api';
+import { useMapStatus } from 'models/Model';
 
 type MapInputPresenterProps = {
     onPlace?: (location: {
@@ -22,11 +23,10 @@ const kistaCoords = {
     lat: 59.4050838849778,
 };
 
-const apiKey = '***REMOVED***';
-
 const MapInputPresenter: FC<MapInputPresenterProps> = (
     props: MapInputPresenterProps
 ) => {
+    const [mapStatus] = useMapStatus();
     const [marker, setMarker] = React.useState<google.maps.LatLng>(
         new google.maps.LatLng(kistaCoords)
     );
@@ -35,19 +35,19 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
     const [pan, setPan] = React.useState<google.maps.LatLng>(marker);
 
     React.useEffect(() => {
-        if (!marker || !value?.description || !props.onPlace) return;
+        if (!marker) return;
+        setPan(marker);
+        if (!value?.description || !props.onPlace) return;
 
         props.onPlace({
             address: value?.description,
             longitude: marker.lng(),
             latitude: marker.lat(),
         });
+    }, [marker, value?.description]);
 
-        setPan(marker);
-    }, [marker]);
-
-    const render = (status: MapStatus) => {
-        switch (status) {
+    const render = () => {
+        switch (mapStatus) {
             case MapStatus.LOADING:
                 return <CircularProgress />;
             case MapStatus.FAILURE:
@@ -70,6 +70,16 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                                 ) => {
                                     if (newMarker) setMarker(newMarker);
                                 }}
+                                onAddressChange={(
+                                    newAddress: string | null
+                                ) => {
+                                    if (newAddress)
+                                        setValue({
+                                            description: newAddress,
+                                            main_text: 'reverse geocoding',
+                                            secondary_text: '',
+                                        });
+                                }}
                             />
                         </div>
                         <MapView
@@ -77,9 +87,16 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                             markers={marker ? [marker] : []}
                             onClick={(e: google.maps.MapMouseEvent) => {
                                 if (e.latLng) {
+                                    setMarker(e.latLng);
                                     reverseGeocode(e.latLng).then(
                                         (addr: string | null) => {
-                                            if (addr) setValue({main_text:'reverse geocoding', description: addr, ...e.latLng});
+                                            if (addr)
+                                                setValue({
+                                                    main_text:
+                                                        'reverse geocoding',
+                                                    description: addr,
+                                                    ...e.latLng,
+                                                });
                                         }
                                     );
                                 }
@@ -89,17 +106,12 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                         />
                     </div>
                 );
+            default:
+                return null;
         }
     };
 
-    return (
-        <MapWrapper
-            id="google-maps"
-            libraries={['places']}
-            apiKey={apiKey}
-            render={render}
-        />
-    );
+    return render();
 };
 
 export default MapInputPresenter;

@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.2.6'
+    version: '0.2.8'
 paths:
     /user/authe:
         get:
@@ -327,7 +327,6 @@ paths:
                     description: 'Unauthorized, or not part of event'
                 '404':
                     description: 'Event not found'
-
     /events/{id}/car:
         post:
             summary: 'Register car'
@@ -393,7 +392,7 @@ paths:
                         schema:
                             type: object
                             required:
-                                - passenger
+                                - passengerId
                             properties:
                                 passengerId:
                                     $ref: 'definitions.yaml#/components/schemas/Id'
@@ -511,6 +510,34 @@ paths:
                     description: 'Unauthenticated'
                 '404':
                     description: 'No address found'
+    /geo/autocomplete:
+        get:
+            summary: 'Autocomplete'
+            description: 'Autocomplete a place query'
+            tags:
+                - geo
+            parameters:
+                - in: query
+                  name: q
+                  schema:
+                      type: string
+                  required: true
+                  description: 'Query to attempt to autocomplete'
+            responses:
+                '200':
+                    description: 'Returns autocomplete info (actually in json format)'
+                    content:
+                        text/plain:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: 'definitions.yaml#/components/schemas/Place'
+                '400':
+                    description: 'Bad Request'
+                '401':
+                    description: 'Unauthenticated'
+                '404':
+                    description: 'No results found'
 
 components:
     securitySchemes:

@@ -3,10 +3,11 @@ import { Box } from '@mui/material';
 import { StyledEngineProvider } from '@mui/material/styles';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { GoogleMapsLoader } from 'helpers/Location';
+import {Status as MapStatus} from '@googlemaps/react-wrapper';
 import ChatsPresenter from 'presenters/ChatsPresenter';
 import React, { useEffect, useLayoutEffect } from 'react';
 import './App.css';
-import { initModel, useUser, useChat } from './models/Model';
+import { initModel, useUser, useChat, useMapStatus } from './models/Model';
 import MainContentPresenter from './presenters/MainContentPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
 import SidebarPresenter from './presenters/SidebarPresenter';
@@ -20,15 +21,17 @@ export default function App() {
     const [chat] = useChat();
 
     //logs if current user changes
-    useEffect(() => {
-        console.log('Current User Object: ', user);
-    }, [user]);
+    if (process.env.NODE_ENV == 'development') {
+        useEffect(() => {
+            console.info('Current User Object: ', user);
+        }, [user]);
+    }
 
     return (
         <StyledEngineProvider injectFirst>
+        <GoogleMapsLoader>
             <ThemeProvider theme={lightmode ? LightTheme : DarkTheme}>
-                <GoogleMapsLoader />
-                <NavbarPresenter />
+                    <NavbarPresenter />
 
                 <div
                     className="App fixed flex h-screen w-screen flex-row justify-center child:mt-20"
@@ -43,10 +46,10 @@ export default function App() {
                     <SidebarPresenter user={user} />
                     <div className="h-full w-10 bg-gradient-to-r from-sideandmain-100 to-sideandmain-200" />
                     <MainContentPresenter user={user} />
-                    <div className="w-[17.5rem]" />
                     {chat && <ChatsPresenter />}
                 </div>
             </ThemeProvider>
+        </GoogleMapsLoader>
         </StyledEngineProvider>
     );
 }
