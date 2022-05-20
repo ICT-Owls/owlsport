@@ -10,5 +10,8 @@
         ]
     ],
     "plugins": ["@babel/transform-runtime"],
-    "sourceType": "module"
+    "sourceType": "module",
+    "inputSourceMap": true,
+    "sourceMaps": true,
+    "minified": true
 }
