@@ -36,6 +36,7 @@ router.post(
             endDateTime,
             location,
         } = req.body;
+
         const authUser = req.user;
 
         for (let key of Object.keys(members || {})) {
@@ -76,10 +77,9 @@ router.post(
  */
 router.get('/', authorize, async (req, res) => {
     const userId = req.user.uid;
-
-    const eventsRef = await events.get();
-    if (eventsRef.val() === undefined) return res.send([]);
-    const userEvents = Object.values(eventsRef.val()).filter(
+    const allEvents = await (await events.get()).val();
+    if (!allEvents) return res.send([]);
+    const userEvents = Object.values(allEvents).filter(
         (e) => e.creatorId == userId || e.members?.hasOwnProperty(userId)
     );
 
@@ -320,7 +320,7 @@ router.post(
         if (!passenger) return res.status(404).send('Passenger not found');
         if (!passenger.requiresCarpooling)
             return res.status(400).send('Member does not require carpooling');
-            
+
         if (!driver) return res.status(404).send('Driver not found');
 
         if (!driver.car) return res.status(404).set('Driver has no car');
