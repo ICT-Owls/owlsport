@@ -1,5 +1,5 @@
 import throttle from 'lodash/throttle';
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
     Wrapper as MapWrapper,
     Status as MapStatus,
@@ -8,14 +8,13 @@ import { useMapStatus } from 'models/Model';
 import { geoAutocomplete } from 'api';
 import { Place } from 'api-client';
 
-
 export type GooglePlace = {
     description: string;
     main_text: string;
     secondary_text?: string;
 };
 
-const BROWSER_API_KEY = "***REMOVED***";
+const BROWSER_API_KEY = '***REMOVED***';
 
 /* Some funky legacy code for loading scripts
     function loadScript(src: string, position: HTMLElement | null, id: string) {
@@ -31,8 +30,11 @@ const BROWSER_API_KEY = "***REMOVED***";
     }
 */
 
-export function GoogleMapsLoader(props: { children: any[], onStatusChange?: (status: keyof typeof MapStatus) => void }) {
-    const [,setStatus] = useMapStatus();
+export function GoogleMapsLoader(props: {
+    children: any[];
+    onStatusChange?: (status: keyof typeof MapStatus) => void;
+}) {
+    const [, setStatus] = useMapStatus();
     return MapWrapper({
         children: props.children,
         apiKey: BROWSER_API_KEY,
@@ -51,7 +53,6 @@ export function usePlaceCompletion() {
                     callback: (results?: readonly Place[]) => void
                 ) => {
                     geoAutocomplete(query).then(callback);
-
                 },
                 200
             ),

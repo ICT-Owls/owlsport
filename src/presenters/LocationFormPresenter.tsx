@@ -1,5 +1,5 @@
 import { GooglePlace } from 'helpers/Location';
-import React, { FC, Ref, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import LocationFormView from '../views/LocationFormView';
 import { geocode } from '../api/index';
 import { GeoData } from 'api/types';
