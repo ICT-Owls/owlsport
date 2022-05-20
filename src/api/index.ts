@@ -58,8 +58,7 @@ export async function getEvents(): Promise<Event[] | null> {
             headers: { authorization: `Bearer ${token}` },
         });
 
-        let valid = true;
-        events.forEach((event) => {
+        events.filter((event) => {
             const validation = validate(event, API_DATATYPES.Event);
             if (!validation.success) {
                 if (process.env.NODE_ENV === 'development') {
@@ -71,12 +70,10 @@ export async function getEvents(): Promise<Event[] | null> {
                         }`
                     );
                 }
-                valid = false;
+                return false;
             }
+            return true;
         });
-        if (!valid) {
-            return null;
-        }
 
         if (process.env.NODE_ENV === 'development') {
             console.info(`Fetched ${events.length} events`);
@@ -110,7 +107,7 @@ export async function leaveEvent(eventId: string): Promise<boolean> {
     const token = localStorage.getItem('auth');
     if (!token || !eventId) return false;
 
-    eventApi.eventsIdSelfDelete(eventId, `Bearer ${token}`);
+    await eventApi.eventsIdSelfDelete(eventId, `Bearer ${token}`);
     return true;
 }
 
@@ -147,9 +144,7 @@ export async function reverseGeocode(
     return null;
 }
 
-export async function geoAutocomplete(
-    query: string
-): Promise<Place[]> {
+export async function geoAutocomplete(query: string): Promise<Place[]> {
     const token = localStorage.getItem('auth');
     if (!token || !query) return [];
     const serverResponse = await geoApi.geoAutocompleteGet(query, {
