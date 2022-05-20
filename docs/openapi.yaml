@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
     title: 'Carpooling'
-    version: '0.2.8'
+    version: '0.2.9'
 paths:
     /user/authe:
         get:
