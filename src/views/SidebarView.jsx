@@ -53,17 +53,10 @@ export default function SidebarView({
                             <Button
                                 sx={{ justifyContent: 'left' }}
                                 color="secondary"
-                                href="/carregistration"
-                            >
-                                Car Registration
-                            </Button>
-                            <Button
-                                sx={{ justifyContent: 'left' }}
-                                color="secondary"
                                 href="/whatever"
                                 className="mb-0"
                             >
-                                Whatever
+                                Map 
                             </Button>
 
                             <Divider style={{ padding: '4px' }} />
