@@ -1,6 +1,11 @@
 import React, { FC, useEffect, useRef } from 'react';
 
-const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
+export type Marker = {
+    latLng: google.maps.LatLngLiteral;
+    icon?: string | google.maps.Icon | google.maps.Symbol;
+};
+
+const MarkerView: React.FC<google.maps.MarkerOptions> = (options) => {
     const [marker, setMarker] = React.useState<google.maps.Marker>();
 
     React.useEffect(() => {
@@ -32,10 +37,10 @@ type MapViewProps = {
     };
     onClick?: (e: google.maps.MapMouseEvent) => void;
     onIdle?: (map: google.maps.Map) => void;
-    markers?: google.maps.LatLng[];
+    markers?: Marker[];
     children?: unknown[];
-    pan?: google.maps.LatLng;
-    setPan?: (lngLat: google.maps.LatLng) => void;
+    pan?: google.maps.LatLngLiteral;
+    setPan?: (lngLat: google.maps.LatLngLiteral) => void;
 };
 
 const MapView: FC<MapViewProps> = (props: MapViewProps) => {
@@ -79,8 +84,13 @@ const MapView: FC<MapViewProps> = (props: MapViewProps) => {
                 ref={mapRef}
                 className={'relative top-0 z-30 h-full w-full bg-slate-600'}
             />
-            {props.markers?.map((latlng, i: number) => (
-                <Marker key={i} map={map} position={latlng} />
+            {props.markers?.map((m, i: number) => (
+                <MarkerView
+                    key={i}
+                    map={map}
+                    position={m.latLng}
+                    icon={m.icon}
+                />
             ))}
         </>
     );

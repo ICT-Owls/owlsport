@@ -30,7 +30,7 @@ const MapLocationPresenter: FC<MapLocationPresenterProps> = (
                     <div className={'relative h-full w-full '}>
                         <MapView
                             startAt={props.location}
-                            markers={[new google.maps.LatLng(props.location)]}
+                            markers={[{latLng: props.location}]}
                         />
                     </div>
                 );

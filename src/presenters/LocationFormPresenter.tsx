@@ -13,31 +13,31 @@ type LocationFormPresenterProps = {
     setValue?: (newValue: GooglePlace | null) => void;
     textInput?: string;
     setTextInput?: (newValue: string) => void;
-    onMarkerChange?: (marker: google.maps.LatLng | null) => void;
+    onMarkerChange?: (marker: google.maps.LatLngLiteral | null) => void;
     onAddressChange?: (address: string | null) => void;
 };
 
 const LocationFormPresenter: FC<LocationFormPresenterProps> = (
     props: LocationFormPresenterProps
 ) => {
-    const [marker, setMarker] = useState<google.maps.LatLng | null>(null);
+    const [marker, setMarker] = useState<google.maps.LatLngLiteral | null>(
+        null
+    );
 
     useEffect(() => {
         props.onMarkerChange?.(marker);
     }, [marker]);
 
     useEffect(() => {
-        if(!props.value) return;
+        if (!props.value) return;
         props.onAddressChange?.(props.value?.description);
 
         // If value is defined and the new value was not attained through reverse geocoding
         if (props.value.main_text !== 'reverse geocoding') {
-            geocode(props.value.description).then(
-                (result: GeoData | null) => {
-                    if (!result) return;
-                    setMarker(new google.maps.LatLng(result.latitude, result.longitude));
-                }
-            );
+            geocode(props.value.description).then((result: GeoData | null) => {
+                if (!result) return;
+                setMarker({ lat: result.latitude, lng: result.longitude });
+            });
         }
     }, [props.value?.description]);
 
