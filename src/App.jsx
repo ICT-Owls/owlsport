@@ -1,13 +1,10 @@
-/*  Presenters  */
-import { Box } from '@mui/material';
 import { StyledEngineProvider } from '@mui/material/styles';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import { GoogleMapsLoader } from 'helpers/Location';
-import {Status as MapStatus} from '@googlemaps/react-wrapper';
 import ChatsPresenter from 'presenters/ChatsPresenter';
 import React, { useEffect, useLayoutEffect } from 'react';
 import './App.css';
-import { initModel, useUser, useChat, useMapStatus } from './models/Model';
+import { initModel, useUser, useChat } from './models/Model';
 import MainContentPresenter from './presenters/MainContentPresenter';
 import NavbarPresenter from './presenters/NavbarPresenter';
 import SidebarPresenter from './presenters/SidebarPresenter';
