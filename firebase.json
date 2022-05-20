@@ -13,16 +13,13 @@
                 }
             },
             {
-                "source": "/api",
-                "run": {
-                    "serviceId": "carpooling-backend",
-                    "region": "europe-north1"
-                }
+                "source": "/**",
+                "destination": "/"
             }
         ],
         "headers": [
             {
-                "source": "*",
+                "source": "/**",
                 "headers": [
                     {
                         "key": "Access-Control-Allow-Origin",
@@ -31,7 +28,7 @@
                 ]
             },
             {
-                "source": "/api/**/*",
+                "source": "/api/**",
                 "headers": [
                     { "key": "Cache-Control", "value": "no-store, private" }
                 ]
