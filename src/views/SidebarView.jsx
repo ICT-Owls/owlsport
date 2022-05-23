@@ -50,14 +50,6 @@ export default function SidebarView({
                             >
                                 Events
                             </Button>
-                            <Button
-                                sx={{ justifyContent: 'left' }}
-                                color="secondary"
-                                href="/whatever"
-                                className="mb-0"
-                            >
-                                Map 
-                            </Button>
 
                             <Divider style={{ padding: '4px' }} />
 
