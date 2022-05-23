@@ -55,7 +55,7 @@ export default function RegisterCarpoolingView({
                 </Button>
             )}
 
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog disablePortal open={open} onClose={handleClose}>
                 <DialogTitle>Car Registration</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -63,72 +63,60 @@ export default function RegisterCarpoolingView({
                         and number of available seats.
                     </DialogContentText>
 
-                    <div className="flex flex-row justify-center">
-                        {user ? (
-                            <Box alignContent={'center'} maxHeight="56px">
-                                <AvatarView maxHeight="100%" user={user} />
-                            </Box>
-                        ) : (
-                            <>ERROR!</>
-                        )}
+                    <div className=" flex h-auto w-auto flex-col justify-center rounded-lg bg-gray-100 p-4 sm:p-12">
+                        <div className="mb-6">
+                            <TextField
+                                fullWidth
+                                id="outlined-basic"
+                                label="Car Model"
+                                variant="outlined"
+                                value={model}
+                                onChange={(e) => {
+                                    setModel(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div className="">
+                            <TextField
+                                fullWidth
+                                id="outlined-basic"
+                                label="Plate number"
+                                variant="outlined"
+                                value={registration}
+                                onChange={(e) =>
+                                    setRegistration(e.target.value)
+                                }
+                            />
+                        </div>
 
-                        <div className="flex w-full px-12">
-                            <div className="rounded-lg bg-gray-100 p-8 sm:p-12">
-                                <div className="mb-6">
-                                    <TextField
-                                        fullWidth
-                                        id="outlined-basic"
-                                        label="Car Model"
-                                        variant="outlined"
-                                        value={model}
-                                        onChange={(e) => {
-                                            setModel(e.target.value);
-                                        }}
-                                    />
-                                </div>
-                                <div className="mb-6">
-                                    <TextField
-                                        fullWidth
-                                        id="outlined-basic"
-                                        label="Plate number"
-                                        variant="outlined"
-                                        value={registration}
-                                        onChange={(e) =>
-                                            setRegistration(e.target.value)
-                                        }
-                                    />
-                                </div>
-
-                                {/* Updown car seats selection */}
-                                <div className="">
-                                    <Typography className="">
-                                        Number of seats
-                                    </Typography>
-                                    <div className="flex flex-row justify-around">
-                                        <Button
-                                            disabled={seats <= 1}
-                                            onClick={() => {
-                                                if (seats > 1)
-                                                    setSeats(seats - 1);
-                                            }}
-                                        >
-                                            <RemoveIcon />
-                                        </Button>
-                                        <h3 className="inline">{seats}</h3>
-                                        <Button
-                                            disabled={seats >= 99}
-                                            onClick={() => {
-                                                if (seats < 99)
-                                                    setSeats(seats + 1);
-                                            }}
-                                        >
-                                            <AddIcon />
-                                        </Button>
-                                    </div>
-                                </div>
-                                <MapInputPresenter onPlace={setLocation} />
+                        {/* Updown car seats selection */}
+                        <div className="p-6">
+                            <Typography className="">
+                                Number of seats
+                            </Typography>
+                            <div className="mb-6">
+                                <Button
+                                    disabled={seats <= 1}
+                                    onClick={() => {
+                                        if (seats > 1) setSeats(seats - 1);
+                                    }}
+                                >
+                                    <RemoveIcon />
+                                </Button>
+                                <h3 className="inline justify-items-center">
+                                    {seats}
+                                </h3>
+                                <Button
+                                    disabled={seats >= 99}
+                                    onClick={() => {
+                                        if (seats < 99) setSeats(seats + 1);
+                                    }}
+                                >
+                                    <AddIcon />
+                                </Button>
                             </div>
                         </div>
+                        <MapInputPresenter onPlace={setLocation} />
                     </div>
                 </DialogContent>
                 <DialogActions>
