@@ -33,6 +33,13 @@
                     { "key": "Cache-Control", "value": "no-store, private" }
                 ]
             }
+        ],
+        "redirects": [
+            {
+                "source": "@(/expo|/about)",
+                "destination": "https://ict-owls.github.io/",
+                "type": 301
+            }
         ]
     }
 }
