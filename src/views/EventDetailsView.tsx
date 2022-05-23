@@ -39,6 +39,7 @@ type EventDetailsViewProps = {
     setCarpooling: (value: boolean) => void;
     pickup: () => void;
     registerCar: (car: Car) => void;
+    mapContext: string;
 };
 
 export default function EventDetailsView(props: EventDetailsViewProps) {
@@ -170,6 +171,7 @@ export default function EventDetailsView(props: EventDetailsViewProps) {
                                     lng: event.location.longitude,
                                     lat: event.location.latitude,
                                 }}
+                                mapContext={props.mapContext}
                             />
                         </div>
                     </div>

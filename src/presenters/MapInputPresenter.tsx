@@ -13,6 +13,8 @@ type MapInputPresenterProps = {
         longitude: number;
         latitude: number;
     }) => void;
+    mapContext: string;
+    size?: { width: string | number; height: string | number };
 };
 
 const kistaCoords = {
@@ -30,6 +32,21 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
     const [pan, setPan] = React.useState<google.maps.LatLngLiteral>(
         marker.latLng
     );
+    const [zoom, setZoom] = React.useState<number>(12); // Default value gets overridden by the map's default value
+
+    React.useEffect(() => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const accuracy = position.coords.accuracy/41.955;
+            const accuracyZoom = 20 - Math.log(accuracy)/0.71533427;
+            setMarker({
+                latLng: {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                },
+            });
+            setZoom(accuracyZoom);
+        });
+    }, []);
 
     React.useEffect(() => {
         if (!marker) return;
@@ -42,71 +59,71 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
         });
     }, [marker, value?.description]);
 
-    const render = () => {
-        switch (mapStatus) {
-            case MapStatus.LOADING:
-                return <CircularProgress />;
-            case MapStatus.FAILURE:
-                return (
-                    <Snackbar>
-                        <Alert severity="warning">Map failed to load</Alert>
-                    </Snackbar>
-                );
-            case MapStatus.SUCCESS:
-                return (
-                    <div className={'h-full w-full '}>
-                        <div className="z-40">
-                            <LocationFormPresenter
-                                textInput={textInput}
-                                setTextInput={setTextInput}
-                                value={value}
-                                setValue={setValue}
-                                onMarkerChange={(newMarker: Marker | null) => {
-                                    console.log(newMarker);
-                                    if (newMarker) setMarker(newMarker);
-                                }}
-                                onAddressChange={(
-                                    newAddress: string | null
-                                ) => {
-                                    if (newAddress)
-                                        setValue({
-                                            description: newAddress,
-                                            main_text: 'reverse geocoding',
-                                            secondary_text: '',
-                                        });
-                                }}
-                            />
-                        </div>
-                        <MapView
-                            startAt={kistaCoords}
-                            markers={marker ? [marker] : []}
-                            onClick={(e: google.maps.MapMouseEvent) => {
-                                if (e.latLng) {
-                                    setMarker({ latLng: e.latLng.toJSON() });
-                                    reverseGeocode(e.latLng).then(
-                                        (addr: string | null) => {
-                                            if (addr) {
-                                                setValue({
-                                                    main_text:
-                                                        'reverse geocoding',
-                                                    description: addr,
-                                                });
-                                            }
-                                        }
-                                    );
-                                }
+    
+    switch (mapStatus) {
+        case MapStatus.LOADING:
+            return <CircularProgress />;
+        case MapStatus.FAILURE:
+            return (
+                <Snackbar>
+                    <Alert severity="warning">Map failed to load</Alert>
+                </Snackbar>
+            );
+        case MapStatus.SUCCESS:
+            return (
+                <div>
+                    <div className="z-40">
+                        <LocationFormPresenter
+                            textInput={textInput}
+                            setTextInput={setTextInput}
+                            value={value}
+                            setValue={setValue}
+                            onMarkerChange={(newMarker: Marker | null) => {
+                                if (newMarker) setMarker(newMarker);
                             }}
-                            pan={pan}
-                            setPan={setPan}
+                            onAddressChange={(
+                                newAddress: string | null
+                            ) => {
+                                if (newAddress)
+                                    setValue({
+                                        description: newAddress,
+                                        main_text: 'reverse geocoding',
+                                        secondary_text: '',
+                                    });
+                            }}
                         />
                     </div>
-                );
-            default:
-                return null;
-        }
-    };
-
-    return render();
+                    <MapView
+                        size={props.size}
+                        mapContext={props.mapContext}
+                        startAt={kistaCoords}
+                        markers={marker ? [marker] : []}
+                        onClick={(e: google.maps.MapMouseEvent) => {
+                            if (e.latLng) {
+                                setMarker({ latLng: e.latLng.toJSON() });
+                                reverseGeocode(e.latLng).then(
+                                    (addr: string | null) => {
+                                        if (addr) {
+                                            setValue({
+                                                main_text:
+                                                    'reverse geocoding',
+                                                description: addr,
+                                            });
+                                        }
+                                    }
+                                );
+                            }
+                        }}
+                        pan={pan}
+                        setPan={setPan}
+                        zoom={zoom}
+                        setZoom={setZoom}
+                    />
+                </div>
+            );
+        default:
+            return null;
+    }
 };
 
 export default MapInputPresenter;

@@ -5,6 +5,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
+    Stack,
     TextField,
 } from '@mui/material';
 import MapInputPresenter from 'presenters/MapInputPresenter';
@@ -51,45 +52,34 @@ export default function RequiresCarpoolingView({
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Enter Location</DialogTitle>
                 <DialogContent sx={{ minHeight: '50vh' }}>
-                    <DialogContentText>
-                        To request carpooling, please enter the location you
-                        want to be picked up from, and the number of seats
-                        required.
-                    </DialogContentText>
-                    {/*<TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Location"
-                        type="email"
-                        fullWidth
-                        variant="standard"
-                        onChange={(e) => {
-                            if (e.target.value?.length > 0)
-                                setSubmitEnabled(true);
-                            else setSubmitEnabled(false);
-                            setAddress(e.target.value);
-                        }}
-                    />*/}
-                    <MapInputPresenter
-                        onPlace={(location) => {
-                            setLocation(location);
-                        }}
-                    />
-                    <TextField
-                        type="number"
-                        placeholder="Required seats"
-                        id="seats"
-                        label="Seats"
-                        fullWidth
-                        value={seats}
-                        onChange={(e) => {
-                            const num = parseInt(e.target.value);
-                            if (num >= 1 && num <= 99) {
-                                setSeats(num);
-                            }
-                        }}
-                    ></TextField>
+                    <Stack spacing={2}>
+                        <DialogContentText>
+                            To request carpooling, please enter the location you
+                            want to be picked up from, and the number of seats
+                            required.
+                        </DialogContentText>
+                        <TextField
+                            type="number"
+                            placeholder="Required seats"
+                            id="seats"
+                            label="Seats"
+                            fullWidth
+                            value={seats}
+                            onChange={(e) => {
+                                const num = parseInt(e.target.value);
+                                if (num >= 1 && num <= 99) {
+                                    setSeats(num);
+                                }
+                            }}
+                        ></TextField>
+                        <MapInputPresenter
+                            size={{ width: '100%', height: '20rem' }}
+                            mapContext="requestCarpooling"
+                            onPlace={(location) => {
+                                setLocation(location);
+                            }}
+                        />
+                    </Stack>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)}>Cancel</Button>

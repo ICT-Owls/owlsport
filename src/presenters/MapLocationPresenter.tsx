@@ -9,6 +9,7 @@ import { useMapStatus } from 'models/Model';
 
 type MapLocationPresenterProps = {
     location: { lng: number; lat: number };
+    mapContext: string;
 };
 
 const MapLocationPresenter: FC<MapLocationPresenterProps> = (
@@ -29,6 +30,7 @@ const MapLocationPresenter: FC<MapLocationPresenterProps> = (
                 return (
                     <div className={'relative h-full w-full '}>
                         <MapView
+                            mapContext={props.mapContext}
                             startAt={props.location}
                             markers={[{latLng: props.location}]}
                         />

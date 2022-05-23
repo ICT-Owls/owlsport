@@ -314,7 +314,7 @@ const EventCreatingView = ({
                             </form>
                         </div>
 
-                        <div className="ml-4 content-center md:w-3/5">
+                        <div className="ml-4 content-center md:w-3/5 flex self-stretch">
                             <div className="relative rounded-lg bg-gray-100 p-8 sm:p-12">
                                 <TextareaAutosize
                                     aria-label="minimum height"
@@ -328,8 +328,10 @@ const EventCreatingView = ({
                                     }
                                 />
 
-                                <div className="mt-8  h-96">
+                                <div className="mt-8">
                                     <MapInputPresenter
+                                        size={{width: '100%', height:'25rem'}}
+                                        mapContext='eventCreate'
                                         onPlace={(newLocation) =>
                                             setLocation(newLocation)
                                         }

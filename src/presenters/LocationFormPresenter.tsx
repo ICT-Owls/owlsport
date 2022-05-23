@@ -36,7 +36,7 @@ const LocationFormPresenter: FC<LocationFormPresenterProps> = (
             geocode(props.value.description).then((result: GeoData | null) => {
                 if (!result) return;
                 setMarker({
-                    latLng: { lat: result.latitude, lng: result.longitude },
+                    latLng: { lat: parseFloat(result.latitude.toString()), lng: parseFloat(result.longitude.toString()) },
                 });
             });
         }

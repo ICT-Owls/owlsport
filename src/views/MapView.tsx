@@ -41,11 +41,19 @@ type MapViewProps = {
     children?: unknown[];
     pan?: google.maps.LatLngLiteral;
     setPan?: (lngLat: google.maps.LatLngLiteral) => void;
+    zoom?: number;
+    setZoom?: (zoom: number) => void;
+    mapContext: string;
+    size?: { width: number | string; height: number | string };
 };
 
 const MapView: FC<MapViewProps> = (props: MapViewProps) => {
     const mapRef = useRef<HTMLDivElement>(null);
     const [map, setMap] = React.useState<google.maps.Map>();
+
+    React.useEffect(() => {
+        if (props.zoom) map?.setZoom(props.zoom);
+    }, [props.zoom]);
 
     React.useEffect(() => {
         if (map) {
@@ -59,6 +67,13 @@ const MapView: FC<MapViewProps> = (props: MapViewProps) => {
 
             if (props.onIdle) {
                 map.addListener('idle', () => props.onIdle?.(map));
+            }
+
+            if (props.setZoom) {
+                map.addListener('zoom_changed', () => {
+                    const newZoom = map.getZoom();
+                    if (newZoom) props.setZoom?.(newZoom);
+                });
             }
         }
     }, [map, props.onClick, props.onIdle]);
@@ -78,28 +93,24 @@ const MapView: FC<MapViewProps> = (props: MapViewProps) => {
         map.panTo(props.pan);
     }, [props.pan]);
 
-    useEffect(() => {
-        if (props.markers) {
-            props.markers.forEach(({ latLng: { lat, lng }, icon }) => {
-                console.assert(typeof lat === 'number' && typeof lng === 'number', 'Marker has invalid latLng');
-            });
-        }
-    }, [props.markers]);
-
     return (
         <>
             <div
                 ref={mapRef}
-                className={'relative top-0 z-30 h-full w-full bg-slate-600'}
+                id={'google-map-' + props.mapContext}
+                className={'z-30 h-full w-full bg-slate-600'}
+                style={{ ...props.size, minWidth: '200px', minHeight: '200px' }}
             />
-            {props.markers?.map((m, i: number) => (
-                <MarkerView
-                    key={i}
-                    map={map}
-                    position={m.latLng}
-                    icon={m.icon}
-                />
-            ))}
+            {props.markers?.map((m, i: number) => {
+                return (
+                    <MarkerView
+                        key={i}
+                        map={map}
+                        position={m.latLng}
+                        icon={m.icon}
+                    />
+                );
+            })}
         </>
     );
 };
