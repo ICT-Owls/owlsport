@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import LocationFormView from '../views/LocationFormView';
 import { geocode } from '../api/index';
 import { GeoData } from 'api/types';
+import { Marker } from 'views/MapView';
 
 export type Place = {
     name: string;
@@ -13,16 +14,14 @@ type LocationFormPresenterProps = {
     setValue?: (newValue: GooglePlace | null) => void;
     textInput?: string;
     setTextInput?: (newValue: string) => void;
-    onMarkerChange?: (marker: google.maps.LatLngLiteral | null) => void;
+    onMarkerChange?: (marker: Marker | null) => void;
     onAddressChange?: (address: string | null) => void;
 };
 
 const LocationFormPresenter: FC<LocationFormPresenterProps> = (
     props: LocationFormPresenterProps
 ) => {
-    const [marker, setMarker] = useState<google.maps.LatLngLiteral | null>(
-        null
-    );
+    const [marker, setMarker] = useState<Marker | null>(null);
 
     useEffect(() => {
         props.onMarkerChange?.(marker);
@@ -36,7 +35,9 @@ const LocationFormPresenter: FC<LocationFormPresenterProps> = (
         if (props.value.main_text !== 'reverse geocoding') {
             geocode(props.value.description).then((result: GeoData | null) => {
                 if (!result) return;
-                setMarker({ lat: result.latitude, lng: result.longitude });
+                setMarker({
+                    latLng: { lat: result.latitude, lng: result.longitude },
+                });
             });
         }
     }, [props.value?.description]);

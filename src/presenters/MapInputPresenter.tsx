@@ -35,7 +35,6 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
         if (!marker) return;
         setPan(marker.latLng);
         if (!value?.description || !props.onPlace) return;
-
         props.onPlace({
             address: value?.description,
             longitude: marker.latLng.lng,
@@ -62,11 +61,9 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                                 setTextInput={setTextInput}
                                 value={value}
                                 setValue={setValue}
-                                onMarkerChange={(
-                                    newMarker: google.maps.LatLngLiteral | null
-                                ) => {
-                                    if (newMarker)
-                                        setMarker({ latLng: newMarker });
+                                onMarkerChange={(newMarker: Marker | null) => {
+                                    console.log(newMarker);
+                                    if (newMarker) setMarker(newMarker);
                                 }}
                                 onAddressChange={(
                                     newAddress: string | null
@@ -88,13 +85,13 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                                     setMarker({ latLng: e.latLng.toJSON() });
                                     reverseGeocode(e.latLng).then(
                                         (addr: string | null) => {
-                                            if (addr)
+                                            if (addr) {
                                                 setValue({
                                                     main_text:
                                                         'reverse geocoding',
                                                     description: addr,
-                                                    ...e.latLng,
                                                 });
+                                            }
                                         }
                                     );
                                 }

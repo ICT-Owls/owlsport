@@ -80,7 +80,7 @@ export default function RequiresCarpoolingView({
                         type="number"
                         placeholder="Required seats"
                         id="seats"
-                        label="seats"
+                        label="Seats"
                         fullWidth
                         value={seats}
                         onChange={(e) => {

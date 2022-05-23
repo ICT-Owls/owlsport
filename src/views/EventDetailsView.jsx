@@ -22,6 +22,7 @@ import {
 import DriversCardPresenter from '../presenters/DriversCardPresenter';
 import RequiresCarpoolingPresenter from '../presenters/RequiresCarpoolingPresenter';
 import AvatarView from './AvatarView';
+import CarpoolerCardView from './CarpoolerCardView';
 export default function EventDetailsView({
     event,
     users,
@@ -120,16 +121,17 @@ export default function EventDetailsView({
                     </div>
                     <Divider variant="fullWidth" />
                     <div className="h-56 overflow-y-scroll">
-                        <List className="flex flex-row flex-wrap justify-center">
+                        <List className="flex h-full flex-row flex-wrap justify-center items-center">
                             {isDriver
                                 ? DriverView({ members, pickup })
                                 : CarpoolerView({ members, users })}
                         </List>
                     </div>
                     <Divider variant="fullWidth" />
-                    <div className="my-2 h-fit w-full text-center text-sm">
-                        <h3 className="m-2">Map</h3>
+                    <div className="my-2 h-fit w-full text-center text-lg">
+                        <h3 className="m-2">Event Description</h3>
                         {description}
+                        <h3 className="m-2">Map</h3>
                     </div>
                     <Divider variant="middle" />
                     <div className="flex h-fit w-full flex-row justify-center">
@@ -170,6 +172,18 @@ function DriverView({ members, pickup }) {
     const requireCarpooling = Object.values(members).filter(
         (m) => m.requiresCarpooling && !m.isDriver && !m.isPassenger
     );
+
+    if (requireCarpooling.length <= 0) {
+        return (
+            <div
+                fontSize={'1.5rem'}
+                className="h-min text-lg text-center text-secondary-100"
+            >
+                No one needs a ride yet...
+            </div>
+        );
+    }
+
     return requireCarpooling.map((m) => {
         return (
             <DriversCardPresenter
@@ -185,87 +199,17 @@ function DriverView({ members, pickup }) {
 
 function CarpoolerView({ members, users }) {
     const drivers = Object.values(members).filter((m) => m.isDriver);
-    return drivers.map((d) => {
-        const { car, id, location, passengers } = d;
-        const { model, registration, seats } = car;
-        const passengerUsers = {};
-        for (let passengerId of passengers || []) {
-            passengerUsers[passengerId] = members[passengerId];
-        }
-        const free =
-            seats -
-            Object.values(passengerUsers).reduce((sum, p) => p.seats + sum, 0);
 
-        let it = 0;
-
+    if (drivers.length <= 0) {
         return (
-            <div key={d.id} className="m-2 inline-flex justify-start">
-                {/* <Card sx={{ minWidth: 150 }}> */}
-                <Card>
-                    <div className="m-2 ml-4 flex flex-col">
-                        <div className="mr-2 flex flex-row items-center">
-                            <AvatarView user={users[id]} />
-
-                            <Typography
-                                className="ml-2"
-                                variant="h6"
-                                component="div"
-                            >
-                                {formatUsername(users[id])}
-                            </Typography>
-                        </div>
-
-                        <div className="flex">
-                            <IconButton
-                                aria-label="location"
-                                className="m-0"
-                                size="small"
-                            >
-                                <LocationOnIcon fontSize="small" />
-                                <p>{location.address}</p>
-                            </IconButton>
-                        </div>
-
-                        <div className="flex justify-start ">
-                            <AvatarGroup max={seats}>
-                                {Array(free)
-                                    .fill(0)
-                                    .map((i) => {
-                                        console.log('x');
-                                        return (
-                                            <Avatar
-                                                key={it++}
-                                                alt="Free Seat"
-                                                src="avatar.png"
-                                            />
-                                        );
-                                    })}
-                                {Object.values(passengerUsers).flatMap(
-                                    (passenger) =>
-                                        Array(passenger.seats)
-                                            .fill(0)
-                                            .map((_) => (
-                                                <AvatarView
-                                                    key={`passenger.id${it++}`}
-                                                    user={users[passenger.id]}
-                                                />
-                                            ))
-                                )}
-                            </AvatarGroup>
-
-                            <div className="ml-20 flex">
-                                <Button
-                                    disabled={true}
-                                    variant="contained"
-                                    className="border-primary rounded border bg-primary-100 transition duration-500"
-                                >
-                                    JOIN
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </Card>
+            <div
+                fontSize={'1.5rem'}
+                className="h-min text-lg text-center text-secondary-100"
+            >
+                No drivers are available...
             </div>
         );
-    });
+    }
+
+    return drivers.map((d) => new CarpoolerCardView(...d, members, users));
 }

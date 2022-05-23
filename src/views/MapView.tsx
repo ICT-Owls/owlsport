@@ -78,6 +78,14 @@ const MapView: FC<MapViewProps> = (props: MapViewProps) => {
         map.panTo(props.pan);
     }, [props.pan]);
 
+    useEffect(() => {
+        if (props.markers) {
+            props.markers.forEach(({ latLng: { lat, lng }, icon }) => {
+                console.assert(typeof lat === 'number' && typeof lng === 'number', 'Marker has invalid latLng');
+            });
+        }
+    }, [props.markers]);
+
     return (
         <>
             <div
