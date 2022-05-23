@@ -58,8 +58,8 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                 );
             case MapStatus.SUCCESS:
                 return (
-                    <div className={'relative h-full w-full '}>
-                        <div className="absolute left-48 top-2 z-40">
+                    <div className={'h-full w-full '}>
+                        <div className="z-40">
                             <LocationFormPresenter
                                 textInput={textInput}
                                 setTextInput={setTextInput}
