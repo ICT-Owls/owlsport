@@ -8,9 +8,18 @@ import express, { json } from 'express';
 
 import path from 'path';
 
+const log = require('ololog').configure({ time: true });
+log.handleNodeErrors();
+
 const app = express();
 
 const port = parseInt(process.env.PORT);
+
+/* Format node error output */
+process.on('uncaughtException', (err) => {
+    logError(err);
+    process.exit(1);
+});
 
 if (isNaN(port)) {
     console.error('Environment variable PORT must be set!');

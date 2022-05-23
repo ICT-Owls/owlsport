@@ -1,5 +1,5 @@
 info:
-    version: '0.2.8'
+    version: '0.2.9'
 components:
     schemas:
         # Information about the authentication status of the current user
@@ -208,7 +208,7 @@ components:
             type: object
             required:
                 - latitude
-                - longitud
+                - longitude
                 - address
             properties:
                 latitude:

@@ -1,10 +1,7 @@
 import React, { FC } from 'react';
-import {
-    Wrapper as MapWrapper,
-    Status as MapStatus,
-} from '@googlemaps/react-wrapper';
+import { Status as MapStatus } from '@googlemaps/react-wrapper';
 import { Alert, CircularProgress, Snackbar } from '@mui/material';
-import MapView from '../views/MapView';
+import MapView, { Marker } from '../views/MapView';
 import LocationFormPresenter from './LocationFormPresenter';
 import { GooglePlace } from 'helpers/Location';
 import { reverseGeocode } from 'api';
@@ -27,22 +24,22 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
     props: MapInputPresenterProps
 ) => {
     const [mapStatus] = useMapStatus();
-    const [marker, setMarker] = React.useState<google.maps.LatLng>(
-        new google.maps.LatLng(kistaCoords)
-    );
+    const [marker, setMarker] = React.useState<Marker>({ latLng: kistaCoords });
     const [textInput, setTextInput] = React.useState<string>();
     const [value, setValue] = React.useState<GooglePlace | null>();
-    const [pan, setPan] = React.useState<google.maps.LatLng>(marker);
+    const [pan, setPan] = React.useState<google.maps.LatLngLiteral>(
+        marker.latLng
+    );
 
     React.useEffect(() => {
         if (!marker) return;
-        setPan(marker);
+        setPan(marker.latLng);
         if (!value?.description || !props.onPlace) return;
 
         props.onPlace({
             address: value?.description,
-            longitude: marker.lng(),
-            latitude: marker.lat(),
+            longitude: marker.latLng.lng,
+            latitude: marker.latLng.lat,
         });
     }, [marker, value?.description]);
 
@@ -58,17 +55,18 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                 );
             case MapStatus.SUCCESS:
                 return (
-                    <div className={'relative h-full w-full '}>
-                        <div className="absolute left-48 top-2 z-40">
+                    <div className={'h-full w-full '}>
+                        <div className="z-40">
                             <LocationFormPresenter
                                 textInput={textInput}
                                 setTextInput={setTextInput}
                                 value={value}
                                 setValue={setValue}
                                 onMarkerChange={(
-                                    newMarker: google.maps.LatLng | null
+                                    newMarker: google.maps.LatLngLiteral | null
                                 ) => {
-                                    if (newMarker) setMarker(newMarker);
+                                    if (newMarker)
+                                        setMarker({ latLng: newMarker });
                                 }}
                                 onAddressChange={(
                                     newAddress: string | null
@@ -87,7 +85,7 @@ const MapInputPresenter: FC<MapInputPresenterProps> = (
                             markers={marker ? [marker] : []}
                             onClick={(e: google.maps.MapMouseEvent) => {
                                 if (e.latLng) {
-                                    setMarker(e.latLng);
+                                    setMarker({ latLng: e.latLng.toJSON() });
                                     reverseGeocode(e.latLng).then(
                                         (addr: string | null) => {
                                             if (addr)

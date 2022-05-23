@@ -3,7 +3,6 @@
         "public": "build",
         "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
         "cleanUrls": true,
-        "trailingSlash": false,
         "rewrites": [
             {
                 "source": "/api",
@@ -13,16 +12,13 @@
                 }
             },
             {
-                "source": "/api",
-                "run": {
-                    "serviceId": "carpooling-backend",
-                    "region": "europe-north1"
-                }
+                "source": "**",
+                "destination": "/index.html"
             }
         ],
         "headers": [
             {
-                "source": "*",
+                "source": "/**",
                 "headers": [
                     {
                         "key": "Access-Control-Allow-Origin",
@@ -31,10 +27,22 @@
                 ]
             },
             {
-                "source": "/api/**/*",
+                "source": "/api/**",
                 "headers": [
                     { "key": "Cache-Control", "value": "no-store, private" }
                 ]
+            }
+        ],
+        "redirects": [
+            {
+                "source": "/expo",
+                "destination": "https://ict-owls.github.io/",
+                "type": 301
+            },
+            {
+                "source": "/about",
+                "destination": "https://ict-owls.github.io/",
+                "type": 301
             }
         ]
     }

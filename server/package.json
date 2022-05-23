@@ -48,7 +48,9 @@
         "firebase-admin": "^10.1.0",
         "isomorphic-fetch": "^3.0.0",
         "node-geocoder": "^4.0.0",
+        "ololog": "^1.1.175",
         "path": "^0.12.7",
+        "pretty-print-error": "^1.1.1",
         "random-avatar-generator": "^2.0.0"
     }
 }
