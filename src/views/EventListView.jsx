@@ -31,6 +31,14 @@ export default function EventListView({ events, user, loadEvents }) {
     const [haveNewEvents, setHaveNewEvents] = useState(false);
     const [haveOldEvents, setHaveOldEvents] = useState(false);
 
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        pollEvents().then(() => {
+            setLoaded(true);
+        });
+    }, []);
+
     useEffect(() => {
         setOldEvents(events.filter((o) => o.endDateTime <= Date.now()));
         setNewEvents(events.filter((o) => o.endDateTime > Date.now()));
@@ -68,7 +76,13 @@ export default function EventListView({ events, user, loadEvents }) {
             </Dialog>
 
             <Box className={'flex flex-col items-start'}>
-                <Typography fontSize={'1.5rem'} fontFamily={'monospace'} color={"#AAA"}>Events</Typography>
+                <Typography
+                    fontSize={'1.5rem'}
+                    fontFamily={'monospace'}
+                    color={'#AAA'}
+                >
+                    Events
+                </Typography>
                 <Button
                     className="w-fit justify-start self-start"
                     onClick={() => setCreateOpen(true)}

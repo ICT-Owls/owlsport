@@ -19,6 +19,7 @@ const dataStruct = {
     events: { defaultValue: [], callbacks: {} },
     showChat: { defaultValue: false, callbacks: {} },
     mapStatus: { defaultValue: MapStatus.LOADING, callbacks: {} },
+    mainContentLoading: { defaultValue: [], callbacks: {} },
 };
 
 //-------- Custom Hooks --------
@@ -35,7 +36,8 @@ export function useEventList() {
     const [events, setEvents] = useCustomHook('events');
 
     const poll = async () => {
-        if (!isLoggedIn()) return;
+        const status = fromLocalStorage('mainContentLoading');
+        if (!isLoggedIn() || status.includes('pollEvents')) return;
         const freshEvents = await getEvents();
         if (freshEvents != null) setEvents(freshEvents);
     };
@@ -50,6 +52,26 @@ export function useChat() {
 export function useMapStatus() {
     const hook = useCustomHook('mapStatus');
     return hook || [null, () => null];
+}
+
+/**
+ *   @returns [isLoading: boolean, startProcess(process), clearProcess(process)]
+ */
+export function useLoadingStatus() {
+    const [status, setStatus] = useCustomHook('mainContentLoading');
+    return [
+        status,
+        (process) => {
+            status.push(process);
+            setStatus(status);
+        },
+        (process) => {
+            const i = status.indexOf(process);
+            if (i < 0) return;
+            status.splice(status.indexOf(process), 1);
+            setStatus(status);
+        },
+    ];
 }
 
 //This function is the current implementation of User login persistance. Since auth()
@@ -89,6 +111,10 @@ export function useUser() {
 
 //This function is run by App.jsx when mounted. Initialized the model
 export function initModel() {
+    // Don't persist loadig state
+    localStorage.removeItem('mapStatus');
+    localStorage.removeItem('mainContentLoading');
+
     //If value does not exist in local storage, then load default value
     Object.keys(dataStruct).map((e) => {
         localStorage.getItem(e) === null &&
