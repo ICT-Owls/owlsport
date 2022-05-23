@@ -13,18 +13,17 @@ import { formatUsername } from 'helpers/Format';
 import AvatarView from './AvatarView';
 
 type CarpoolerCardViewProps = {
-    car: Car;
-    id: Id;
-    location: Location;
-    passengers: Id[];
+    driver: EventMember,
     members: { [key: string]: EventMember };
     users: { [key: string]: User };
 };
 
 const CarpoolerCardView: FC<CarpoolerCardViewProps> = (props) => {
-    const { model, registration, seats } = props.car;
+    if (!props.driver.car || !props.driver.passengers || !props.driver.location) return null;
+
+    const { model, registration, seats } = props.driver.car;
     const passengerUsers: { [key: string]: EventMember } = {};
-    for (const passengerId of props.passengers || []) {
+    for (const passengerId of props.driver.passengers || []) {
         passengerUsers[passengerId] = props.members[passengerId];
     }
     const free =
@@ -37,19 +36,19 @@ const CarpoolerCardView: FC<CarpoolerCardViewProps> = (props) => {
     let it = 0;
 
     return (
-        <div key={props.id} className="m-2 inline-flex justify-start">
+        <div key={props.driver.id} className="m-2 inline-flex justify-start">
             {/* <Card sx={{ minWidth: 150 }}> */}
             <Card>
                 <div className="m-2 ml-4 flex flex-col">
                     <div className="mr-2 flex flex-row items-center">
-                        <AvatarView user={props.users[props.id]} />
+                        <AvatarView user={props.users[props.driver.id]} />
 
                         <Typography
                             className="ml-2"
                             variant="h6"
                             component="div"
                         >
-                            {formatUsername(props.users[props.id])}
+                            {formatUsername(props.users[props.driver.id])}
                         </Typography>
                     </div>
 
@@ -60,7 +59,7 @@ const CarpoolerCardView: FC<CarpoolerCardViewProps> = (props) => {
                             size="small"
                         >
                             <LocationOnIcon fontSize="small" />
-                            <p>{props.location.address}</p>
+                            <p>{props.driver.location.address}</p>
                         </IconButton>
                     </div>
 

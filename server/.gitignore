@@ -15,6 +15,7 @@
 
 # generated files
 /generated-sources
+/package-lock.json
 
 # misc
 .DS_Store
