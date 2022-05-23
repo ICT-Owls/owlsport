@@ -103,7 +103,6 @@ const LocationFormView: FC<LocationFormViewProps> = (
         <div className="bg-background-100">
             <Autocomplete
                 id="google-map-demo"
-                sx={{ width: 300 }}
                 getOptionLabel={(option) =>
                     typeof option === 'string' ? option : option.description
                 }
