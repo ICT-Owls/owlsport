@@ -36,7 +36,12 @@
         ],
         "redirects": [
             {
-                "source": "@(/expo|/about)",
+                "source": "/expo/**",
+                "destination": "https://ict-owls.github.io/",
+                "type": 301
+            },
+            {
+                "source": "/about/**",
                 "destination": "https://ict-owls.github.io/",
                 "type": 301
             }
