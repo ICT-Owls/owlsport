@@ -55,7 +55,7 @@ export default function RegisterCarpoolingView({
                 </Button>
             )}
 
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog disablePortal open={open} onClose={handleClose}>
                 <DialogTitle>Car Registration</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -63,17 +63,17 @@ export default function RegisterCarpoolingView({
                         and number of available seats.
                     </DialogContentText>
 
-                    <div className="flex flex-row justify-center">
-                        {user ? (
-                            <Box alignContent={'center'} maxHeight="56px">
-                                <AvatarView maxHeight="100%" user={user} />
-                            </Box>
-                        ) : (
-                            <>ERROR!</>
-                        )}
+                    <div className="justify-center">
+                        {/*{user ? (*/}
+                        {/*    <Box alignContent={'center'} maxHeight="56px">*/}
+                        {/*        <AvatarView maxHeight="100%" user={user} />*/}
+                        {/*    </Box>*/}
+                        {/*) : (*/}
+                        {/*    <>No user!</>*/}
+                        {/*)}*/}
 
-                        <div className="flex w-full px-12">
-                            <div className="rounded-lg bg-gray-100 p-8 sm:p-12">
+                        <div className="flex w-full">
+                            <div className="rounded-lg bg-gray-100 p-4 sm:p-12">
                                 <div className="mb-6">
                                     <TextField
                                         fullWidth
@@ -86,7 +86,7 @@ export default function RegisterCarpoolingView({
                                         }}
                                     />
                                 </div>
-                                <div className="mb-6">
+                                <div className="">
                                     <TextField
                                         fullWidth
                                         id="outlined-basic"
@@ -100,11 +100,11 @@ export default function RegisterCarpoolingView({
                                 </div>
 
                                 {/* Updown car seats selection */}
-                                <div className="">
+                                <div className="p-6">
                                     <Typography className="">
                                         Number of seats
                                     </Typography>
-                                    <div className="flex flex-row justify-around">
+                                    <div className="mb-6">
                                         <Button
                                             disabled={seats <= 1}
                                             onClick={() => {
@@ -114,7 +114,7 @@ export default function RegisterCarpoolingView({
                                         >
                                             <RemoveIcon />
                                         </Button>
-                                        <h3 className="inline">{seats}</h3>
+                                        <h3 className="inline justify-items-center">{seats}</h3>
                                         <Button
                                             disabled={seats >= 99}
                                             onClick={() => {
