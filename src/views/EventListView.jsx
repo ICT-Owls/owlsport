@@ -93,7 +93,7 @@ export default function EventListView({ events, user, loadEvents }) {
 
             {haveNewEvents ? (
                 <Typography textAlign={'center'} variant="h5" py-10>
-                    New Events
+                    Upcoming Events
                 </Typography>
             ) : (
                 <div />
@@ -130,7 +130,7 @@ export default function EventListView({ events, user, loadEvents }) {
 
             {haveOldEvents ? (
                 <Typography textAlign={'center'} variant="h5" py-10>
-                    Old Events
+                    Past Events
                 </Typography>
             ) : (
                 <div />
