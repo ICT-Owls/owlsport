@@ -51,6 +51,14 @@ export default function SidebarView({
                                 Events
                             </Button>
 
+                            <Button
+                                sx={{ justifyContent: 'left' }}
+                                color={'secondary'}
+                                href="/about"
+                            >
+                                About
+                            </Button>
+
                             <Divider style={{ padding: '4px' }} />
 
                             {user ? (
