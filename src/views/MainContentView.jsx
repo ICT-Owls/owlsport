@@ -7,6 +7,7 @@ import MapInputPresenter from 'presenters/MapInputPresenter';
 import WelcomeView from './WelcomeView';
 import { CircularProgress } from '@mui/material';
 import { useLoadingStatus } from 'models/Model';
+import LocationDialogView from './LocationDialogView';
 
 export default function MainContentView({ user }) {
     const [loadingTasks, addLoadingTask, clearLoadingTask] = useLoadingStatus();
@@ -16,24 +17,33 @@ export default function MainContentView({ user }) {
     const routed = user ? (
         <Routes>
             <Route
-                path="/event/:eventId"
-                element={<EventDetailsPresenter user={user} />}
-            />
-
-            <Route
-                path="/events"
+                exact
+                path="/"
                 element={<EventListPresenter user={user} />}
             />
+            <Route path="/">
+                <Route
+                    path="event/:eventId"
+                    element={<EventDetailsPresenter user={user} />}
+                >
+                    <Route
+                        path="map"
+                        element={<LocationDialogView user={user} />}
+                    />
+                </Route>
 
-            <Route
-                path="/carregistration"
-                element={<CarRegistrationPresenter user={user} />}
-            />
-            <Route path="/whatever" element={<MapInputPresenter />} />
+                <Route
+                    path="events"
+                    element={<EventListPresenter user={user} />}
+                />
 
-            <Route path="/" element={<EventListPresenter user={user} />} />
+                <Route
+                    path="carregistration"
+                    element={<CarRegistrationPresenter user={user} />}
+                />
 
-            <Route path="/welcome" element={<WelcomeView />} />
+                <Route path="welcome" element={<WelcomeView />} />
+            </Route>
         </Routes>
     ) : (
         <WelcomeView />
@@ -45,7 +55,7 @@ export default function MainContentView({ user }) {
                 sx={{
                     position: 'absolute',
                     left: 'calc(50% - 3rem)',
-                    display: (loadingTasks.length!==0) ? 'block' : 'none',
+                    display: loadingTasks.length !== 0 ? 'block' : 'none',
                 }}
                 thickness={4}
                 size="6rem"

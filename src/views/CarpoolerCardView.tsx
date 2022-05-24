@@ -11,15 +11,17 @@ import Card from '@mui/material/Card';
 import { Car, EventMember, Id, User, Location } from '../api/types';
 import { formatUsername } from 'helpers/Format';
 import AvatarView from './AvatarView';
+import { NavLink } from 'react-router-dom';
 
 type CarpoolerCardViewProps = {
-    driver: EventMember,
+    driver: EventMember;
     members: { [key: string]: EventMember };
     users: { [key: string]: User };
 };
 
 const CarpoolerCardView: FC<CarpoolerCardViewProps> = (props) => {
-    if (!props.driver.car || !props.driver.passengers || !props.driver.location) return null;
+    if (!props.driver.car || !props.driver.passengers || !props.driver.location)
+        return null;
 
     const { model, registration, seats } = props.driver.car;
     const passengerUsers: { [key: string]: EventMember } = {};
@@ -53,14 +55,29 @@ const CarpoolerCardView: FC<CarpoolerCardViewProps> = (props) => {
                     </div>
 
                     <div className="flex">
-                        <IconButton
-                            aria-label="location"
-                            className="m-0"
-                            size="small"
+                        <NavLink
+                            to={
+                                './map?lng=' +
+                                props.driver.location.longitude +
+                                '&lat=' +
+                                props.driver.location.latitude
+                            }
                         >
-                            <LocationOnIcon fontSize="small" />
-                            <p>{props.driver.location.address}</p>
-                        </IconButton>
+                            <Button
+                                aria-label="location"
+                                className="m-0"
+                                size="small"
+                                variant="text"
+                            >
+                                <LocationOnIcon
+                                    fontSize="small"
+                                    className="text-secondary-100"
+                                />{' '}
+                                <span className="text-secondary-100">
+                                    {' ' + props.driver.location.address}
+                                </span>
+                            </Button>
+                        </NavLink>
                     </div>
 
                     <div className="flex justify-start ">

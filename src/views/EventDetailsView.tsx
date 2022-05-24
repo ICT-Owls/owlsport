@@ -13,12 +13,11 @@ import DialogContent from '@mui/material/DialogContent';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
 import { leaveEvent } from 'api';
 import { useEventList } from 'models/Model';
 import MapLocationPresenter from 'presenters/MapLocationPresenter';
 import RegisterCarpoolingPresenter from 'presenters/RegisterCarpoolingPresenter';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import {
     formatDateMonthDay,
     formatFullDate,
@@ -31,6 +30,7 @@ import AvatarView from './AvatarView';
 import CarpoolerCardView from './CarpoolerCardView';
 import { EventMember, User, Id, Car, Event } from '../api/types';
 import React, { FC } from 'react';
+import DialogTitleBase from './DialogBase';
 
 type EventDetailsViewProps = {
     event: Event;
@@ -92,23 +92,7 @@ export default function EventDetailsView(props: EventDetailsViewProps) {
             fullWidth
             maxWidth={'xl'}
         >
-            <DialogTitle>
-                {title}
-                {handleClose ? (
-                    <IconButton
-                        aria-label="close"
-                        onClick={handleClose}
-                        sx={{
-                            position: 'absolute',
-                            right: 8,
-                            top: 8,
-                            color: (theme) => theme.palette.grey[500],
-                        }}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                ) : null}
-            </DialogTitle>
+            <DialogTitleBase title={title} onClose={handleClose} />
             <DialogContent className="scrollbar-thin">
                 <div className="flex flex-col justify-around">
                     <div className="flex flex-row items-center justify-between">
@@ -159,7 +143,9 @@ export default function EventDetailsView(props: EventDetailsViewProps) {
                     </div>
                     <Divider variant="fullWidth" />
                     <div className="my-2 h-fit w-full text-center text-lg">
-                        <h3 className="m-2">Event Description</h3>
+                        {description.trim().length === 0 ? null : (
+                            <h3 className="m-2">Event Description</h3>
+                        )}
                         {description}
                         <h3 className="m-2">Map</h3>
                     </div>
@@ -195,6 +181,7 @@ export default function EventDetailsView(props: EventDetailsViewProps) {
                         : "I don't want to attend this event"}
                 </Button>
             </div>
+            <Outlet />
         </Dialog>
     );
 }
