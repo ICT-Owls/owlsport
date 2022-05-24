@@ -22,11 +22,15 @@ export type UserOption = {
 };
 
 const newOptions = [
-    { label: 'Test Testson', email: 'test@test.com' },
-    { label: 'Hugo Sandell', email: 'hugossandell@gmail.com' },
-    { label: 'Maria Dodieva', email: 'syunkova@gmail.com' },
-    { label: 'Samson Emblad', email: 'samson@emblad.com' },
-    { label: 'Francis Gniady', email: 'franek.kg@gmail.com' },
+    { email: 'Test Testson', label: 'test@test.com' },
+    { email: 'erik@owlsport.se', label: 'Erik Eriksson' },
+    { email: 'muhja@owlsport.se', label: 'Muhja Aboud' },
+    { email: 'zach@owlsport.se', label: 'Zacharias Eklund' },
+    { email: 'zhkng@owlsport.se', label: 'Zhu Kang' },
+    { email: 'munira@owlsport.se', label: 'Munira Regalado' },
+    { email: 'amy@owlsport.se', label: 'Amy McMillan' },
+    { email: 'amina@owlsport.se', label: 'Amina Negassi' },
+    { email: 'marco@owlsport.se', label: 'Marco Dahl' },
 ]; // TODO: Load from user's friends (and other known users?)
 
 const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
