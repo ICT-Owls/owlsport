@@ -55,7 +55,7 @@ export function useMapStatus() {
 }
 
 /**
- *   @returns [isLoading: boolean, startProcess(process), clearProcess(process)]
+ *   @returns [status: array, startProcess(process), clearProcess(process)]
  */
 export function useLoadingStatus() {
     const [status, setStatus] = useCustomHook('mainContentLoading');

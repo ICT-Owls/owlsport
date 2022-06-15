@@ -1,9 +1,11 @@
 import { getUser } from 'api';
+import { useLoadingStatus } from 'models/Model';
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { eventApi } from '../helpers/Firebase';
 import EventDetailsView from '../views/EventDetailsView';
 export default function EventDetailsPresenter({ user }) {
+    const [loadingStatus, startProcess, clearProcess] = useLoadingStatus();
     const { eventId } = useParams();
     const [eventData, setEventData] = React.useState({
         event: undefined,
@@ -15,7 +17,8 @@ export default function EventDetailsPresenter({ user }) {
     };
 
     useEffect(() => {
-        async function fetch() {
+        (async () => {
+            startProcess('eventDetails');
             const newEvent = await eventApi.eventsIdGet(eventId, opts);
             const newUsers = {};
 
@@ -30,8 +33,8 @@ export default function EventDetailsPresenter({ user }) {
                 event: newEvent,
                 users: newUsers,
             });
-        }
-        fetch();
+            clearProcess('eventDetails');
+        })();
     }, [eventId]);
 
     const setCarpooling = (requiresCarpooling, location, seats) => {

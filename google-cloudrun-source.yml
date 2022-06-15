@@ -52,7 +52,7 @@ on:
       - release
 
 env:
-  PROJECT_ID: ***REMOVED*** 
+  PROJECT_ID: '${{ secrets.FIREBASE_PROJECTID}}' 
   SERVICE: carpooling-backend 
   REGION: europe-north1
 

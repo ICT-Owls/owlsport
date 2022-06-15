@@ -26,6 +26,9 @@ module.exports = {
             backgroundImage: (theme) => ({
                 background: "url('../background.png')",
             }),
+            transitionDuration: {
+                opacity: 1000,
+            },
         },
     },
     plugins: [

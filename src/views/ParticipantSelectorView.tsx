@@ -92,6 +92,7 @@ const ParticipantSelectorView: FC<ParticipantSelectorViewProps> = (
         _event: SyntheticEvent,
         newValue: UserOption[] | UserOption | null
     ) => {
+        console.info("New Value: " + newValue);
         if (newValue == null) {
             props?.setValue?.([]);
             return;
@@ -122,9 +123,9 @@ const ParticipantSelectorView: FC<ParticipantSelectorViewProps> = (
                 onClose={() => {
                     setOpen(false);
                 }}
-                onInputChange={(_event, newValue: string) =>
-                    props?.setInputValue?.(newValue)
-                }
+                onInputChange={(_event, newValue: string) => {
+                    props?.setInputValue?.(newValue);
+                }}
                 onChange={handleChange}
                 value={props.value}
                 inputValue={props.inputValue}

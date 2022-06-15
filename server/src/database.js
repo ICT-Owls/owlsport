@@ -1,6 +1,6 @@
 const admin = require('firebase-admin');
 const { initializeApp } = require('firebase/app');
-const serviceAccount = require('***REMOVED***');
+const serviceAccount = require('./firebase-adminsdk.json');
 
 const adminApp = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -9,7 +9,7 @@ const adminApp = admin.initializeApp({
 });
 
 const firebaseConfig = {
-    apiKey: '***REMOVED***',
+    apiKey: process.env.GOOGLE_API_BROWSER_KEY,
     authDomain: '***REMOVED***',
     databaseURL:
         '***REMOVED***',

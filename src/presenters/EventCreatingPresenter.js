@@ -2,6 +2,7 @@ import * as React from 'react';
 import EventCreatingView from '../views/EventCreatingView';
 import { createEvent } from '../api';
 import { useEventList } from 'models/Model';
+import EventEditView from 'views/EventEditView';
 
 export const EventCreatingPresenter = ({ user, onSubmit }) => {
 

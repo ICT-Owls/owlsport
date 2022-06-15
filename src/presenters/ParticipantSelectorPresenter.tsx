@@ -51,11 +51,31 @@ const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
         let active = true;
 
         // Check if manual input is valid email address
-        setIsInputValid(emailRegEx.test(inputValue));
+        setIsInputValid(emailRegEx.test(inputValue.trim()));
+        console.info(
+            inputValue +
+                ' is ' +
+                (isInputValid ? '' : 'not') +
+                ' a valid email.'
+        );
+
+        if (isInputValid && inputValue.endsWith(' ')) {
+            setSelection([
+                ...selection,
+                { label: inputValue, email: inputValue },
+            ]);
+            setInputValue('');
+            return;
+        }
 
         // Check if entered email already exists in options to not add it twice
         const isExisting = fixedOptions.some(
-            (option) => inputValue === option.label
+            (option) => inputValue === option.email
+        );
+
+        console.info(
+            inputValue +
+                (isInputValid ? ' already existed' : " didn't already exist")
         );
 
         // Is entered email valid and unique?
@@ -71,8 +91,9 @@ const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
         if (!loading) {
             return undefined;
         }
-        setLoaded(false);
 
+        // Fake loading
+        setLoaded(false);
         (async () => {
             if (active) {
                 await new Promise((resolve) => {
@@ -99,7 +120,10 @@ const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
     const handleSubmit = () => {
         props.onSubmit?.(
             isInputValid
-                ? [{ email: inputValue, label: inputValue }, ...selection]
+                ? [
+                      { email: inputValue.trim(), label: inputValue.trim() },
+                      ...selection,
+                  ]
                 : selection
         );
 
@@ -123,10 +147,6 @@ const ParticipantSelectorPresenter: FC<ParticipantSelectorPresenterProps> = (
             onSubmit={handleSubmit}
         />
     );
-};
-
-ParticipantSelectorPresenter.defaultProps = {
-    showButton: true,
 };
 
 export default ParticipantSelectorPresenter;

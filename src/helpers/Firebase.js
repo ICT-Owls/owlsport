@@ -18,7 +18,7 @@ const userApi = new UserApi(backendApiConfig);
 const eventApi = new EventApi(backendApiConfig);
 
 const firebaseConfig = {
-    apiKey: '***REMOVED***',
+    apiKey: process.env.GOOGLE_API_BROWSER_KEY,
     authDomain: '***REMOVED***',
     databaseURL:
         '***REMOVED***',

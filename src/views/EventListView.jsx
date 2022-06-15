@@ -10,7 +10,8 @@ import {
 } from '@mui/material';
 import { useEventList } from 'models/Model';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { EventCreatingPresenter } from '../presenters/EventCreatingPresenter';
 import EventListCardView from './EventListCardView';
 
@@ -18,64 +19,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function EventListView({ events, user, loadEvents }) {
-    const [, pollEvents] = useEventList();
-
-    const [oldEvents, setOldEvents] = useState(
-        events.filter((o) => o.endDateTime <= Date.now())
-    );
-    const [newEvents, setNewEvents] = useState(
-        events.filter((o) => o.endDateTime > Date.now())
-    );
-
-    const [haveNewEvents, setHaveNewEvents] = useState(false);
-    const [haveOldEvents, setHaveOldEvents] = useState(false);
-
-    const [loaded, setLoaded] = useState(false);
-
-    useEffect(() => {
-        pollEvents().then(() => {
-            setLoaded(true);
-        });
-    }, []);
-
-    useEffect(() => {
-        setOldEvents(events.filter((o) => o.endDateTime <= Date.now()));
-        setNewEvents(events.filter((o) => o.endDateTime > Date.now()));
-        setHaveNewEvents(newEvents.length > 0);
-        setHaveOldEvents(oldEvents.length > 0);
-    }, [events]);
-
-    // console.log(newEvents.length);
-    // console.log(oldEvents.length);
-
-    const [createOpen, setCreateOpen] = React.useState(false);
+export default function EventListView(props) {
+    const {
+        events,
+        user,
+        loadEvents,
+        onCreateEventClicked,
+        newEvents,
+        oldEvents,
+        haveNewEvents,
+        haveOldEvents,
+        hidden,
+    } = props;
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if necessary)
     return (
-        <div className="">
-            <Dialog
-                // for keeping CSS style in EventCreating.jsx
-                disablePortal={true}
-                open={createOpen}
-                onClose={() => {
-                    pollEvents();
-                    setCreateOpen(false);
-                }}
-                maxWidth="xl"
-                fullWidth={true}
-            >
-                <Container padding="1rem">
-                    <EventCreatingPresenter
-                        user={user}
-                        onSubmit={() => {
-                            setCreateOpen(false);
-                            loadEvents();
-                        }}
-                    />
-                </Container>
-            </Dialog>
-
-            <Box className={'flex flex-col items-start'}>
+        <div className={hidden ? 'hidden' : ''}>
+            <Box className={'flex flex-col items-start scrollbar-thin'}>
                 <Typography
                     fontSize={'1.5rem'}
                     fontFamily={'monospace'}
@@ -85,7 +44,7 @@ export default function EventListView({ events, user, loadEvents }) {
                 </Typography>
                 <Button
                     className="w-fit justify-start self-start"
-                    onClick={() => setCreateOpen(true)}
+                    onClick={onCreateEventClicked}
                 >
                     + Create Event
                 </Button>
@@ -100,16 +59,7 @@ export default function EventListView({ events, user, loadEvents }) {
             )}
 
             {haveNewEvents ? (
-                <List
-                // sx={{
-                //     width: '100%',
-                //     // maxWidth: 360,
-                //     // position: 'relative',
-                //     // overflow: 'scroll',
-                //     // height: '100%',
-                //     maxHeight: '80%',
-                //     minHeight: '60%'}}
-                >
+                <List>
                     {newEvents.map((event) => {
                         return (
                             <ListItem
@@ -137,16 +87,7 @@ export default function EventListView({ events, user, loadEvents }) {
             )}
 
             {haveOldEvents ? (
-                <List
-                // sx={{
-                //         width: '100%',
-                //        // maxWidth: 360,
-                //        // position: 'relative',
-                //        // overflow: 'scroll',
-                //        // height: '100%',
-                //        maxHeight: '80%',
-                //        minHeight: '60%'}}
-                >
+                <List>
                     {oldEvents.map((event) => {
                         return (
                             <ListItem
@@ -164,36 +105,6 @@ export default function EventListView({ events, user, loadEvents }) {
             ) : (
                 <div />
             )}
-
-            {/*<Box*/}
-            {/*    sx={{ width: '100%', height: '80%', minHeight:'50vh', maxWidth: 360, bgcolor: 'yellow' }}*/}
-            {/*>*/}
-            {/*<List*/}
-            {/*    sx={{*/}
-            {/*        width: '100%',*/}
-            {/*        maxWidth: 360,*/}
-            {/*        bgcolor: 'background.paper',*/}
-            {/*        position: 'relative',*/}
-            {/*        overflow: 'auto',*/}
-            {/*        maxHeight: '90%',*/}
-            {/*        '& ul': { padding: 0 },*/}
-            {/*    }}*/}
-            {/*    subheader={<li />}*/}
-            {/*>*/}
-            {/*    {[0, 1, 2, 3, 4].map((sectionId) => (*/}
-            {/*        <li key={`section-${sectionId}`}>*/}
-            {/*            <ul>*/}
-            {/*                <ListSubheader>{`I'm sticky ${sectionId}`}</ListSubheader>*/}
-            {/*                {[0, 1, 2].map((item) => (*/}
-            {/*                    <ListItem key={`item-${sectionId}-${item}`}>*/}
-            {/*                        <ListItemText primary={`Item ${item}`} />*/}
-            {/*                    </ListItem>*/}
-            {/*                ))}*/}
-            {/*            </ul>*/}
-            {/*        </li>*/}
-            {/*    ))}*/}
-            {/*</List>*/}
-            {/*</Box>*/}
         </div>
     );
 }

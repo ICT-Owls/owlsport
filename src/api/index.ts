@@ -74,10 +74,6 @@ export async function getEvents(): Promise<Event[] | null> {
             }
             return true;
         });
-
-        if (process.env.NODE_ENV === 'development') {
-            console.info(`Fetched ${events.length} events`);
-        }
         return events;
     } catch (e) {
         if (typeof e === 'object' && e !== null) handleError(e as Response);
@@ -96,6 +92,20 @@ export async function getUser(id?: string) {
             : await userApi.userIdGet('', {
                   headers: { authorization: `Bearer ${token}` },
               });
+        return user;
+    } catch (e) {
+        if (typeof e === 'object' && e !== null) handleError(e as Response);
+    }
+    return null;
+}
+
+export async function getUserByEmail(email: string) {
+    const token = localStorage.getItem('auth');
+    if (!token) return;
+    try {
+        const user = userApi.userEmailEmailGet(email, {
+            headers: { authorization: `Bearer ${token}` },
+        });
         return user;
     } catch (e) {
         if (typeof e === 'object' && e !== null) handleError(e as Response);

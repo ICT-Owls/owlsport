@@ -3,7 +3,7 @@ const { NodePath } = require('@babel/core');
 const { validationResult } = require('express-validator');
 const GoogleMapsClient = require('@googlemaps/google-maps-services-js/dist/client').Client
 
-let gmapKey = process.env.GOOGLE_MAPS_API_KEY;
+let gmapKey = process.env.GOOGLE_API_BROWSER_KEY;
 
 if(!gmapKey){
     console.error("No google maps api key set");

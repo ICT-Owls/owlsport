@@ -17,6 +17,9 @@
 /generated-sources
 /package-lock.json
 
+# keys
+firebase-adminsdk.json
+
 # misc
 .DS_Store
 .env.local

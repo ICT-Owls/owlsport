@@ -14,7 +14,7 @@ export type GooglePlace = {
     secondary_text?: string;
 };
 
-const BROWSER_API_KEY = '***REMOVED***';
+const BROWSER_API_KEY = process.env.GOOGLE_API_BROWSER_KEY;
 
 /* Some funky legacy code for loading scripts
     function loadScript(src: string, position: HTMLElement | null, id: string) {

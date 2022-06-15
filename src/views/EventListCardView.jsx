@@ -73,7 +73,7 @@ const EventListCardView = ({
 export default EventListCardView;
 
 function MemberBox({ members, user }) {
-    if(!members) return null;
+    if (!members) return null;
     return (
         <List
             className={

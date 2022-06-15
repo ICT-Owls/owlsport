@@ -114,44 +114,66 @@ const EventCreatingView = ({
     //These views only handle UI. They should not handle any logic outside of ui (They can handle logic specific to some ui element, if neccessary)
     return (
         <>
-            <DialogContent>
-                <div className="flex flex-row justify-center">
-                    {user ? (
-                        <Box alignContent={'center'} maxHeight="56px">
-                            <AvatarView maxHeight="100%" user={user} />
-                        </Box>
-                    ) : (
-                        <>ERROR!</>
-                    )}
+            <div className="flex flex-row justify-center">
+                {user ? (
+                    <Box alignContent={'center'} maxHeight="56px">
+                        <AvatarView maxHeight="100%" user={user} />
+                    </Box>
+                ) : (
+                    <>ERROR!</>
+                )}
 
-                    <div className="flex w-full px-12">
-                        <div className="rounded-lg bg-gray-100 p-8 sm:p-12">
-                            <div className="mb-6">
-                                <TextField
-                                    fullWidth
-                                    id="outlined-basic"
-                                    label="Event"
-                                    variant="outlined"
-                                    value={title}
-                                    onChange={(e) => {
-                                        setTitle(e.target.value);
+                <div className="flex w-full px-12">
+                    <div className="rounded-lg bg-gray-100 p-8 sm:p-12">
+                        <div className="mb-6">
+                            <TextField
+                                fullWidth
+                                id="outlined-basic"
+                                label="Event"
+                                variant="outlined"
+                                value={title}
+                                onChange={(e) => {
+                                    setTitle(e.target.value);
+                                }}
+                            />
+                        </div>
+
+                        <div className="mb-6">
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DatePicker
+                                    renderInput={(props) => (
+                                        <TextField
+                                            {...props}
+                                            className="w-full"
+                                        />
+                                    )}
+                                    label="Select Date"
+                                    className="
+                                    focus:border-primary
+                                    w-full
+                                    rounded
+                                    border-gray-500
+                                    p-3
+                                    text-gray-800
+                                    outline-none
+                                    focus-visible:shadow-none
+                                    dark:border-slate-600
+                                    dark:bg-slate-700
+                                    dark:text-gray-50
+                                    "
+                                    value={date}
+                                    onChange={(newValue) => {
+                                        setDate(Date.parse(newValue));
                                     }}
                                 />
-                            </div>
+                            </LocalizationProvider>
+                        </div>
 
-                            <div className="mb-6">
-                                <LocalizationProvider
-                                    dateAdapter={AdapterDateFns}
-                                >
-                                    <DatePicker
-                                        renderInput={(props) => (
-                                            <TextField
-                                                {...props}
-                                                className="w-full"
-                                            />
-                                        )}
-                                        label="Select Date"
-                                        className="
+                        <div className="mb-6">
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <TimePicker
+                                    label="Start time"
+                                    className="
                                     focus:border-primary
                                     w-full
                                     rounded
@@ -164,139 +186,107 @@ const EventCreatingView = ({
                                     dark:bg-slate-700
                                     dark:text-gray-50
                                     "
-                                        value={date}
-                                        onChange={(newValue) => {
-                                            setDate(Date.parse(newValue));
-                                        }}
-                                    />
-                                </LocalizationProvider>
-                            </div>
-
-                            <div className="mb-6">
-                                <LocalizationProvider
-                                    dateAdapter={AdapterDateFns}
-                                >
-                                    <TimePicker
-                                        label="Start time"
-                                        className="
-                                    focus:border-primary
-                                    w-full
-                                    rounded
-                                    border-gray-500
-                                    p-3
-                                    text-gray-800
-                                    outline-none
-                                    focus-visible:shadow-none
-                                    dark:border-slate-600
-                                    dark:bg-slate-700
-                                    dark:text-gray-50
-                                    "
-                                        value={startDateTime}
-                                        onChange={(newDate) => {
-                                            setStartDateTime(
-                                                Date.parse(newDate)
-                                            );
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                className="w-full"
-                                            />
-                                        )}
-                                    />
-                                </LocalizationProvider>
-                            </div>
-
-                            <div className="mb-6">
-                                <LocalizationProvider
-                                    dateAdapter={AdapterDateFns}
-                                >
-                                    <TimePicker
-                                        label="End time"
-                                        className="
-                                    focus:border-primary
-                                    w-full
-                                    rounded
-                                    border-gray-500
-                                    p-3
-                                    text-gray-800
-                                    outline-none
-                                    focus-visible:shadow-none
-                                    dark:border-slate-600
-                                    dark:bg-slate-700
-                                    dark:text-gray-50
-                                    "
-                                        value={endDateTime}
-                                        onChange={(newDate) => {
-                                            setEndDateTime(Date.parse(newDate));
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                className="w-full"
-                                            />
-                                        )}
-                                    />
-                                </LocalizationProvider>
-                            </div>
-
-                            <div className="mb-6">
-                                <TextField
-                                    fullWidth
-                                    id="outlined-basic"
-                                    label="Address"
-                                    variant="outlined"
-                                    value={location.address || ''}
-                                    onChange={(e) =>
-                                        setLocation({
-                                            longitude: location.longitude,
-                                            latitude: location.latitude,
-                                            address: e.target.value,
-                                        })
-                                    }
+                                    value={startDateTime}
+                                    onChange={(newDate) => {
+                                        setStartDateTime(Date.parse(newDate));
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            className="w-full"
+                                        />
+                                    )}
                                 />
-                                {/*<input*/}
-                                {/*    type="text"*/}
-                                {/*    placeholder="Location"*/}
-                                {/*    className="*/}
-                                {/*    w-full*/}
-                                {/*    rounded*/}
-                                {/*    p-3*/}
-                                {/*    focus:border-primary*/}
-                                {/*                                       "*/}
-                                {/*    name="location"*/}
-                                {/*    id="location"*/}
-                                {/*/>*/}
-                            </div>
+                            </LocalizationProvider>
+                        </div>
 
-                            <div className="mb-6">
-                                <ParticipantSelectorPresenter
-                                    onSubmit={handleAddUser}
-                                    placeholderText="Invite user"
-                                    buttonText="Invite"
-                                    multiple
-                                    showButton={true}
+                        <div className="mb-6">
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <TimePicker
+                                    label="End time"
+                                    className="
+                                    focus:border-primary
+                                    w-full
+                                    rounded
+                                    border-gray-500
+                                    p-3
+                                    text-gray-800
+                                    outline-none
+                                    focus-visible:shadow-none
+                                    dark:border-slate-600
+                                    dark:bg-slate-700
+                                    dark:text-gray-50
+                                    "
+                                    value={endDateTime}
+                                    onChange={(newDate) => {
+                                        setEndDateTime(Date.parse(newDate));
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            className="w-full"
+                                        />
+                                    )}
                                 />
-                                <List className="m-2 h-32 overflow-y-auto">
-                                    <TransitionGroup>
-                                        {Object.values(members).map((item) => (
-                                            <Collapse key={item.email}>
-                                                {renderItem({
-                                                    item,
-                                                    handleRemoveUser,
-                                                })}
-                                            </Collapse>
-                                        ))}
-                                    </TransitionGroup>
-                                </List>
-                            </div>
+                            </LocalizationProvider>
+                        </div>
 
-                            <form className="">
-                                <div className="">
-                                    <div className="mt-4">
-                                        <Button
-                                            variant="contained"
-                                            className="
+                        <div className="mb-6">
+                            <TextField
+                                fullWidth
+                                id="outlined-basic"
+                                label="Address"
+                                variant="outlined"
+                                value={location.address || ''}
+                                onChange={(e) =>
+                                    setLocation({
+                                        longitude: location.longitude,
+                                        latitude: location.latitude,
+                                        address: e.target.value,
+                                    })
+                                }
+                            />
+                            {/*<input*/}
+                            {/*    type="text"*/}
+                            {/*    placeholder="Location"*/}
+                            {/*    className="*/}
+                            {/*    w-full*/}
+                            {/*    rounded*/}
+                            {/*    p-3*/}
+                            {/*    focus:border-primary*/}
+                            {/*                                       "*/}
+                            {/*    name="location"*/}
+                            {/*    id="location"*/}
+                            {/*/>*/}
+                        </div>
+
+                        <div className="mb-6">
+                            <ParticipantSelectorPresenter
+                                onSubmit={handleAddUser}
+                                placeholderText="Invite users"
+                                multiple
+                                showButton={false}
+                            />
+                            <List className="m-2 h-32 overflow-y-auto">
+                                <TransitionGroup>
+                                    {Object.values(members).map((item) => (
+                                        <Collapse key={item.email}>
+                                            {renderItem({
+                                                item,
+                                                handleRemoveUser,
+                                            })}
+                                        </Collapse>
+                                    ))}
+                                </TransitionGroup>
+                            </List>
+                        </div>
+
+                        <form className="">
+                            <div className="">
+                                <div className="mt-4">
+                                    <Button
+                                        variant="contained"
+                                        className="
                                     hover:
                                     bg-primary border-primary
                                     w-full
@@ -305,43 +295,40 @@ const EventCreatingView = ({
                                     transition
                                     duration-500
                                     "
-                                            onClick={submit}
-                                        >
-                                            Create
-                                        </Button>
-                                    </div>
+                                        onClick={submit}
+                                    >
+                                        Create
+                                    </Button>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
+                    </div>
 
-                        <div className="ml-4 content-center md:w-3/5 flex self-stretch">
-                            <div className="relative rounded-lg bg-gray-100 p-8 sm:p-12">
-                                <TextareaAutosize
-                                    aria-label="minimum height"
-                                    minRows={15}
-                                    maxRows={20}
-                                    placeholder="About"
-                                    style={{ width: 400 }}
-                                    value={description}
-                                    onChange={(e) =>
-                                        setDescription(e.target.value)
+                    <div className="ml-4 flex content-center self-stretch md:w-3/5">
+                        <div className="relative rounded-lg bg-gray-100 p-8 sm:p-12">
+                            <TextareaAutosize
+                                aria-label="minimum height"
+                                minRows={15}
+                                maxRows={20}
+                                placeholder="About"
+                                style={{ width: 400 }}
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                            />
+
+                            <div className="mt-8">
+                                <MapInputPresenter
+                                    size={{ width: '100%', height: '25rem' }}
+                                    mapContext="eventCreate"
+                                    onPlace={(newLocation) =>
+                                        setLocation(newLocation)
                                     }
                                 />
-
-                                <div className="mt-8">
-                                    <MapInputPresenter
-                                        size={{width: '100%', height:'25rem'}}
-                                        mapContext='eventCreate'
-                                        onPlace={(newLocation) =>
-                                            setLocation(newLocation)
-                                        }
-                                    />
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </DialogContent>
+            </div>
         </>
     );
 };
